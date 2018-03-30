@@ -8,6 +8,7 @@ import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.Station;
 import myVelibCore.userAndCardPackage.Card;
 import myVelibCore.userAndCardPackage.User;
+import myVelibCore.utilities.RunningTime;
 
 public class ParsingAndCalling {
 	
@@ -53,6 +54,8 @@ public class ParsingAndCalling {
 			User user = UserFactory.getUser(userName,network);
 			AbstractFactory cardFactory = FactoryProducer.getFactory("Card");
 			Card userCard = cardFactory.getCard(cardType);
+			Thread userThread = new Thread(user);
+			userThread.start();
 		}
 		
 	}
@@ -117,7 +120,13 @@ public class ParsingAndCalling {
 		try{time = Integer.parseInt(args[3]);}
 		catch(Exception e) {System.out.println("Error : time must be an integer"); argsParsable = false;}
 		if(argsParsable) {
-			
+			try {
+				User user = Network.searchUserByIDAllNetworks(userID);
+				Station station = Network.searchStationByIDAllNetworks(stationID);
+				station.returnABike(user);
+			}
+		}
+		else {System.out.println(TYPE_ERROR_MSG);}
 			///A IMPLEMENTER
 			
 		}
@@ -178,4 +187,10 @@ public class ParsingAndCalling {
 		}
 		
 	}
+	
+	public static void setupTime() {
+		Thread time = new Thread(RunningTime.getInstance());
+		time.start();
+	}
+	
 }

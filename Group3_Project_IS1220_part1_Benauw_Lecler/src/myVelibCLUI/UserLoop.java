@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
+import myVelibCore.stationPackage.Network;
+
 public class UserLoop {
 	//When you loop, you read the line entered by the user
 	//The first word is used as the command
 	//Then you split the line to obtain the parameters and their number
 	//Regarding to the number of parameters, you deduce what the user want to do
-	//You parse every parameter, and send error if parsing don't work
+	//You parse every parameter, and send error if parsing doesn't work
 	//You call the right function
 	
 	
@@ -87,7 +89,14 @@ public class UserLoop {
    
    public static final String DESCRIPTION_ONLINE  = 
 		   "online : used to put online station"+"\n" + DESCRIPTION1_ONLINE +"\n";
-  
+   
+   //Setup time Command
+   
+   public static final String SETUPTIME_COMMAND = "setupTime";
+   
+   public static final String DESCRIPTION_SETUPTIME = 
+		   "setupTime : used to launch the time simulation";
+   
    //RentBike Command
    
    public static final String RENTBIKE_COMMAND = "rentBike";
@@ -242,6 +251,7 @@ public class UserLoop {
          
          if (command.equalsIgnoreCase(EXIT_COMMAND)) {
         	 if (numberOfParametersEntered == NBR_PARAM_EXIT) {
+        		 Network.setSimulaton_On(false);
                  System.out.println(EXITING_MSG);
                  return;
         	 }
@@ -345,6 +355,9 @@ public class UserLoop {
          		ParsingAndCalling.displayWith1Param(inputForParsing);
          	}
          	else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(SETUPTIME_COMMAND)) {
+        	 ParsingAndCalling.setupTime();
          }
          
          else{System.out.println(UNRECOGNIZED_COMMAND_MSG);}

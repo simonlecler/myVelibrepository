@@ -30,7 +30,7 @@ import myVelibCore.utilities.Time;
  * @author Simon Lecler & Edouard Benauw
  *
  */
-public class User implements Runnable{
+public class User implements Runnable, Observer{
 	/**
 	 * Name of the user
 	 */
@@ -283,6 +283,7 @@ public class User implements Runnable{
 	 * @param stationStatus
 	 *		True if the station is available, false either
 	 */		
+	@Override
 	public void updateDeparture (boolean isThereAnyBicycle,boolean stationStatus){
 		if (!isThereAnyBicycle || !stationStatus) {
 			try {
@@ -340,6 +341,7 @@ public class User implements Runnable{
 	 * @param stationStatus
 	 *		True if the station is available, false either
 	 */
+	@Override
 	public void updateDestination (boolean isThereFreeSlots,boolean stationStatus) {
 		if(!isThereFreeSlots || !stationStatus) {
 			try {
@@ -580,6 +582,8 @@ public class User implements Runnable{
 		}
 	
 	}
+
+
 	
 }
 

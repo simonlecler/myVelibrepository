@@ -1,6 +1,7 @@
 package myVelibCore.stationPackage;
 
 import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
+import myVelibCore.userAndCardPackage.Observer;
 import myVelibCore.utilities.GPSLocation;
 /**
  * <b>Special type of station</b>
@@ -21,6 +22,21 @@ public class StationPlus extends Station{
 	 */
 	public StationPlus(GPSLocation gpsLocation, Network network) throws UnimplementedSubclassWithoutInputException {
 		super(gpsLocation,network);
+	}
+	@Override
+	public void registerObserver(Observer observer) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeObserver(Observer observer) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void notifyObservers() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

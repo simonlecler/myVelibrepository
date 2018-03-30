@@ -27,7 +27,7 @@ import myVelibCore.utilities.Time;
  * @author Simon Lecler & Edouard Benauw
  *
  */
-public abstract class Station {
+public abstract class Station implements Observable{
 	/**
 	 * The unique instance of StationSortedByType
 	 * @see Network
