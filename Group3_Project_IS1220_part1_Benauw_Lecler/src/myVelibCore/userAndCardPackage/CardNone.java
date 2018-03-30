@@ -9,6 +9,11 @@ import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
  *
  */
 public class CardNone extends Card {
+	@Override
+	public String toString() {
+		return "No card";
+	}
+
 	/**
 	 * The amount on the card, equal to zero and cannot be changed because this is not a card
 	 */

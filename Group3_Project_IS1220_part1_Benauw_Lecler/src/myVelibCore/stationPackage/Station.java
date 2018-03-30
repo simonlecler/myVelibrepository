@@ -332,10 +332,7 @@ public abstract class Station implements Observable{
 		return this.stationStatitics.computeAverageOccupationRate(this.slots, beginningTime, endingTime);
 	}
 
-	@Override
-	public String toString() {
-		return "Station " + ", id=" + id + ", gpsLocation=" + gpsLocation + "]";
-	}
+	
 	
 	public void displayStatistics() {
 		System.out.println("Total number of operations on the station : " +this.stationStatitics.getAllOperationsNumber());

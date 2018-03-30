@@ -183,7 +183,7 @@ public class ParsingAndCalling {
 
 		try {
 			Network network = Network.searchNetworkByName(velibNetworkName);
-			network.display();
+			System.out.println("network");
 		}
 		
 	}

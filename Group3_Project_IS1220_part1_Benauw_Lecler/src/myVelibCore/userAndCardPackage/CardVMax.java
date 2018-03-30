@@ -29,4 +29,8 @@ public class CardVMax extends Card {
 		return visitor.visit(this,bycicle,minutes);
 	}
 	
+	@Override
+	public String toString() {
+		return "CardVMax whose current balance is " + getBalance();
+	}
 }

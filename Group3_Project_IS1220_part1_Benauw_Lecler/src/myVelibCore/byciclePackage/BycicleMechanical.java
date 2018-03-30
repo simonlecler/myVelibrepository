@@ -6,6 +6,13 @@ public class BycicleMechanical extends Bycicle {
 	public BycicleMechanical() {
 		super();
 	}
+
+	@Override
+	public String toString() {
+		return "Mechanical";
+	}
+	
+	
 	
 	
 

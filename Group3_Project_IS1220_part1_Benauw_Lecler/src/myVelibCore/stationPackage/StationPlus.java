@@ -10,6 +10,11 @@ import myVelibCore.utilities.GPSLocation;
  *
  */
 public class StationPlus extends Station{
+	@Override
+	public String toString() {
+		return "Station Plus" + " " + "|" + " " +" id=" + this.getId() + " "+"|" + " "+ "Coordonnées GPS : " + " " + this.getGpsLocation() +" "+ "|" + " "+ "Number of parking slots :" + " " + this.getSlots().size() + "\n";
+		
+	}
 	/**
 	 * Time-credit earned by the user. It is declared final as it doesn't change
 	 */

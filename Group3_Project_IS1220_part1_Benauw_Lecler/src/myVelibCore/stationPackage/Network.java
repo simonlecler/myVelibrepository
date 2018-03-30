@@ -85,6 +85,16 @@ public class Network {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return("This myVelib Network is situated in" + " "+ name + "\n" + "Its ID is" +" "+ id + "\n" 
+				+ "Here are the detailed informations about all the stations of the network :" +  "\n" 
+				+ allStations + "\n"
+				+ "Here are the detailed informations about all the users of the network" + "\n"
+				+ allUsers);		
+	}
+
+
 	public String getName() {
 		return name;
 	}

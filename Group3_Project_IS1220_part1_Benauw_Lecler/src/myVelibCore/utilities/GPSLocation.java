@@ -36,16 +36,16 @@ public class GPSLocation {
 	
 	public static double getMaxLatitude(double sidearea) {
 		// You input a maximum sidearea and the method return the maximum latitude possible to obtain if you consider a line coming from the point(0,0) 
-		return 0;
+		return sidearea/111.11;
 		
-		// A implémenter !!!
+		
 	}
 	
 	public static double getMaxLongitude(double sidearea) {
 		// You input a maximum sidearea and the method return the maximum longitude possible to obtain if you consider a line coming from the point(0,0)
-		return 0;
+		return sidearea/(111.1);
 		
-		// A implémenter !!!
+		
 	}
 	
 	public GPSLocation(double latitude, double longitude) {
@@ -84,7 +84,7 @@ public class GPSLocation {
 
 	@Override
 public String toString() {
-	return "GPSLocation [latitude=" + latitude + ", longitude=" + longitude + "]";
+	return "latitude=" + latitude + ", longitude=" + longitude;
 }
 
 	

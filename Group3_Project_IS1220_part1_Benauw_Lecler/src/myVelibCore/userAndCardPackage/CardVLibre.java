@@ -25,6 +25,10 @@ public class CardVLibre extends Card {
 	}
 
 	@Override
+	public String toString() {
+		return "CardVLibre whose current balance is " + getBalance();
+	}
+	@Override
 	public int accept (CardVisitor visitor, Bycicle bycicle, int minutes) throws UnimplementedSubclassWithoutInputException {
 		return visitor.visit(this,bycicle,minutes);
 	}

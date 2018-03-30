@@ -24,6 +24,12 @@ public class StationStandard extends Station{
 		super(gpsLocation,network);
 	}
 	@Override
+	public String toString() {
+		return "Station Standard" + " " + "|" + " " +" id="+" " + this.getId() + " "+"|" + " "+ "Coordonnées GPS :"+ " " + this.getGpsLocation() +" "+ "|" + " "+ "Number of parking slots" + " " +this.getSlots().size() + "\n";
+		
+	}
+	
+	@Override
 	public void registerObserver(Observer observer) {
 		// TODO Auto-generated method stub
 		

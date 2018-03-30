@@ -407,6 +407,19 @@ public class User implements Runnable, Observer{
 		}
 	}
 
+	@Override
+	public String toString() {
+		if (this.getBycicle() == null) {
+			return "name=" + name +  " " + "|" + " " + "id=" + id +" "+ "|" + " " + "Coordonnées GPS" + " "+ gpsLocation + " " + "|" + " " + "Carte d'abonnement" +" " + userCard
+					+ " "+ "|" + " " + "Currently not riding";
+		}
+		else {
+			return "name=" + name +  " " + "|" + " " + "id=" + id +" "+ "|" + " " + "Coordonnées GPS" + gpsLocation + " " + "|" + " " + "Carte d'abonnement" + " " +userCard
+					+ " " + "|" + " " + "Currently riding with a bicycle of type" + " " + bycicle;
+		}
+		
+	}
+
 	/**
 	 * 
 	 * @return The total spent on a bicycle by the user

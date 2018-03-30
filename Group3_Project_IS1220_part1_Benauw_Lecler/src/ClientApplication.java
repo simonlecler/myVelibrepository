@@ -239,8 +239,7 @@ public class ClientApplication {
 		ParkingSlot slot99 = new ParkingSlot(station20);
 		ParkingSlot slot100 = new ParkingSlot(station20);
 		
-		
-		
+		System.out.println(network1);		
 		
 		Thread user1Thread = new Thread(user1);
 		
@@ -255,19 +254,13 @@ public class ClientApplication {
 		try {
 
 			
-			Bycicle bycicle1 = bycicleFactory.getBycicle("Electrical");
-			Bycicle bycicle2 = bycicleFactory.getBycicle("Electrical");
-			depart.getStationBikeCounters().addBike(bycicle1, depart.getSlots());
-			depart.getStationBikeCounters().addBike(bycicle2, depart.getSlots());
+			
 			user1.planningRide(new GPSLocation(0,0), "Avoid Plus Stations", "Electrical");
 			
 			//user2.planningRide(new GPSLocation(0,0), "Avoid Plus Stations", "Electrical");
 			
 			
-		} catch (BadInstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		try {
 			Thread.sleep(10000);
@@ -280,12 +273,18 @@ public class ClientApplication {
 		System.out.println(user1.getCurrentDepartureStation());
 		System.out.println(user1.getCurrentDestinationStation());
 		//System.out.println(user2.getGpsLocation());
-		Network.setSimulaton_On(false);
 		
-	
-		
+		}finally{
+			Network.setSimulaton_On(false);
+		}
+			
+		}
 		
 	}
 	
+		
+		
 	
-}
+	
+	
+

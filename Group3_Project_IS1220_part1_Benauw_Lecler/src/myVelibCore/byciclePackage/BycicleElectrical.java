@@ -9,6 +9,10 @@ public class BycicleElectrical extends Bycicle {
 		super();
 	}
 	
+	@Override
+	public String toString() {
+		return "Electrical";
+	}
 	
 	
 }
