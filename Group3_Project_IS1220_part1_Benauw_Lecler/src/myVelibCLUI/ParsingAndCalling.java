@@ -150,10 +150,6 @@ public class ParsingAndCalling {
 			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
-			///A IMPLEMENTER
-			
-		}
-		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void displayStationWith2Param(String[] args) {
@@ -226,18 +222,40 @@ public class ParsingAndCalling {
 		
 		bicycleType = args[6];
 		if(argsParsable) {
-			GPSLocation destination = new GPSLocation(destinationLatitude, destinationLongitude);
-			Network network = Network.searchNetworkByName(velibNetworkName);
-			User user = network.searchUserByName(userName);
-			user.planningRide(destination, policy, bicycleType);
+			try {
+				GPSLocation destination = new GPSLocation(destinationLatitude, destinationLongitude);
+				Network network = Network.searchNetworkByName(velibNetworkName);
+				User user = network.searchUserByName(userName);
+				user.planningRide(destination, policy, bicycleType);
+			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 			
 		
 	}
-	public static void setupTime() {
-		Thread time = new Thread(RunningTime.getInstance());
-		time.start();
+	
+	public static void runTime(String[] args) {
+		if(RunningTime.isTimeRunning()) {
+			System.out.println("Time is already running !");
+		}
+		else { 
+			RunningTime.setTimeRunning(true);
+			Thread time = new Thread(RunningTime.getInstance());
+			RunningTime.getInstance().setCurrentThread(time);
+			time.start();
+		}
+	}
+	
+	public static void stopTime(String[] args) {
+		if(RunningTime.isTimeRunning()) {
+			try{RunningTime.getInstance().getCurrentThread().interrupt();}
+			catch(SecurityException e) {System.out.println("Running Time Thread interrupted !");
+			RunningTime.setTimeRunning(false);
+			}
+		}
+		else {
+			System.out.println("Time is already stopped !");
+		}
 	}
 	
 }

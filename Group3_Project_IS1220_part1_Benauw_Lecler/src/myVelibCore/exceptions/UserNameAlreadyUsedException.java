@@ -4,9 +4,8 @@ import myVelibCore.stationPackage.Network;
 
 public class UserNameAlreadyUsedException extends Exception{
 	private String nameAlreadyUsed;
-	private Network network;
 
-	public UserNameAlreadyUsedException(String nameAlreadyUsed, Network network) {
+	public UserNameAlreadyUsedException(String nameAlreadyUsed) {
 		super();
 		this.nameAlreadyUsed = nameAlreadyUsed;
 	}

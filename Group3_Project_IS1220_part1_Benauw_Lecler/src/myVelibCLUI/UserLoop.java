@@ -98,12 +98,21 @@ public class UserLoop {
    public static final String DESCRIPTION_ONLINE  = 
 		   "online : used to put online station"+"\n" + DESCRIPTION1_ONLINE +"\n";
    
-   //Setup time Command
+   //Run time Command
    
-   public static final String SETUPTIME_COMMAND = "setupTime";
+   public static final String RUNTIME_COMMAND = "runTime";
+   public static final int NBR_PARAM_RUNTIME = 0;
    
    public static final String DESCRIPTION_SETUPTIME = 
-		   "setupTime : used to launch the time simulation";
+		   "runTime : used to launch the time simulation";
+   
+   //Stop time Command
+   
+   public static final String STOPTIME_COMMAND = "stopTime";
+   public static final int NBR_PARAM_STOPTIME = 0;
+   
+   public static final String DESCRIPTION_STOPTIME = 
+		   "stopTime : used to stop the time simulation";
    
    //RentBike Command
    
@@ -259,7 +268,6 @@ public class UserLoop {
          
          if (command.equalsIgnoreCase(EXIT_COMMAND)) {
         	 if (numberOfParametersEntered == NBR_PARAM_EXIT) {
-        		 Network.setSimulaton_On(false);
                  System.out.println(EXITING_MSG);
                  return;
         	 }
@@ -367,10 +375,18 @@ public class UserLoop {
          	}
          	else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }
-         else if (command.equalsIgnoreCase(SETUPTIME_COMMAND)) {
-        	 ParsingAndCalling.setupTime();
+         else if (command.equalsIgnoreCase(RUNTIME_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR_PARAM_RUNTIME) {
+        	 ParsingAndCalling.runTime(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }
-         
+         else if (command.equalsIgnoreCase(STOPTIME_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR_PARAM_STOPTIME) {
+        	 ParsingAndCalling.stopTime(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
          else{System.out.println(UNRECOGNIZED_COMMAND_MSG);}
       }
    }

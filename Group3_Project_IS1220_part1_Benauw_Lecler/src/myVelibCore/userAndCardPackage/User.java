@@ -18,12 +18,15 @@ import myVelibCore.exceptions.ReturnBikeFailException;
 import myVelibCore.exceptions.StationFullException;
 import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
 import myVelibCore.exceptions.UpdateRideFailException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.exceptions.ComputeCostImpossibleException;
+import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.planningPolicyPackage.PolicyChoice;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.Station;
 import myVelibCore.utilities.GPSLocation;
 import myVelibCore.utilities.IDGenerator;
+import myVelibCore.utilities.RunningTime;
 import myVelibCore.utilities.Time;
 /**
  * This class defines users
@@ -102,13 +105,22 @@ public class User implements Runnable, Observer{
 	 * @param network
 	 * 		Network of the user
 	 */
-	public User(String name,Network network) {
+	public User(String name,Network network) throws UserNameAlreadyUsedException {
 		super();
-		this.name = name;
-		this.id = IDGenerator.getInstance().getNextID();
-		this.network=network;
-		this.network.addUser(this);
-		this.userStatitics= new UserStatitics();
+		boolean isNameFree = true;
+		for (User u : network.getAllUsers()) {
+			if (u.getName().equalsIgnoreCase(name)) {
+				isNameFree = false;
+			}
+		}
+		if (isNameFree) {
+			this.name = name;
+			this.id = IDGenerator.getInstance().getNextID();
+			this.network=network;
+			this.network.addUser(this);
+			this.userStatitics= new UserStatitics();
+		}
+		else {throw new UserNameAlreadyUsedException(name);}
 	}
 	
 	public String getName() {
@@ -577,7 +589,7 @@ public class User implements Runnable, Observer{
 	 * During the simulation, if a user plans a ride, the method rides() is called
 	 */
 	public void run() {
-		while(Network.isSimulation_On()) {
+		while(RunningTime.isTimeRunning()) {
 			
 			if (this.isPlanningARide == true){
 				try {

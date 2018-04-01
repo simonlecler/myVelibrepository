@@ -9,8 +9,10 @@ import myVelibCore.stationPackage.Network;
  *
  */
 public class RunningTime implements Runnable{
-	private static RunningTime instance;
-
+	private static RunningTime instance = new RunningTime();
+	private Thread currentThread;
+	private static boolean isTimeRunning;
+	
 	private RunningTime() {
 		
 	}
@@ -31,7 +33,7 @@ public class RunningTime implements Runnable{
 	@Override
 	public void run() {
 		Time clock = new Time();
-		while(Network.isSimulation_On()) {
+		while(isTimeRunning) {
 			clock.updateTime();	
 			try {
 				Thread.sleep(10);
@@ -41,6 +43,18 @@ public class RunningTime implements Runnable{
 			}
 		
 		}
+	}
+	public Thread getCurrentThread() {
+		return currentThread;
+	}
+	public void setCurrentThread(Thread currentThread) {
+		this.currentThread = currentThread;
+	}
+	public static boolean isTimeRunning() {
+		return isTimeRunning;
+	}
+	public static void setTimeRunning(boolean isTimeRunning) {
+		RunningTime.isTimeRunning = isTimeRunning;
 	}		
 }
 	

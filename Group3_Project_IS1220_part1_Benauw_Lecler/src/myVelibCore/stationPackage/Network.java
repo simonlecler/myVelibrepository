@@ -35,7 +35,6 @@ public class Network {
 	private ArrayList<Station> allStandardStations = new ArrayList<Station>();
 	private ArrayList<Station> allPlusStations = new ArrayList<Station>();
 	private ArrayList<User> allUsers = new ArrayList<User>();
-	private static boolean simulationOn = true;
 	
 
 	
@@ -143,8 +142,12 @@ public class Network {
 		this.allUsers.add(user);
 	}
 	
-
 	
+	public ArrayList<User> getAllUsers() {
+		return allUsers;
+	}
+
+
 	public void addStation(Station station) throws UnimplementedSubclassWithoutInputException {
 		if (station instanceof StationStandard) {this.allStandardStations.add(station);this.allStations.add(station);}
 		else if (station instanceof StationPlus) {this.allPlusStations.add(station);this.allStations.add(station);}
@@ -266,6 +269,7 @@ public class Network {
 				return u;
 			}
 		}
+		throw new UnexistingUserNameException(name);
 	}
 	
 	public static User searchUserByIDAllNetworks(int id) throws UnexistingUserIDException {
@@ -285,14 +289,6 @@ public class Network {
 	
 	public void sortStationByMostUsed() {
 		allStations.sort(new StationComparatorByMostUsed());
-	}
-
-	public static boolean isSimulation_On() {
-		return simulationOn;
-	}
-
-	public static void setSimulaton_On(boolean thread_laucher) {
-		Network.simulationOn = thread_laucher;
 	}
 
 
