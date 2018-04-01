@@ -1,1 +1,14 @@
-SETUP_COMMAND(Paris,20,
+setup Paris 50 5 5 123 52
+addUser Edouard CardVmax Paris
+addUser Simon CardVlibre Paris
+addUser Kevin CardNone Paris
+addUser Quentin cardNone Paris
+addUser Ivan cardVmax Paris
+runTime
+setUserGPSPosition Paris Edouard 0.012 0.032
+setUserGPSPosition Paris Simon 0.024 0.007
+setUserGPSPosition Paris Kevin 0.035 0.018
+setUserGPSPosition Paris Quentin 0.005 0.024
+setUserGPSPosition Paris Ivan 0.014 0.017
+
+stopTime
