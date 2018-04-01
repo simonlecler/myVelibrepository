@@ -578,7 +578,6 @@ public class User implements Runnable, Observer{
 		while(Network.isSimulation_On()) {
 			
 			if (this.isPlanningARide == true){
-				System.out.println("rides");
 				try {
 					this.rides();
 				} catch (BadInstantiationException e) {

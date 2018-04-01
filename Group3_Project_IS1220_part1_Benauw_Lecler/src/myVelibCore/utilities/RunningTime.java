@@ -40,9 +40,9 @@ public class RunningTime implements Runnable{
 				e.printStackTrace();
 			}
 		
-			}
-		}		
-	}
+		}
+	}		
+}
 	
 	
 
