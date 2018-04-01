@@ -17,7 +17,7 @@ class CardFactoryTest {
 	@Test
 	void testGetCardString() throws BadInstantiationException, FactoryNullException{
 		AbstractFactory cardFactory = FactoryProducer.getFactory("Card");
-		Card cardNone = cardFactory.getCard("");
+		Card cardNone = cardFactory.getCard("None");
 		Card cardVlibre = cardFactory.getCard("Vlibre");
 		Card cardVmax = cardFactory.getCard("Vmax");
 		assertTrue(cardNone instanceof CardNone);
@@ -29,7 +29,7 @@ class CardFactoryTest {
 	@Test
 	void testGetCardStringInt() throws BadInstantiationException, FactoryNullException{
 		AbstractFactory cardFactory = FactoryProducer.getFactory("Card");
-		Card cardNone = cardFactory.getCard("", 10);
+		Card cardNone = cardFactory.getCard("None", 10);
 		Card cardVlibre = cardFactory.getCard("Vlibre", 54);
 		Card cardVmax = cardFactory.getCard("Vmax", 12);
 		assertTrue(cardNone instanceof CardNone);

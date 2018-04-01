@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import myVelibCore.abstractFactoryPattern.AbstractFactory;
@@ -32,8 +34,8 @@ class ShortestPathTest {
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(0,3),network1);
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,1),network1);
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(5,3),network1);
 		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network1);
 		Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(10,20),network1);
 		Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(3,5),network1);
@@ -56,8 +58,11 @@ class ShortestPathTest {
 		Station stations[] = {stationPlus2,stationPlus1};
 		ShortestPath test = new ShortestPath();
 	
+		Station[] result = test.chooseStations(new GPSLocation(30,30), new GPSLocation(0,0),BycicleElectrical.typeWritten,network1);
 		
-		assertTrue(test.chooseStations(new GPSLocation(30,30), new GPSLocation(0,0),BycicleElectrical.typeWritten,network1)== stations);
+		assertTrue(result[0] == stationPlus2);
+		assertTrue(result[1] == stationPlus1);
+	
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
