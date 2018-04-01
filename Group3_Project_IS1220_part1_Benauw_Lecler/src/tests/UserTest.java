@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import myVelibCLUI.ParsingAndCalling;
 import myVelibCore.abstractFactoryPattern.AbstractFactory;
 import myVelibCore.abstractFactoryPattern.FactoryProducer;
 import myVelibCore.abstractFactoryPattern.NetworkFactory;
@@ -173,9 +174,7 @@ class UserTest {
 		
 		
 		user1.rides();
-		
 		Network.setSimulaton_On(false);
-		
 		assertTrue(user1.getGpsLocation().getLatitude()==30.31925);
 		assertTrue(user1.getGpsLocation().getLongitude()==30.31925);
 		assertTrue(user1.isPlanningARide()==false);

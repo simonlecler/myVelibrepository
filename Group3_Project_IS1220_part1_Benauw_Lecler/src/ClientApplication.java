@@ -20,7 +20,7 @@ import myVelibCore.utilities.GPSLocation;
 import myVelibCore.utilities.RunningTime;
 
 public class ClientApplication {
-	
+/*	
 	
 	public static void main(String[] args) throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, StationFullException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
@@ -279,7 +279,7 @@ public class ClientApplication {
 		}
 			
 		}
-		
+*/		
 	}
 	
 		

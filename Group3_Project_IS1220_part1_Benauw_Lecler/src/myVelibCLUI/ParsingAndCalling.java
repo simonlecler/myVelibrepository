@@ -2,8 +2,20 @@ package myVelibCLUI;
 
 import myVelibCore.abstractFactoryPattern.AbstractFactory;
 import myVelibCore.abstractFactoryPattern.FactoryProducer;
+import myVelibCore.exceptions.BadInstantiationException;
+import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.NotEnoughSlotsException;
+import myVelibCore.exceptions.PlanningRideFailException;
+import myVelibCore.exceptions.RentBikeFailException;
+import myVelibCore.exceptions.ReturnBikeFailException;
+import myVelibCore.exceptions.SlotStatusFailException;
+import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.UnexistingNetworkNameException;
+import myVelibCore.exceptions.UnexistingStationIDException;
+import myVelibCore.exceptions.UnexistingUserIDException;
+import myVelibCore.exceptions.UnexistingUserNameException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
 import myVelibCore.stationPackage.Station;
@@ -23,7 +35,9 @@ public class ParsingAndCalling {
 		try {
 			Network.setupNetwork(velibNetworkName, 10, 10, 4, 75);
 		}
-		
+		catch (NotEnoughSlotsException | NetworkNameAlreadyUsedException e) {
+			System.out.println("Can not create the network because : " + e.getMessage()); 
+		}
 	}
 	
 	public static void setupWith5Param(String[] args) {
@@ -41,6 +55,9 @@ public class ParsingAndCalling {
 		if(argsParsable) {
 			try {
 				Network.setupNetwork(name, nstations, nslots, sidearea, nbikes);
+			}
+			catch (NotEnoughSlotsException | NetworkNameAlreadyUsedException e) {
+				System.out.println("Can not create the network because : " + e.getMessage());
 			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
@@ -64,6 +81,9 @@ public class ParsingAndCalling {
 			try {
 				Network.setupNetworkWithDefinedBycicle(name, nstations, nslots, sidearea, nbikesMechanical, nbikesElectrical);
 			}
+			catch (NotEnoughSlotsException | NetworkNameAlreadyUsedException e) {
+				System.out.println("Can not create the network because : " + e.getMessage());
+			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
@@ -82,6 +102,13 @@ public class ParsingAndCalling {
 			Thread userThread = new Thread(user);
 			userThread.start();
 		}
+		catch (UnexistingNetworkNameException | UserNameAlreadyUsedException | BadInstantiationException  e) {
+			System.out.println("Impossible to add user because : " + e.getMessage());
+		} 
+		catch (FactoryNullException e) {
+			System.out.println("IMPOSSIBLE TO PERFORM OPERATION. ERROR NOT SUPPOSED TO HAPPEN" + e.getMessage());
+		} 
+
 	}
 	
 	public static void setUserGPSPositionWith4Param(String[] args) {
@@ -99,12 +126,16 @@ public class ParsingAndCalling {
 				User user = network.searchUserByName(userName);
 				user.setGpsLocation(new GPSLocation(latitude, longitude));
 			}
+			catch (UnexistingNetworkNameException | UnexistingUserNameException e) {
+				System.out.println("Impossible to modify the GPS location because : " + e.getMessage());
+			}
+			
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void offlineWith2Param(String[] args) {
-		String velibNetworkName; int stationID;
+		String velibNetworkName; int stationID = 0;
 		boolean argsParsable = true;
 		velibNetworkName = args[1];
 		try{stationID = Integer.parseInt(args[2]);}
@@ -115,12 +146,19 @@ public class ParsingAndCalling {
 				Station station = network.searchStationByID(stationID);
 				station.turnOff();
 			}
+			catch (UnexistingNetworkNameException | UnexistingStationIDException e) {
+				System.out.println("Impossible to turn station offline because : " + e.getMessage());
+			} 
+			catch (SlotStatusFailException e) {
+				System.out.println("Station offline but we encountered problems during the operation : " + e.getMessage());
+			} 
+			
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void onlineWith2Param(String[] args) {
-		String velibNetworkName; int stationID;
+		String velibNetworkName; int stationID = 0;
 		boolean argsParsable = true;
 		velibNetworkName = args[1];
 		try{stationID = Integer.parseInt(args[2]);}
@@ -131,12 +169,19 @@ public class ParsingAndCalling {
 			Station station = network.searchStationByID(stationID);
 			station.turnOn();
 			}
+			catch (UnexistingNetworkNameException | UnexistingStationIDException e) {
+				System.out.println("Impossible to turn station online because : " + e.getMessage());
+			} 
+			catch (SlotStatusFailException e) {
+				System.out.println("Station online but we encountered problems during the operation : " + e.getMessage());
+			} 
+			
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void rentBikeWith2Param(String[] args) {
-		int userID; int stationID; String bycicleType;
+		int userID = 0; int stationID = 0; String bycicleType;
 		boolean argsParsable = true;
 		try{userID = Integer.parseInt(args[1]);}
 		catch(Exception e) {System.out.println("Error : userID must be an integer"); argsParsable = false;}
@@ -149,12 +194,15 @@ public class ParsingAndCalling {
 				Station station = Network.searchStationByIDAllNetworks(stationID);
 				station.rentABike(user, bycicleType);
 			}
+			catch (UnexistingUserIDException | UnexistingStationIDException | RentBikeFailException e) {
+				System.out.println("Impossible to perform the renting operation because : "+e.getMessage());
+			} 
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void returnBikeWith3Param(String[] args) {
-		int userID; int stationID; int time;
+		int userID = 0; int stationID = 0; int time = 0;
 		boolean argsParsable = true;
 		try{userID = Integer.parseInt(args[1]);}
 		catch(Exception e) {System.out.println("Error : userID must be an integer"); argsParsable = false;}
@@ -168,6 +216,9 @@ public class ParsingAndCalling {
 				Station station = Network.searchStationByIDAllNetworks(stationID);
 				station.returnABike(user);
 			}
+			catch (UnexistingUserIDException | UnexistingStationIDException | ReturnBikeFailException | StationFullException e) {
+				System.out.println("Impossible to perform the returning operation because : "+e.getMessage());
+			} 
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
@@ -184,13 +235,15 @@ public class ParsingAndCalling {
 				Station station = network.searchStationByID(stationID);
 				station.display();
 			}
-			
+			catch (UnexistingStationIDException | UnexistingNetworkNameException e) {
+				System.out.println("Impossible to display the station because : " + e.getMessage());
+			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void displayUserWith2Param(String[] args) {
-		String velibNetworkName; int userID;
+		String velibNetworkName; int userID = 0;
 		boolean argsParsable = true;
 		velibNetworkName = args[1];
 		try{ userID = Integer.parseInt(args[2]);}
@@ -200,6 +253,9 @@ public class ParsingAndCalling {
 				Network network = Network.searchNetworkByName(velibNetworkName);
 				User user = network.searchUserByID(userID);
 				user.display();
+			}
+			catch (UnexistingNetworkNameException | UnexistingUserIDException e) {
+				System.out.println("Impossible to display the user because : " + e.getMessage());
 			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
@@ -213,16 +269,21 @@ public class ParsingAndCalling {
 			Network network = Network.searchNetworkByName(velibNetworkName);
 			network.sortStationBy(policy);
 		}
-		
+		catch (UnexistingNetworkNameException | BadInstantiationException e) {
+			System.out.println("Impossible to sort the stations because : " + e.getMessage());
+		}
 	}
 	
 	public static void displayWith1Param(String[] args) {
 		String velibNetworkName;
+		velibNetworkName = args[1];
 		try {
 			Network network = Network.searchNetworkByName(velibNetworkName);
 			System.out.println(network);
 		}
-		
+		catch (UnexistingNetworkNameException e) {
+			System.out.println("Impossible to display the network because : " + e.getMessage());
+		}
 	}
 	
 	public static void listNetworkWith0Param(String[] args) {
@@ -230,7 +291,7 @@ public class ParsingAndCalling {
 	}
 	
 	public static void planningRideWith6Param(String[] args) {
-		String velibNetworkName; String userName; String policy ; double destinationLatitude ; double destinationLongitude ; String bicycleType;
+		String velibNetworkName; String userName; String policy ; double destinationLatitude = 0; double destinationLongitude = 0 ; String bicycleType;
 		boolean argsParsable = true;
 		velibNetworkName = args[1];
 		userName = args[2];
@@ -246,6 +307,9 @@ public class ParsingAndCalling {
 				Network network = Network.searchNetworkByName(velibNetworkName);
 				User user = network.searchUserByName(userName);
 				user.planningRide(destination, policy, bicycleType);
+			}
+			catch (UnexistingNetworkNameException | UnexistingUserNameException | PlanningRideFailException e) {
+				System.out.println("Impossible to plan the ride because : " + e.getMessage());
 			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}	
@@ -269,6 +333,9 @@ public class ParsingAndCalling {
 			ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
 			station.getStationStatitics().addRentOperation(user, new Time(timeOfOperation), slot);
 		}
+		catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationIDException e) {
+			System.out.println("Impossible to add the renting operation because : " + e.getMessage());
+		}
 	}
 	
 	public static void addReturnOperationWith5Param (String[] args) {
@@ -289,30 +356,18 @@ public class ParsingAndCalling {
 			ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
 			station.getStationStatitics().addReturnOperation(user, new Time(timeOfOperation), slot);
 		}
+		catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationIDException e) {
+			System.out.println("Impossible to add the returning operation because : " + e.getMessage());
+		}
+		
 	}
 	
 	public static void runTimeWith0Param(String[] args) {
-		if(RunningTime.isTimeRunning()) {
-			System.out.println("Time is already running !");
-		}
-		else { 
-			RunningTime.setTimeRunning(true);
-			Thread time = new Thread(RunningTime.getInstance());
-			RunningTime.getInstance().setCurrentThread(time);
-			time.start();
-		}
+		RunningTime.runTime();
 	}
 	
 	public static void stopTimeWith0Param(String[] args) {
-		if(RunningTime.isTimeRunning()) {
-			try{RunningTime.getInstance().getCurrentThread().interrupt();}
-			catch(SecurityException e) {System.out.println("Running Time Thread interrupted !");
-			RunningTime.setTimeRunning(false);
-			}
-		}
-		else {
-			System.out.println("Time is already stopped !");
-		}
+		RunningTime.stopTime();
 	}
 	
 }

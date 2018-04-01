@@ -44,6 +44,31 @@ public class RunningTime implements Runnable{
 		
 		}
 	}
+	
+	public static void runTime() {
+		if(RunningTime.isTimeRunning()) {
+			System.out.println("Time is already running !");
+		}
+		else { 
+			RunningTime.setTimeRunning(true);
+			Thread time = new Thread(RunningTime.getInstance());
+			RunningTime.getInstance().setCurrentThread(time);
+			time.start();
+		}
+	}
+	
+	public static void stopTime() {
+		if(RunningTime.isTimeRunning()) {
+			try{RunningTime.getInstance().getCurrentThread().interrupt();}
+			catch(SecurityException e) {System.out.println("Running Time Thread interrupted !");
+			RunningTime.setTimeRunning(false);
+			}
+		}
+		else {
+			System.out.println("Time is already stopped !");
+		}
+	}
+	
 	public Thread getCurrentThread() {
 		return currentThread;
 	}

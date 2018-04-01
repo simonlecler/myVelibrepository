@@ -46,7 +46,9 @@ class AvoidPlusStationTest {
 		ParkingSlot slot2 = new ParkingSlot(stationPlus1);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard1);
 		ParkingSlot slot4 = new ParkingSlot(stationStandard1);
-		User user = new User("Jean",network1);
+		User user = null;
+		try{user = new User("Jean",network1); } 
+		catch(Exception e) {System.out.println(e.getMessage());}
 		user.setGpsLocation(new GPSLocation(30,30));
 		//ParkingSlot slot7 = new ParkingSlot(stationStandard2);
 		//ParkingSlot slot8 = new ParkingSlot(stationStandard2);

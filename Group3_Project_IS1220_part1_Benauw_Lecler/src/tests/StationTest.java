@@ -154,8 +154,10 @@ class StationTest {
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
 		ParkingSlot slot2 = new ParkingSlot(stationPlus2);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard1);
-		User user = new User("Edouard",network5);
-		User user1 = new User("Simon", network5);
+		User user = null;
+		User user1 = null;
+		try {user = new User("Edouard",network5);user1 = new User("Simon", network5);}
+		catch(Exception e) { System.out.println(e.getMessage());}
 		Bycicle bycicle1 = bycicleFactory.getBycicle("Electrical");
 		Bycicle bycicle2 = bycicleFactory.getBycicle("Electrical");
 		stationPlus2.addBike(bycicle1);
@@ -187,8 +189,10 @@ class StationTest {
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
 		ParkingSlot slot2 = new ParkingSlot(stationPlus2);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard1);
-		User user = new User("Edouard",network6);
-		User user1 = new User("Simon", network6);
+		User user = null; 
+		User user1 = null;
+		try{user = new User("Edouard",network6); user1 = new User("Simon", network6);}
+		catch (Exception e) {System.out.println(e.getMessage());}
 		user.setGpsLocation(new GPSLocation(25,25));
 		stationPlus2.getStationBikeCounters().addBike(bycicle1, stationPlus2.getSlots());
 		user.planningRide(new GPSLocation(0,0), "Shortest Path", "Electrical");
