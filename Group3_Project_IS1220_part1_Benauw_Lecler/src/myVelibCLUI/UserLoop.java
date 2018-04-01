@@ -78,6 +78,18 @@ public class UserLoop {
    public static final String DESCRIPTION_ADDUSER = 
 		   "addUser : used to add an user\r\n"+"\n" + DESCRIPTION1_ADDUSER +"\n";
    
+   // SetUserGPSPosition Command
+   
+ public static final String SETUSERGPSPOSITION_COMMAND = "setUserGPSPosition";
+   
+   public static final int NBR1_PARAM_SETUSERGPSPOSITION = 3;
+   public static final String DESCRIPTION1_SETUSERGPSPOSITION =
+		   "	setUserGPSPosition <velibnetworkName> <userName> <latitude> <longitude> : \r\n" +
+		   "	to set the position of a given user in a given network, according to GPS coordinates\r\n"; 
+   
+   public static final String DESCRIPTION_SETUSERGPSPOSITION = 
+		   "setUserGPSPosition : used to modify gps position of an user\r\n"+"\n" + DESCRIPTION1_SETUSERGPSPOSITION +"\n";
+   
    //PlanRide Command
    
    public static final String PLANRIDE_COMMAND = "planRide";
@@ -165,6 +177,30 @@ public class UserLoop {
    public static final String DESCRIPTION_RETURNBIKE = 
 		   "returnBike : used to return a bike"+"\n" + DESCRIPTION1_RETURNBIKE +"\n";
    
+   //AddRentOperation Command
+   
+   public static final String ADDRENTOPERATION_COMMAND = "addRentOperation";
+
+   public static final int NBR1_PARAM_ADDRENTOPERATION = 5;
+   public static final String DESCRIPTION1_ADDRENTOPERATION =
+		   "	addRentOperation <velibNetworkName> <stationID> <userName> <timeOfOperation> <numberOfParkingSlot> :\r\n" +
+		   "	add a renting operation on the given station concerning the given user, parking slot and time\r\n";
+   
+   public static final String DESCRIPTION_ADDRENTOPERATION = 
+		   "addRentOperation : add a renting operation for the statistics"+"\n" + DESCRIPTION1_ADDRENTOPERATION +"\n";
+   
+   //AddReturnOperation Command
+   
+   public static final String ADDRETURNOPERATION_COMMAND = "addReturnOperation";
+
+   public static final int NBR1_PARAM_ADDRETURNOPERATION = 5;
+   public static final String DESCRIPTION1_ADDRETURNOPERATION =
+		   "	addReturnOperation <velibNetworkName> <stationID> <userName> <timeOfOperation> <numberOfParkingSlot> :\r\n" +
+			"	add a returning operation on the given station concerning the given user, parking slot and time\r\n";
+   
+   public static final String DESCRIPTION_ADDRETURNOPERATION = 
+		   "addReturnOperation : add a returning operation for the statistics"+"\n" + DESCRIPTION1_ADDRETURNOPERATION +"\n";
+   
    //DisplayStation Command
    
    public static final String DISPLAYSTATION_COMMAND = "displayStation";
@@ -238,7 +274,7 @@ public class UserLoop {
    
    public static final String INCORRECT_PARAMETERS_NUMBER_MSG = "You've entered the wrong number of parameters for the command.\r\n"+
 		   														"Type help if you need assistance.\r\n"+"\n";
-   public static final String HELP_MSG = DESCRIPTION_SETUP + DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY + DESCRIPTION_RUNTIME + DESCRIPTION_STOPTIME;
+   public static final String HELP_MSG = DESCRIPTION_HELP + DESCRIPTION_EXIT + DESCRIPTION_READFILE + DESCRIPTION_WRITETOFILE + DESCRIPTION_SETUP + DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY + DESCRIPTION_RUNTIME + DESCRIPTION_STOPTIME + DESCRIPTION_PLANRIDE + DESCRIPTION_LISTNETWORK + DESCRIPTION_ADDRENTOPERATION +DECRIPTION_ADDRETURNOPERATION;
    public static final String UNRECOGNIZED_COMMAND_MSG ="You entered a unrecognized command ! Remember you can type help for help ;)";
    
    public static final String READING_FILE_BEGINNING_MSG = "Beginning to read command from following file :";
@@ -449,6 +485,24 @@ public class UserLoop {
          else if (command.equalsIgnoreCase(PLANRIDE_COMMAND)) {
         	 if(numberOfParametersEntered==NBR1_PARAM_PLANRIDE) {
         	 ParsingAndCalling.planningRideWith6Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(SETUSERGPSPOSITION_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR1_PARAM_SETUSERGPSPOSITION) {
+        	 ParsingAndCalling.setUserGPSPositionWith4Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(ADDRENTOPERATION_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR1_PARAM_ADDRENTOPERATION) {
+        	 ParsingAndCalling.addRentOperationWith5Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(ADDRETURNOPERATION_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR1_PARAM_ADDRETURNOPERATION) {
+        	 ParsingAndCalling.addReturnOperationWith5Param(inputForParsing);
         	 }
         	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }

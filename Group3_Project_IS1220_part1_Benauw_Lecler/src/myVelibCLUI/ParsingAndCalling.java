@@ -5,11 +5,13 @@ import myVelibCore.abstractFactoryPattern.FactoryProducer;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.NotEnoughSlotsException;
 import myVelibCore.stationPackage.Network;
+import myVelibCore.stationPackage.ParkingSlot;
 import myVelibCore.stationPackage.Station;
 import myVelibCore.userAndCardPackage.Card;
 import myVelibCore.userAndCardPackage.User;
 import myVelibCore.utilities.GPSLocation;
 import myVelibCore.utilities.RunningTime;
+import myVelibCore.utilities.Time;
 
 public class ParsingAndCalling {
 	
@@ -80,7 +82,25 @@ public class ParsingAndCalling {
 			Thread userThread = new Thread(user);
 			userThread.start();
 		}
-		
+	}
+	
+	public static void setUserGPSPositionWith4Param(String[] args) {
+		String velibNetworkName; String userName ; double latitude = 0; double longitude = 0;
+		boolean argsParsable = true;
+		velibNetworkName = args[1];
+		userName = args[2];
+		try {latitude = Double.parseDouble(args[3]);}
+		catch(Exception e) {System.out.println("Error : latitude must be a double"); argsParsable = false;}
+		try {longitude = Double.parseDouble(args[4]);}
+		catch(Exception e) {System.out.println("Error : longitude must be a double"); argsParsable = false;}
+		if(argsParsable) {
+			try {
+				Network network = Network.searchNetworkByName(velibNetworkName);
+				User user = network.searchUserByName(userName);
+				user.setGpsLocation(new GPSLocation(latitude, longitude));
+			}
+		}
+		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void offlineWith2Param(String[] args) {
@@ -229,6 +249,46 @@ public class ParsingAndCalling {
 			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}	
+	}
+	
+	public static void addRentOperationWith5Param (String[] args) {
+		String velibNetworkName; int stationID = 0; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
+		boolean argsParsable = true;
+		velibNetworkName = args[1];
+		try {stationID = Integer.parseInt(args[2]);}
+		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
+		userName = args[3];
+		try {timeOfOperation = Integer.parseInt(args[4]);}
+		catch(Exception e) {System.out.println("Error : timeOfOperation must be an integer"); argsParsable = false;}
+		try {numberOfParkingSlot = Integer.parseInt(args[5]);}
+		catch(Exception e) {System.out.println("Error : numberOfParkingSlot must be an integer"); argsParsable = false;}
+		try {
+			Network network = Network.searchNetworkByName(velibNetworkName);
+			User user = network.searchUserByName(userName);
+			Station station = network.searchStationByID(stationID);
+			ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
+			station.getStationStatitics().addRentOperation(user, new Time(timeOfOperation), slot);
+		}
+	}
+	
+	public static void addReturnOperationWith5Param (String[] args) {
+		String velibNetworkName; int stationID = 0; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
+		boolean argsParsable = true;
+		velibNetworkName = args[1];
+		try {stationID = Integer.parseInt(args[2]);}
+		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
+		userName = args[3];
+		try {timeOfOperation = Integer.parseInt(args[4]);}
+		catch(Exception e) {System.out.println("Error : timeOfOperation must be an integer"); argsParsable = false;}
+		try {numberOfParkingSlot = Integer.parseInt(args[5]);}
+		catch(Exception e) {System.out.println("Error : numberOfParkingSlot must be an integer"); argsParsable = false;}
+		try {
+			Network network = Network.searchNetworkByName(velibNetworkName);
+			User user = network.searchUserByName(userName);
+			Station station = network.searchStationByID(stationID);
+			ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
+			station.getStationStatitics().addReturnOperation(user, new Time(timeOfOperation), slot);
+		}
 	}
 	
 	public static void runTimeWith0Param(String[] args) {
