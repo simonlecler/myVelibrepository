@@ -43,6 +43,28 @@ public class ParsingAndCalling {
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
+	public static void setupWith6Param(String[] args) {
+		String name; int nstations=0; int nslots=0; float sidearea=0; int nbikesMechanical=0; int nbikesElectrical=0;
+		boolean argsParsable = true;
+		name = args[1];
+		try{nstations = Integer.parseInt(args[2]);}
+		catch(Exception e) {System.out.println("Error : nstations must be an integer"); argsParsable = false;}
+		try{nslots = Integer.parseInt(args[3]);}
+		catch(Exception e) {System.out.println("Error : nslots must be an integer"); argsParsable = false;}
+		try{sidearea = Float.parseFloat(args[4]);}
+		catch(Exception e) {System.out.println("Error : sidearea must be a float"); argsParsable = false;}
+		try{nbikesMechanical = Integer.parseInt(args[5]);}
+		catch(Exception e) {System.out.println("Error : nbikesMechanical must be an integer"); argsParsable = false;}
+		try{nbikesElectrical = Integer.parseInt(args[6]);}
+		catch(Exception e) {System.out.println("Error : nbikesElectrical must be an integer"); argsParsable = false;}
+		if(argsParsable) {
+			try {
+				Network.setupNetworkWithDefinedBycicle(name, nstations, nslots, sidearea, nbikesMechanical, nbikesElectrical);
+			}
+		}
+		else {System.out.println(TYPE_ERROR_MSG);}
+	}
+	
 	public static void addUserWith3Param(String[] args) {
 		String userName; String cardType; String velibNetworkName;
 		userName = args[1];
@@ -160,7 +182,7 @@ public class ParsingAndCalling {
 			try {
 				Network network = Network.searchNetworkByName(velibNetworkName);
 				User user = network.searchUserByID(userID);
-				user.displayStatistics();
+				user.display();
 			}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
@@ -183,7 +205,7 @@ public class ParsingAndCalling {
 
 		try {
 			Network network = Network.searchNetworkByName(velibNetworkName);
-			System.out.println("network");
+			System.out.println(network);
 		}
 		
 	}

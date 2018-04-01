@@ -8,6 +8,8 @@ import myVelibCore.abstractFactoryPattern.BycicleFactory;
 import myVelibCore.abstractFactoryPattern.FactoryProducer;
 import myVelibCore.abstractFactoryPattern.StationFactory;
 import myVelibCore.byciclePackage.Bycicle;
+import myVelibCore.byciclePackage.BycicleElectrical;
+import myVelibCore.byciclePackage.BycicleMechanical;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
@@ -44,7 +46,13 @@ public class Network {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	public static void ListAllNetworks() {
+		System.out.println("List of all networks created :");
+		for (Network n : allNetworks) {
+			System.out.println(n.name);
+		}
+	}
 
 	public Network(String name) throws NetworkNameAlreadyUsedException {
 		boolean isNameFree = true;
@@ -81,7 +89,31 @@ public class Network {
 			}
 		}
 		//Adding Bikes
-		network.addNBikeRandom(network, nBikes);
+		Network.addNBikeRandom(network, nBikes);
+	}
+	
+	public static void setupNetworkWithDefinedBycicle(String name, int nStations, int nSlots, double sideArea, int nBikesMechanical, int nBikesElectrical) throws NetworkNameAlreadyUsedException, NotEnoughSlotsException {
+		int nBikes = nBikesMechanical+nBikesElectrical;
+		if (nBikes>nSlots) {throw new NotEnoughSlotsException(nBikes,nSlots);}
+		Network network = new Network(name);
+		double maxLat = GPSLocation.getMaxLatitude(sideArea);
+		double maxLong = GPSLocation.getMaxLongitude(sideArea);
+		AbstractFactory stationFactory = null;
+		//Creating stations
+		try {stationFactory = FactoryProducer.getFactory("Station");} 
+		catch (BadInstantiationException e) {System.out.println("This is not supposed to happen " + e.getMessage());}
+		for (int i=1; i<=nStations; i++) {
+			try {stationFactory.getStation(StationFactory.getRandomStationType(), new GPSLocation(Math.random()*maxLat,Math.random()*maxLong), network);}
+			catch (BadInstantiationException | FactoryNullException e) {System.out.println("This is not supposed to happen ! "+e.getMessage());}
+		//Adding slots
+			for (Station s : network.getAllStations()) {
+				for (i=1; i<=nSlots; i++) {
+					s.addParkingSlot();
+				}
+			}
+		}
+		//Adding Bikes
+		Network.addNBikeRandomWithDefinedType(network,nBikesMechanical,nBikesElectrical);
 	}
 	
 	
@@ -92,6 +124,13 @@ public class Network {
 				+ allStations + "\n"
 				+ "Here are the detailed informations about all the users of the network" + "\n"
 				+ allUsers);		
+	}
+	
+	public void display() {
+		System.out.println(this.name);
+		System.out.println(this.id);
+		for(User u : this.allUsers) {u.display();}
+		for(Station s : this.allStations) {s.display();}
 	}
 
 
@@ -120,7 +159,44 @@ public class Network {
 	
 	public ArrayList<Station> getAllStations(){return allStations;}
 	
-	public void addNBikeRandom(Network network,int nBikes) throws NotEnoughSlotsException {
+	public static void addNBikeRandomWithDefinedType(Network network,int nBikesMechanical, int nBikesElectrical) throws NotEnoughSlotsException {
+		int totalFreeSlots = 0;
+		int nBikes = nBikesMechanical+nBikesElectrical;
+		for (Station s : network.getAllStations()) {
+			totalFreeSlots = totalFreeSlots + s.getStationBikeCounters().getFreeSlots();
+		}
+		if (nBikes>totalFreeSlots) {
+			throw new NotEnoughSlotsException(nBikes,totalFreeSlots);
+		}
+		else {
+			int totalBikeAdded = 0;
+			int totalMechanicalAdded = 0;
+			int totalElectricalAdded = 0;
+			AbstractFactory bycicleFactory = null;
+			try {bycicleFactory = FactoryProducer.getFactory("Bycicle");}
+			catch(Exception e) {System.out.println("This is not supposed to happen ! " + e.getMessage());}
+			while(totalBikeAdded<nBikes) {
+				for (Station s : network.getAllStations()) {
+					if(totalBikeAdded<nBikes && Math.random()>0.5) {
+						if(totalMechanicalAdded<nBikesMechanical) {
+							try {s.addBike(bycicleFactory.getBycicle(BycicleMechanical.typeWritten));}
+							catch(Exception e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
+							totalBikeAdded++;
+							totalMechanicalAdded++;
+						}
+						else if(totalElectricalAdded<nBikesElectrical) {
+							try {s.addBike(bycicleFactory.getBycicle(BycicleElectrical.typeWritten));}
+							catch(Exception e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
+							totalBikeAdded++;
+							totalElectricalAdded++;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public static void addNBikeRandom(Network network,int nBikes) throws NotEnoughSlotsException {
 		int totalFreeSlots = 0;
 		for (Station s : network.getAllStations()) {
 			totalFreeSlots = totalFreeSlots + s.getStationBikeCounters().getFreeSlots();
@@ -220,12 +296,7 @@ public class Network {
 		Network.allNetworks = allNetworks;
 	}
 	
-	public void display() {
-		System.out.println(this.name);
-		System.out.println(this.id);
-		for(User u : this.allUsers) {u.display();}
-		for(Station s : this.allStations) {s.display();}
-	}
+
 	
 	public void sortStationBy(String choice) throws BadInstantiationException {
 		Comparator<Station> Comparator = null;

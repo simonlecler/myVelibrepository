@@ -50,8 +50,16 @@ public class UserLoop {
    "	sidearea and initially populated with a nbikes bikes randomly distributed over the\r\n" +
    "	nstations stations\r\n";
    
+   public static final int NBR3_PARAM_SETUP = 6;
+   public static final String DESCRIPTION3_SETUP = 
+   "	setup <name> <nstations> <nslots> <sidearea> <nbikesMechanical> <nbikesElectrical>: to create a myVelib net-\r\n" +
+   "	work with given name and consisting of nstations stations each of which has nslots\r\n" +
+   "	parking slots and such that stations are arranged on a square grid whose of side\r\n" +
+   "	sidearea and initially populated with nbikesMechanical Mechanical bikes and nBikesElectrical \r\n" +
+   "	Electrical bikes randomly distributed over the nstations stations\r\n";
+   
    public static final String DESCRIPTION_SETUP = 
-		   "setup : used to create a myVelib network\r\n"+"\n" + DESCRIPTION1_SETUP + DESCRIPTION2_SETUP+"\n";
+		   "setup : used to create a myVelib network\r\n"+"\n" + DESCRIPTION1_SETUP + DESCRIPTION2_SETUP+DESCRIPTION3_SETUP+"\n";
    
    //addUser Command
    
@@ -290,6 +298,9 @@ public class UserLoop {
         	}
         	else if(numberOfParametersEntered==NBR2_PARAM_SETUP) {
         		ParsingAndCalling.setupWith5Param(inputForParsing);
+        	}
+        	else if (numberOfParametersEntered==NBR3_PARAM_SETUP) {
+        		ParsingAndCalling.setupWith6Param(inputForParsing);
         	}
         	else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }

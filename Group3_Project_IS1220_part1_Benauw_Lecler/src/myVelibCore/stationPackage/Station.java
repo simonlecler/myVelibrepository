@@ -200,7 +200,7 @@ public abstract class Station implements Observable{
 				rentingBycicle = this.stationBikeCounters.removeBike(bycicleType,this.slots);
 				this.unregisterObserverDeparture(user);
 				user.isDeparted(rentingBycicle.getBycicle());
-				
+				System.out.println("You've sucessfully rented a " + bycicleType + " bike from station id " + this.getId());
 				this.stationStatitics.addRentOperation(user, Time.getCurrentTime(), rentingBycicle.getSlot());
 				
 				if(this.stationBikeCounters.isThereAnyBycicle()==false) {
@@ -244,12 +244,16 @@ public abstract class Station implements Observable{
 				Time.lock.lock();
 				ParkingSlot slot = this.stationBikeCounters.addBike(user.getBycicle(), slots);
 				int cost = user.computeMyRideCost(user.getLastRentTime().timeDifferenceBetween(Time.getCurrentTime()));
-				try{user.getUserCard().increaseBalance(creditGivenWhenReturning);}
-				catch(CardNoneNoBalanceException e) {}//Nothing to do ?
+				System.out.println("Duration of your ride : " + user.getLastRentTime().timeDifferenceBetween(Time.getCurrentTime()));
+				try{user.getUserCard().increaseBalance(creditGivenWhenReturning);
+					System.out.println("The credit time balance has been increased by : " + creditGivenWhenReturning + "The total credit time earned is :" + user.getUserCard().getBalance());
+					}
+				catch(CardNoneNoBalanceException e) {System.out.println("No credit time can be given without a card");}//Nothing to do ?
 				System.out.println("You pay :" + cost + "euros");
 				this.stationStatitics.addReturnOperation(user, Time.getCurrentTime(), slot);
 				this.unregisterObserverDestination(user);
 				user.isArrived(cost);
+				System.out.println("You've sucessfully returned your bike to station id " + this.getId());
 				if(this.stationBikeCounters.isThereFreeSlots()==false) {
 					this.changed=true;
 					this.notifyObserversDestination();

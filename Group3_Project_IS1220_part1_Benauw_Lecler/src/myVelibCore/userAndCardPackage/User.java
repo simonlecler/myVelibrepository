@@ -419,19 +419,6 @@ public class User implements Runnable, Observer{
 		}
 		
 	}
-
-	/**
-	 * 
-	 * @return The total spent on a bicycle by the user
-	 */
-	public int calculateTotalTimeSpentOnABike() {
-		if (this.bycicle==null) {
-			return(this.userStatitics.getTotalTimeSpentOnABikeWithoutActualRide());
-		}
-		else {
-			return(this.userStatitics.getTotalTimeSpentOnABikeWithoutActualRide()+Time.timeDifference(Time.getCurrentTime(),this.lastRentTime));
-		}
-	}
 	
 	public void display() {
 		System.out.println("User name : " + this.name);
@@ -448,6 +435,21 @@ public class User implements Runnable, Observer{
 		System.out.println("Total amount of charges for riding bike is :" + this.userStatitics.getTotalAmountOfCharges());
 		System.out.println("Total time-credit earned is :" + this.userCard.getCardStatitics().getTotalTimeCreditEarned());
 	}
+
+	/**
+	 * 
+	 * @return The total spent on a bicycle by the user
+	 */
+	public int calculateTotalTimeSpentOnABike() {
+		if (this.bycicle==null) {
+			return(this.userStatitics.getTotalTimeSpentOnABikeWithoutActualRide());
+		}
+		else {
+			return(this.userStatitics.getTotalTimeSpentOnABikeWithoutActualRide()+Time.timeDifference(Time.getCurrentTime(),this.lastRentTime));
+		}
+	}
+	
+
 	/**
 	 * This method simulates the user' ride
 	 * @throws BadInstantiationException
