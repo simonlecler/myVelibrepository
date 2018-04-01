@@ -28,25 +28,55 @@ import myVelibCore.utilities.IDGenerator;
 import myVelibCore.utilities.Time;
 
 public class Network {
+	/**
+	 * List of all networks
+	 */
 	private static ArrayList<Network> allNetworks = new ArrayList<Network>();
+	/**
+	 * Name of the network
+	 */
 	private String name;
+	/**
+	 * ID of the network
+	 */
 	private final int id;
+	/**
+	 * Stations in the network
+	 */
 	private ArrayList<Station> allStations = new ArrayList<Station>();
+	/**
+	 * Standard stations of the network
+	 */
 	private ArrayList<Station> allStandardStations = new ArrayList<Station>();
+	/**
+	 * Plus stations of the network
+	 */
 	private ArrayList<Station> allPlusStations = new ArrayList<Station>();
+	/**
+	 * Users in the network
+	 */
 	private ArrayList<User> allUsers = new ArrayList<User>();
 	
 
-	
+	/**
+	 * 
+	 * @return the Id of the network
+	 */
 	public int getId() {
 		return id;
 	}
 
-
+	/**
+	 * 
+	 * @param name 
+	 * 	The name wanted
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	/**
+	 * Displays all the networks
+	 */
 	public static void ListAllNetworks() {
 		System.out.println("List of all networks created :");
 		for (Network n : allNetworks) {
@@ -54,7 +84,12 @@ public class Network {
 		}
 		System.out.println("\n");
 	}
-
+	/**
+	 * Constructor
+	 * @param name
+	 *      Name of the network
+	 * @throws NetworkNameAlreadyUsedException
+	 */
 	public Network(String name) throws NetworkNameAlreadyUsedException {
 		boolean isNameFree = true;
 		for (Network n : allNetworks) {
@@ -69,7 +104,16 @@ public class Network {
 		}
 		else {throw new NetworkNameAlreadyUsedException(name);}
 	}
-	
+	/**
+	 * Set up the network in a given configuration
+	 * @param name
+	 * @param nStations
+	 * @param nSlots
+	 * @param sideArea
+	 * @param nBikes
+	 * @throws NetworkNameAlreadyUsedException
+	 * @throws NotEnoughSlotsException
+	 */
 	public static void setupNetwork(String name, int nStations, int nSlots, double sideArea, int nBikes) throws NetworkNameAlreadyUsedException, NotEnoughSlotsException {
 		if (nBikes>nSlots) {throw new NotEnoughSlotsException(nBikes,nSlots);}
 		Network network = new Network(name);
@@ -92,7 +136,17 @@ public class Network {
 		//Adding Bikes
 		Network.addNBikeRandom(network, nBikes);
 	}
-	
+	/**
+	 * Setup the network with defined bicycles
+	 * @param name
+	 * @param nStations
+	 * @param nSlots
+	 * @param sideArea
+	 * @param nBikesMechanical
+	 * @param nBikesElectrical
+	 * @throws NetworkNameAlreadyUsedException
+	 * @throws NotEnoughSlotsException
+	 */
 	public static void setupNetworkWithDefinedBycicle(String name, int nStations, int nSlots, double sideArea, int nBikesMechanical, int nBikesElectrical) throws NetworkNameAlreadyUsedException, NotEnoughSlotsException {
 		int nBikes = nBikesMechanical+nBikesElectrical;
 		if (nBikes>nSlots) {throw new NotEnoughSlotsException(nBikes,nSlots);}
@@ -127,6 +181,9 @@ public class Network {
 				+ allUsers);		
 	}
 	
+	/**
+	 * displays informations about the network
+	 */
 	public void display() {
 		System.out.println(this.name);
 		System.out.println(this.id);
@@ -138,32 +195,56 @@ public class Network {
 	public String getName() {
 		return name;
 	}
-
+/**
+ * add a user to the network
+ * @param user
+ */
 	public void addUser(User user) {
 		this.allUsers.add(user);
 	}
 	
-	
+	/**
+	 * 
+	 * @return a list of all the users in the network
+	 */
 	public ArrayList<User> getAllUsers() {
 		return allUsers;
 	}
 
-
+/**
+ * Add a station to the network
+ * @param station
+ * @throws UnimplementedSubclassWithoutInputException
+ */
 	public void addStation(Station station) throws UnimplementedSubclassWithoutInputException {
 		if (station instanceof StationStandard) {this.allStandardStations.add(station);this.allStations.add(station);}
 		else if (station instanceof StationPlus) {this.allPlusStations.add(station);this.allStations.add(station);}
 		else {throw new UnimplementedSubclassWithoutInputException("Station");}
 	}
-	
+	/**
+	 * 
+	 * @param stationType
+	 * @return a list of all the stations of this type
+	 * @throws UnimplementedSubclassWithInputException
+	 */
 	public ArrayList<Station> getAListOfStationType(String stationType) throws UnimplementedSubclassWithInputException {
 		if (stationType.equalsIgnoreCase("All")) {return allStations;}
 		else if (stationType.equalsIgnoreCase("Standard")) {return allStandardStations;}
 		else if (stationType.equalsIgnoreCase("Plus")) {return allPlusStations;}
 		else {throw new UnimplementedSubclassWithInputException("Station",stationType);}
 	}
-	
+	/**
+	 * 
+	 * @return all the stations
+	 */
 	public ArrayList<Station> getAllStations(){return allStations;}
-	
+	/**
+	 * Add bicycles of a certain type randomly in the network
+	 * @param network
+	 * @param nBikesMechanical
+	 * @param nBikesElectrical
+	 * @throws NotEnoughSlotsException
+	 */
 	public static void addNBikeRandomWithDefinedType(Network network,int nBikesMechanical, int nBikesElectrical) throws NotEnoughSlotsException {
 		int totalFreeSlots = 0;
 		int nBikes = nBikesMechanical+nBikesElectrical;
@@ -200,6 +281,9 @@ public class Network {
 			}
 		}
 	}
+	/**
+	 * Add bicycles of a certain type randomly in the network
+	 */
 	
 	public static void addNBikeRandom(Network network,int nBikes) throws NotEnoughSlotsException {
 		int totalFreeSlots = 0;
@@ -225,7 +309,12 @@ public class Network {
 			}
 		}
 	}
-	
+	/**
+	 * 
+	 * @param name
+	 * @return the network of this name
+	 * @throws UnexistingNetworkNameException
+	 */
 	public static Network searchNetworkByName(String name) throws UnexistingNetworkNameException {
 		for (Network n : allNetworks) {
 			if (n.getName().equalsIgnoreCase(name)) {
@@ -234,7 +323,12 @@ public class Network {
 		}
 		throw new UnexistingNetworkNameException(name);
 	}
-	
+	/**
+	 * 
+	 * @param id
+	 * @return the station of this id
+	 * @throws UnexistingStationIDException
+	 */
 	public Station searchStationByID(int id) throws UnexistingStationIDException {
 		for (Station s : this.allStations) {
 			if (s.getId()== id) {
@@ -254,7 +348,12 @@ public class Network {
 		}
 		throw new UnexistingStationIDException(id);
 	}
-	
+	/**
+	 * 
+	 * @param id
+	 * @return the user with this ID
+	 * @throws UnexistingUserIDException
+	 */
 	public User searchUserByID(int id) throws UnexistingUserIDException {
 		for (User u : this.allUsers) {
 			if (u.getId()== id) {
@@ -263,7 +362,12 @@ public class Network {
 		}
 		throw new UnexistingUserIDException(id);
 	}
-	
+	/**
+	 * 
+	 * @param name
+	 * @return The user with this name
+	 * @throws UnexistingUserNameException
+	 */
 	public User searchUserByName(String name) throws UnexistingUserNameException {
 		for (User u : this.allUsers) {
 			if (u.getNetwork().equals(name)) {
@@ -303,7 +407,12 @@ public class Network {
 	}
 	
 
-	
+	/**
+	 * Sorts the station according a certain policy
+	 * @param choice
+	 * 	policy wanted
+	 * @throws BadInstantiationException
+	 */
 	public void sortStationBy(String choice) throws BadInstantiationException {
 		Comparator<Station> Comparator = null;
 		if(choice.equalsIgnoreCase("Least Occupied")) {Comparator = new StationComparatorByLeastOccupied(Time.getOriginalTime(),Time.getCurrentTime());}
