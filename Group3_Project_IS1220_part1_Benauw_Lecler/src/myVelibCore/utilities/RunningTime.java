@@ -80,6 +80,10 @@ public class RunningTime implements Runnable{
 	}
 	public static void setTimeRunning(boolean isTimeRunning) {
 		RunningTime.isTimeRunning = isTimeRunning;
+	}
+	public static void setSimulaton_On(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}		
 }
 	

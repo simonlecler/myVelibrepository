@@ -24,7 +24,7 @@ class RunningTimeTest {
 		try {
 			thread.start();
 			Thread.sleep(100);
-			Network.setSimulaton_On(false);
+			RunningTime.setSimulaton_On(false);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
