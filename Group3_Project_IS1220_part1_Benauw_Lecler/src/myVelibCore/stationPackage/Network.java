@@ -190,6 +190,7 @@ public class Network {
 				return u;
 			}
 		}
+		throw new UnexistingUserNameException(name);
 	}
 	
 	public static User searchUserByIDAllNetworks(int id) throws UnexistingUserIDException {

@@ -8,13 +8,14 @@ import myVelibCore.abstractFactoryPattern.FactoryProducer;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.userAndCardPackage.User;
 
 class UserFactoryTest {
 
 	@Test
-	void testGetUser() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void testGetUser() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, UserNameAlreadyUsedException {
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
 		AbstractFactory UserFactory = FactoryProducer.getFactory("User");
