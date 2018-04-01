@@ -50,8 +50,9 @@ public class Network {
 	public static void ListAllNetworks() {
 		System.out.println("List of all networks created :");
 		for (Network n : allNetworks) {
-			System.out.println(n.name);
+			System.out.print(n.name + " | ");
 		}
+		System.out.println("\n");
 	}
 
 	public Network(String name) throws NetworkNameAlreadyUsedException {

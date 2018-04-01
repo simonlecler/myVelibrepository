@@ -194,17 +194,19 @@ public class ParsingAndCalling {
 			network.sortStationBy(policy);
 		}
 		
-		
 	}
 	
 	public static void displayWith1Param(String[] args) {
 		String velibNetworkName;
-
 		try {
 			Network network = Network.searchNetworkByName(velibNetworkName);
 			System.out.println(network);
 		}
 		
+	}
+	
+	public static void listNetworkWith0Param(String[] args) {
+		Network.ListAllNetworks();
 	}
 	
 	public static void planningRideWith6Param(String[] args) {
@@ -213,13 +215,10 @@ public class ParsingAndCalling {
 		velibNetworkName = args[1];
 		userName = args[2];
 		policy = args[3];
-		try {
-			destinationLatitude = Double.parseDouble(args[4]);
-			destinationLongitude = Double.parseDouble(args[5]);
-		}
-		catch(Exception e) {System.out.println("Error : userID must be an integer"); argsParsable = false;}
-			
-		
+		try {destinationLatitude = Double.parseDouble(args[4]);}
+		catch(Exception e) {System.out.println("Error : destinationLatitude must be a double"); argsParsable = false;}
+		try {destinationLongitude = Double.parseDouble(args[5]);}
+		catch(Exception e) {System.out.println("Error : destinationLongitude must be a double"); argsParsable = false;}
 		bicycleType = args[6];
 		if(argsParsable) {
 			try {
@@ -229,12 +228,10 @@ public class ParsingAndCalling {
 				user.planningRide(destination, policy, bicycleType);
 			}
 		}
-		else {System.out.println(TYPE_ERROR_MSG);}
-			
-		
+		else {System.out.println(TYPE_ERROR_MSG);}	
 	}
 	
-	public static void runTime(String[] args) {
+	public static void runTimeWith0Param(String[] args) {
 		if(RunningTime.isTimeRunning()) {
 			System.out.println("Time is already running !");
 		}
@@ -246,7 +243,7 @@ public class ParsingAndCalling {
 		}
 	}
 	
-	public static void stopTime(String[] args) {
+	public static void stopTimeWith0Param(String[] args) {
 		if(RunningTime.isTimeRunning()) {
 			try{RunningTime.getInstance().getCurrentThread().interrupt();}
 			catch(SecurityException e) {System.out.println("Running Time Thread interrupted !");

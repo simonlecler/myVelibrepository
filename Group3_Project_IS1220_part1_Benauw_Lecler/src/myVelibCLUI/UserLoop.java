@@ -2,8 +2,10 @@ package myVelibCLUI;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import myVelibCore.stationPackage.Network;
@@ -16,6 +18,8 @@ public class UserLoop {
 	//You parse every parameter, and send error if parsing doesn't work
 	//You call the right function
 	
+	public static final PrintStream ps_console = System.out;
+
 	
 	//Exit Command
 	
@@ -74,6 +78,21 @@ public class UserLoop {
    public static final String DESCRIPTION_ADDUSER = 
 		   "addUser : used to add an user\r\n"+"\n" + DESCRIPTION1_ADDUSER +"\n";
    
+   //PlanRide Command
+   
+   public static final String PLANRIDE_COMMAND = "planRide";
+  
+   public static final int NBR1_PARAM_PLANRIDE = 3;
+   public static final String DESCRIPTION1_PLANRIDE =
+		   "	planRide <velibNetworkName> <userName> <policy> <destinationLatitude> <destinationLongitude> <bicycleType> \r\n" +
+		   "	to plan a ride for a given user in a given network following a specific planning policy\r\n" +
+		   "	You must enter the gps location and the bicycle type wished\r\n";
+   
+   public static final String DESCRIPTION_PLANRIDE = 
+		   "planRide : used to plan a ride\r\n"+"\n" + DESCRIPTION1_PLANRIDE +"\n";
+   
+   
+   
    //Offline Command
    
    public static final String OFFLINE_COMMAND = "offline";
@@ -103,7 +122,7 @@ public class UserLoop {
    public static final String RUNTIME_COMMAND = "runTime";
    public static final int NBR_PARAM_RUNTIME = 0;
    
-   public static final String DESCRIPTION_SETUPTIME = 
+   public static final String DESCRIPTION_RUNTIME = 
 		   "runTime : used to launch the time simulation";
    
    //Stop time Command
@@ -113,6 +132,13 @@ public class UserLoop {
    
    public static final String DESCRIPTION_STOPTIME = 
 		   "stopTime : used to stop the time simulation";
+   
+   //List Network Command 
+   public static final String LISTNETWORK_COMMAND = "listNetwork";
+   public static final int NBR_PARAM_LISTNETWORK = 0;
+   
+   public static final String DESCRIPTION_LISTNETWORK = 
+		   "listNetwork : used to list all the networks created";
    
    //RentBike Command
    
@@ -193,16 +219,26 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_READFILE = 1;
    public static final String DESCRIPTION1_READFILE =
-		   "	file <fileName>: to execute the command line written in a txt file\r\n";
+		   " readFile <fileName>: to execute the command line written in a txt file\r\n";
    
    public static final String DESCRIPTION_READFILE = 
 		   "readFile : used to read a file"+"\n" + DESCRIPTION1_READFILE +"\n";
    
+   //WriteToFile Command
+   
+   public static final String WRITETOFILE_COMMAND = "writeToFile";
+
+   public static final int NBR1_PARAM_WRITETOFILE = 1;
+   public static final String DESCRIPTION1_WRITETOFILE =
+		   " writeToFile <fileName>: to write the output i a txt file. isWritingToFile must be true in this case. TO STOP, YOU MUST TYPE 'stopWriting' as the argument \r\n";
+   
+   public static final String DESCRIPTION_WRITETOFILE = 
+		   "writeToFile : used to redirect output to a txt file "+"\n" + DESCRIPTION1_WRITETOFILE +"\n";
    //Other messages
    
    public static final String INCORRECT_PARAMETERS_NUMBER_MSG = "You've entered the wrong number of parameters for the command.\r\n"+
 		   														"Type help if you need assistance.\r\n"+"\n";
-   public static final String HELP_MSG = DESCRIPTION_SETUP + DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY;
+   public static final String HELP_MSG = DESCRIPTION_SETUP + DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY + DESCRIPTION_RUNTIME + DESCRIPTION_STOPTIME;
    public static final String UNRECOGNIZED_COMMAND_MSG ="You entered a unrecognized command ! Remember you can type help for help ;)";
    
    public static final String READING_FILE_BEGINNING_MSG = "Beginning to read command from following file :";
@@ -300,6 +336,23 @@ public class UserLoop {
         	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG );}
          }
          
+         else if (command.equalsIgnoreCase(WRITETOFILE_COMMAND)) {
+        	 if(numberOfParametersEntered == NBR1_PARAM_WRITETOFILE) {
+        		 String fileName = inputForParsing[1];
+        		 if(fileName.equalsIgnoreCase("stopWriting")){
+        			 System.setOut(ps_console);
+        		 }
+        		 else {
+        			 File file = new File(fileName);
+        	         FileOutputStream fos = new FileOutputStream(file);
+        	         PrintStream ps = new PrintStream(fos);
+        	         System.setOut(ps);
+        		 }
+        	 }
+         }
+         
+         // OTHER COMMANDS
+         
          else if (command.equalsIgnoreCase(SETUP_COMMAND)) {
         	if(numberOfParametersEntered==NBR1_PARAM_SETUP) {
         		ParsingAndCalling.setupWith1Param(inputForParsing);
@@ -377,13 +430,25 @@ public class UserLoop {
          }
          else if (command.equalsIgnoreCase(RUNTIME_COMMAND)) {
         	 if(numberOfParametersEntered==NBR_PARAM_RUNTIME) {
-        	 ParsingAndCalling.runTime(inputForParsing);
+        	 ParsingAndCalling.runTimeWith0Param(inputForParsing);
         	 }
         	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }
          else if (command.equalsIgnoreCase(STOPTIME_COMMAND)) {
         	 if(numberOfParametersEntered==NBR_PARAM_STOPTIME) {
-        	 ParsingAndCalling.stopTime(inputForParsing);
+        	 ParsingAndCalling.stopTimeWith0Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(LISTNETWORK_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR_PARAM_LISTNETWORK) {
+        	 ParsingAndCalling.listNetworkWith0Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(PLANRIDE_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR1_PARAM_PLANRIDE) {
+        	 ParsingAndCalling.planningRideWith6Param(inputForParsing);
         	 }
         	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }
