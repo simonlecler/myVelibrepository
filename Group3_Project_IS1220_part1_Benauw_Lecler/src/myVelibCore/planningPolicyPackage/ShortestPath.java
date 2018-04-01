@@ -41,12 +41,16 @@ public class ShortestPath implements PlanningPolicy{
 		if (availableDestinationStations.size()==0 || (availableDestinationStations.size()==1 && availableStartingStations.size()==1 && availableStartingStations.size()==1 && availableDestinationStations.get(0)==availableStartingStations.get(0))) {throw new NoDestinationStationAvailableException();}	
 		for(Station stationDepart : availableStartingStations) {
 			for(Station stationArrivee : availableDestinationStations) {
-				double currentDistance = start.getDistance(stationDepart.getGpsLocation()) + stationDepart.getGpsLocation().getDistance(stationArrivee.getGpsLocation())+ destination.getDistance(stationArrivee.getGpsLocation());
-				if (currentDistance < shortestDistance) {
-					shortestDistance = currentDistance;
-					startingStation = stationDepart;
-					destinationStation = stationArrivee;
+				if (stationDepart!=stationArrivee) {
+					double currentDistance = start.getDistance(stationDepart.getGpsLocation()) + stationDepart.getGpsLocation().getDistance(stationArrivee.getGpsLocation())+ destination.getDistance(stationArrivee.getGpsLocation());
+					if (currentDistance < shortestDistance) {
+			
+						shortestDistance = currentDistance;
+						startingStation = stationDepart;
+						destinationStation = stationArrivee;
+					}
 				}
+				
 			}
 		}
 		Station stations[] = {startingStation, destinationStation};

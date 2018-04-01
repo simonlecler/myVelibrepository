@@ -224,8 +224,7 @@ class UserTest {
 		}
 		
 		
-		System.out.println(user1.getGpsLocation());
-		System.out.println(user2.getGpsLocation());
+	
 		assertTrue(user1.getGpsLocation().getLatitude()==30.31925 && user1.getGpsLocation().getLongitude()==30.31925);
 		assertTrue(user2.getGpsLocation().getLatitude()==30.31925 && user1.getGpsLocation().getLongitude()==30.31925);
 	

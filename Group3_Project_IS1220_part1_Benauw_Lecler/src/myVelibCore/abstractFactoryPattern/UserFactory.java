@@ -2,6 +2,7 @@ package myVelibCore.abstractFactoryPattern;
 
 import myVelibCore.byciclePackage.Bycicle;
 import myVelibCore.exceptions.FactoryNullException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.Station;
 import myVelibCore.userAndCardPackage.Card;
@@ -18,7 +19,7 @@ public class UserFactory extends AbstractFactory{
 	 * @return Instance of User 
 	 */
 	@Override
-	public User getUser(String name, Network network) {
+	public User getUser(String name, Network network) throws UserNameAlreadyUsedException{
 		return new User(name,network);
 	}
 	@Override

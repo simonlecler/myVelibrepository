@@ -4,6 +4,7 @@ import myVelibCore.byciclePackage.Bycicle;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.Station;
 import myVelibCore.userAndCardPackage.Card;
@@ -16,7 +17,7 @@ import myVelibCore.utilities.GPSLocation;
  * @author Simon Lecler
  */
 public abstract class AbstractFactory {
-	public abstract User getUser(String name, Network network)throws FactoryNullException;
+	public abstract User getUser(String name, Network network)throws FactoryNullException, UserNameAlreadyUsedException;
 	public abstract Station getStation(String stationType, GPSLocation gpsLocation, Network network)throws BadInstantiationException,FactoryNullException;
 	public abstract Card getCard(String CardType) throws BadInstantiationException,FactoryNullException; 
 	public abstract Card getCard(String CardType, int balance)throws BadInstantiationException,FactoryNullException;

@@ -35,7 +35,7 @@ class ParkingSlotTest {
 		Bycicle bycicle1 = bycicleFactory.getBycicle("Electrical");
 		slot1.setStatus(false);
 		station2.getStationBikeCounters().addBike(bycicle1, station2.getSlots());
-		assertTrue(slot1.getOccupationStatus() == true);
+		assertTrue(slot1.getOccupationStatus() == false);
 		assertTrue(slot2.getOccupationStatus() == true);
 		assertTrue(slot3.getOccupationStatus() == false);	
 	}
