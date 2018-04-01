@@ -15,6 +15,7 @@ import myVelibCore.exceptions.NotEnoughSlotsException;
 import myVelibCore.exceptions.UnexistingNetworkNameException;
 import myVelibCore.exceptions.UnexistingStationIDException;
 import myVelibCore.exceptions.UnexistingUserIDException;
+import myVelibCore.exceptions.UnexistingUserNameException;
 import myVelibCore.exceptions.UnimplementedSubclassWithInputException;
 import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
 import myVelibCore.sortStationPackage.StationComparatorByLeastOccupied;
@@ -181,6 +182,14 @@ public class Network {
 			}
 		}
 		throw new UnexistingUserIDException(id);
+	}
+	
+	public User searchUserByName(String name) throws UnexistingUserNameException {
+		for (User u : this.allUsers) {
+			if (u.getNetwork().equals(name)) {
+				return u;
+			}
+		}
 	}
 	
 	public static User searchUserByIDAllNetworks(int id) throws UnexistingUserIDException {

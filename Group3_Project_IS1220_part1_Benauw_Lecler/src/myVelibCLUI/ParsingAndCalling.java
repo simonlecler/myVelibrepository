@@ -8,6 +8,7 @@ import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.Station;
 import myVelibCore.userAndCardPackage.Card;
 import myVelibCore.userAndCardPackage.User;
+import myVelibCore.utilities.GPSLocation;
 import myVelibCore.utilities.RunningTime;
 
 public class ParsingAndCalling {
@@ -188,6 +189,30 @@ public class ParsingAndCalling {
 		
 	}
 	
+	public static void planningRideWith6Param(String[] args) {
+		String velibNetworkName; String userName; String policy ; double destinationLatitude ; double destinationLongitude ; String bicycleType;
+		boolean argsParsable = true;
+		velibNetworkName = args[1];
+		userName = args[2];
+		policy = args[3];
+		try {
+			destinationLatitude = Double.parseDouble(args[4]);
+			destinationLongitude = Double.parseDouble(args[5]);
+		}
+		catch(Exception e) {System.out.println("Error : userID must be an integer"); argsParsable = false;}
+			
+		
+		bicycleType = args[6];
+		if(argsParsable) {
+			GPSLocation destination = new GPSLocation(destinationLatitude, destinationLongitude);
+			Network network = Network.searchNetworkByName(velibNetworkName);
+			User user = network.searchUserByName(userName);
+			user.planningRide(destination, policy, bicycleType);
+		}
+		else {System.out.println(TYPE_ERROR_MSG);}
+			
+		
+	}
 	public static void setupTime() {
 		Thread time = new Thread(RunningTime.getInstance());
 		time.start();
