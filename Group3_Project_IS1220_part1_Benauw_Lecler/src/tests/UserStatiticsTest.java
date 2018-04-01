@@ -9,6 +9,7 @@ import myVelibCore.abstractFactoryPattern.FactoryProducer;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.userAndCardPackage.User;
 
@@ -17,7 +18,7 @@ class UserStatiticsTest {
 
 
 	@Test
-	void testIncreaseNumberOfRidesBy() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void testIncreaseNumberOfRidesBy() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -31,7 +32,7 @@ class UserStatiticsTest {
 	}
 
 	@Test
-	void testIncreaseTotalTimeSpentOnABikeBy() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void testIncreaseTotalTimeSpentOnABikeBy() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -46,7 +47,7 @@ class UserStatiticsTest {
 	}
 
 	@Test
-	void testIncreaseTotalAmountOfChargesBy() throws FactoryNullException, NetworkNameAlreadyUsedException, BadInstantiationException {
+	void testIncreaseTotalAmountOfChargesBy() throws FactoryNullException, NetworkNameAlreadyUsedException, BadInstantiationException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");

@@ -23,6 +23,7 @@ import myVelibCore.exceptions.RentBikeFailException;
 import myVelibCore.exceptions.ReturnBikeFailException;
 import myVelibCore.exceptions.SlotStatusFailException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
 import myVelibCore.stationPackage.Station;
@@ -33,7 +34,7 @@ import myVelibCore.utilities.GPSLocation;
 class StationTest {
 
 	@Test
-	void testRentABikeWhenBikeAvailable() throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, NoBycicleAvailableException{
+	void testRentABikeWhenBikeAvailable() throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, NoBycicleAvailableException, UserNameAlreadyUsedException{
 	
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
@@ -58,7 +59,7 @@ class StationTest {
 	}
 	
 	@Test 
-	void testRentABikeWhenNoBikeAvailable() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException{
+	void testRentABikeWhenNoBikeAvailable() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, UserNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -82,7 +83,7 @@ class StationTest {
 		
 	}
 	@Test
-	void testReturnABikeWhenThereIsFreeSlot() throws BadInstantiationException, RentBikeFailException, ReturnBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException{
+	void testReturnABikeWhenThereIsFreeSlot() throws BadInstantiationException, RentBikeFailException, ReturnBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException, UserNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -110,7 +111,7 @@ class StationTest {
 	
 
 	@Test 
-	void testReturnABikeWhenNoFreeSlots()throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException, StationFullException{
+	void testReturnABikeWhenNoFreeSlots()throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException, StationFullException, UserNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");

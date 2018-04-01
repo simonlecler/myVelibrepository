@@ -16,6 +16,7 @@ import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.PlanningRideFailException;
 import myVelibCore.exceptions.RentBikeFailException;
+import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
 import myVelibCore.stationPackage.Station;
@@ -29,7 +30,7 @@ class UserTest {
 
 	
 	@Test
-	void testComputeMyRideCost() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, ComputeCostImpossibleException {
+	void testComputeMyRideCost() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, ComputeCostImpossibleException, UserNameAlreadyUsedException {
 	
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
@@ -70,7 +71,7 @@ class UserTest {
 	}
 
 	@Test
-	void testPlanningRide() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException {
+	void testPlanningRide() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -121,7 +122,7 @@ class UserTest {
 	}
 	
 	@Test
-	void testIsDeparted() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void testIsDeparted() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -147,7 +148,7 @@ class UserTest {
 	
 	
 	@Test
-	void testRides() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException {
+	void testRides() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -182,7 +183,7 @@ class UserTest {
 	}
 
 	@Test
-	void testRun() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException {
+	void testRun() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
