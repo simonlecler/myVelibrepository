@@ -175,7 +175,7 @@ class UserTest {
 		
 		
 		user1.rides();
-		RunningTime.setSimulaton_On(false);
+		//RunningTime.setSimulaton_On(false);
 		assertTrue(user1.getGpsLocation().getLatitude()==30.31925);
 		assertTrue(user1.getGpsLocation().getLongitude()==30.31925);
 		assertTrue(user1.isPlanningARide()==false);

@@ -143,7 +143,7 @@ public class Network {
 	 * @throws NotEnoughSlotsException
 	 */
 	public static void setupNetwork(String name, int nStations, int nSlots, double sideArea, int nBikes) throws NetworkNameAlreadyUsedException, NotEnoughSlotsException {
-		if (nBikes>nSlots) {throw new NotEnoughSlotsException(nBikes,nSlots);}
+		if (nBikes>nSlots*nStations) {throw new NotEnoughSlotsException(nBikes,nSlots);}
 		Network network = new Network(name, sideArea);
 		double maxLat = GPSLocation.getMaxLatitude(sideArea);
 		double maxLong = GPSLocation.getMaxLongitude(sideArea);
@@ -154,11 +154,11 @@ public class Network {
 		for (int i=1; i<=nStations; i++) {
 			try {stationFactory.getStation(StationFactory.getRandomStationType(), new GPSLocation(Math.random()*maxLat,Math.random()*maxLong), network, "station"+i);}
 			catch (BadInstantiationException | FactoryNullException | StationNameAlreadyUsedException e) {System.out.println("This is not supposed to happen ! "+e.getMessage());}
+		}
 		//Adding slots
-			for (Station s : network.getAllStations()) {
-				for (i=1; i<=nSlots; i++) {
-					s.addParkingSlot();
-				}
+		for (Station s : network.getAllStations()) {
+			for (int a=1; a<=nSlots; a++) {
+				s.addParkingSlot();
 			}
 		}
 		//Adding Bikes
@@ -177,7 +177,7 @@ public class Network {
 	 */
 	public static void setupNetworkWithDefinedBycicle(String name, int nStations, int nSlots, double sideArea, int nBikesMechanical, int nBikesElectrical) throws NetworkNameAlreadyUsedException, NotEnoughSlotsException {
 		int nBikes = nBikesMechanical+nBikesElectrical;
-		if (nBikes>nSlots) {throw new NotEnoughSlotsException(nBikes,nSlots);}
+		if (nBikes>nSlots*nStations) {throw new NotEnoughSlotsException(nBikes,nSlots);}
 		Network network = new Network(name, sideArea);
 		double maxLat = GPSLocation.getMaxLatitude(sideArea);
 		double maxLong = GPSLocation.getMaxLongitude(sideArea);
@@ -188,13 +188,14 @@ public class Network {
 		for (int i=1; i<=nStations; i++) {
 			try {stationFactory.getStation(StationFactory.getRandomStationType(), new GPSLocation(Math.random()*maxLat,Math.random()*maxLong), network, "station"+i);}
 			catch (BadInstantiationException | FactoryNullException | StationNameAlreadyUsedException e) {System.out.println("This is not supposed to happen ! "+e.getMessage());}
+		}
 		//Adding slots
-			for (Station s : network.getAllStations()) {
-				for (i=1; i<=nSlots; i++) {
+		for (Station s : network.getAllStations()) {
+			for (int a=1; a<=nSlots; a++) {
 					s.addParkingSlot();
-				}
 			}
 		}
+		
 		//Adding Bikes
 		Network.addNBikeRandomWithDefinedType(network,nBikesMechanical,nBikesElectrical);
 	}
@@ -398,7 +399,7 @@ public class Network {
 	public static Station searchStationByNameAllNetworks(String name) throws UnexistingStationNameException {
 		for (Network n : allNetworks) {
 			for (Station s : n.allStations) {
-				if (s.getName()== name) {
+				if (s.getName().equalsIgnoreCase(name)) {
 					return s;
 				}
 			}
@@ -428,7 +429,7 @@ public class Network {
 	 */
 	public User searchUserByName(String name) throws UnexistingUserNameException {
 		for (User u : this.allUsers) {
-			if (u.getNetwork().equals(name)) {
+			if (u.getName().equalsIgnoreCase(name)) {
 				return u;
 			}
 		}
@@ -449,7 +450,7 @@ public class Network {
 	public static User searchUserByNameAllNetworks(String name) throws UnexistingUserNameException {
 		for (Network n : allNetworks) {
 			for (User u : n.allUsers) {
-				if (u.getName()== name) {
+				if (u.getName().equalsIgnoreCase(name)) {
 					return u;
 				}	
 			}

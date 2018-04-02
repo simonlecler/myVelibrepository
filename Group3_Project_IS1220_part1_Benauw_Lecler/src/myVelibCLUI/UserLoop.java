@@ -95,7 +95,7 @@ public class UserLoop {
    
  public static final String SETUSERGPSPOSITION_COMMAND = "setUserGPSPosition";
    
-   public static final int NBR1_PARAM_SETUSERGPSPOSITION = 3;
+   public static final int NBR1_PARAM_SETUSERGPSPOSITION = 4;
    public static final String DESCRIPTION1_SETUSERGPSPOSITION =
 		   "	setUserGPSPosition <velibnetworkName> <userName> <latitude> <longitude> : \r\n" +
 		   "	to set the position of a given user in a given network, according to GPS coordinates\r\n"; 

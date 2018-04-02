@@ -94,11 +94,12 @@ public abstract class Station implements Observable{
 		super();
 		boolean isNameFree = true;
 		for (Station s : network.getAllStations()) {
-			if (s.getName().equalsIgnoreCase(name)) {
+			if (s.getName().equalsIgnoreCase(name)) { 
 				isNameFree = false;
 			}
 		}
 		if (isNameFree) {
+			this.name = name;
 			this.id = IDGenerator.getInstance().getNextID();
 			this.gpsLocation=gpsLocation;
 			this.network=network;
@@ -148,6 +149,7 @@ public abstract class Station implements Observable{
 	public void addParkingSlot() {
 		ParkingSlot newPS = new ParkingSlot(this);
 		this.slots.add(newPS);
+		this.stationBikeCounters.increaseFreeSlots();
 	}
 	
 	

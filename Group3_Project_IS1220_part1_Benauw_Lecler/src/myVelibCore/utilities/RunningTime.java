@@ -38,8 +38,7 @@ public class RunningTime implements Runnable{
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		
 		}
@@ -59,10 +58,9 @@ public class RunningTime implements Runnable{
 	
 	public static void stopTime() {
 		if(RunningTime.isTimeRunning()) {
-			try{RunningTime.getInstance().getCurrentThread().interrupt();}
-			catch(SecurityException e) {System.out.println("Running Time Thread interrupted !");
+			RunningTime.getInstance().getCurrentThread().interrupt();
 			RunningTime.setTimeRunning(false);
-			}
+			System.out.println("Running Time Thread interrupted !");
 		}
 		else {
 			System.out.println("Time is already stopped !");
@@ -81,10 +79,7 @@ public class RunningTime implements Runnable{
 	public static void setTimeRunning(boolean isTimeRunning) {
 		RunningTime.isTimeRunning = isTimeRunning;
 	}
-	public static void setSimulaton_On(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}		
+
 }
 	
 	

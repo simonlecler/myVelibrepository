@@ -120,15 +120,10 @@ public class ParsingAndCalling {
 		boolean argsParsable = true;
 		try {nSlots = Integer.parseInt(args[6]);}
 		catch(Exception e) {System.out.println("Error : the number of slots must be in Integer");argsParsable = false;}
-		try {
-			latitude = Double.parseDouble(args[4]);
-		}
+		try {latitude = Double.parseDouble(args[4]);}
 		catch(Exception e) {System.out.println("Error : latitude must be a double"); argsParsable = false;}
-		try {
-			longitude = Double.parseDouble(args[5]);
-		}
+		try {longitude = Double.parseDouble(args[5]);}
 		catch(Exception e) {System.out.println("Error : longitude must be a double"); argsParsable = false;}
-		
 		if(argsParsable) {
 			try {
 				networkName = args[1];

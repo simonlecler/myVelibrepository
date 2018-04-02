@@ -13,7 +13,7 @@ import myVelibCore.utilities.GPSLocation;
 public class StationPlus extends Station{
 	@Override
 	public String toString() {
-		return "Station Plus" + " " + "|" + " " +" id=" + this.getId() + " "+"|" + " "+ "Coordonnées GPS : " + " " + this.getGpsLocation() +" "+ "|" + " "+ "Number of parking slots :" + " " + this.getSlots().size() + "\n";
+		return "Station Plus" + " " + "|" + " " +" id=" + this.getId() + " "+"|" + " "+ "name =" + this.getName() + " " +"|"+" "+ "Coordonnées GPS : " + " " + this.getGpsLocation() +" "+ "|" + " "+ "Number of parking slots :" + " " + this.getSlots().size() + "\n";
 		
 	}
 	/**

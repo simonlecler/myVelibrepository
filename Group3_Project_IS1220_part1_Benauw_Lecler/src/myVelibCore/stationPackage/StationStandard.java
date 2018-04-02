@@ -27,7 +27,7 @@ public class StationStandard extends Station{
 	}
 	@Override
 	public String toString() {
-		return "Station Standard" + " " + "|" + " " +" id="+" " + this.getId() + " "+"|" + " "+ "Coordonnées GPS :"+ " " + this.getGpsLocation() +" "+ "|" + " "+ "Number of parking slots" + " " +this.getSlots().size() + "\n";
+		return "Station Standard" + " " + "|" + " " +" id="+" " + this.getId() + " "+"|" + " "+ "name =" + this.getName() + " " +"|"+" " + "Coordonnées GPS :"+ " " + this.getGpsLocation() +" "+ "|" + " "+ "Number of parking slots" + " " +this.getSlots().size() + "\n";
 		
 	}
 	

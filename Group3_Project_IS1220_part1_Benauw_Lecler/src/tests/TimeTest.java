@@ -55,7 +55,7 @@ class TimeTest {
 		Time time = new Time();
 		thread.start();
 		time.updateTime();
-		RunningTime.setSimulaton_On(false);
+		//RunningTime.setSimulaton_On(false);
 		assertTrue(Time.getStaticCurrentTime()==1);
 	}
 
