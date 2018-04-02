@@ -294,7 +294,7 @@ public class UserLoop {
    public static final String READING_FILE_COMPLETE_MSG = "Reading from file complete !";
    public static final String FAILING_TO_READ_FILE_MSG = "Failing to read the file because of an incorrect path... Please type an other command";
    
-   public static final String EXITING_MSG = "Exit";
+   public static final String EXITING_MSG = "Exit program...";
    public static final String DEADLOCK_EXITING_MSG = "You've ended in a deadlock ! :( Please contact the author of the program in order to fix this bug !!!\r\n" +
 		   											 "Now Exiting...";
    // ==== MAIN ====
