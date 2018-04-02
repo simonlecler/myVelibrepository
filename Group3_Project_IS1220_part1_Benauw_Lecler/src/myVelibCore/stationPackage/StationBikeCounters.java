@@ -32,6 +32,12 @@ public class StationBikeCounters {
 	
 	
 	
+	@Override
+	public String toString() {
+		return "| Electrical bikes =" + numberElectrical + " | Mechanical bikes =" + numberMechanical
+				+ " | free Slots=" + freeSlots + " |";
+	}
+
 	public int getNumberElectrical() {
 		return numberElectrical;
 	}
@@ -68,8 +74,8 @@ public class StationBikeCounters {
 	 * @return if there are bicycle of this type in the station
 	 */
 	public boolean isThereAny (String bycicleType) {
-		if(bycicleType == BycicleElectrical.typeWritten && numberElectrical>0) {return true;}
-		if(bycicleType == BycicleMechanical.typeWritten && numberMechanical>0) {return true;}
+		if(bycicleType.equalsIgnoreCase(BycicleElectrical.typeWritten) && numberElectrical>0) {return true;}
+		if(bycicleType.equalsIgnoreCase(BycicleMechanical.typeWritten) && numberMechanical>0) {return true;}
 		else {return false;}
 	}
 	/**
@@ -79,8 +85,8 @@ public class StationBikeCounters {
 	 * @return The number of bicycles of this type in the station
 	 */
 	public int howMany (String bycicleType) throws UnimplementedSubclassWithInputException {
-		if(bycicleType == BycicleElectrical.typeWritten) {return numberElectrical;}
-		else if(bycicleType == BycicleMechanical.typeWritten) {return numberMechanical;}
+		if(bycicleType.equalsIgnoreCase(BycicleElectrical.typeWritten)) {return numberElectrical;}
+		else if(bycicleType.equalsIgnoreCase(BycicleMechanical.typeWritten)) {return numberMechanical;}
 		else {throw new UnimplementedSubclassWithInputException("Bycicle",bycicleType);}
 	}
 	
@@ -132,10 +138,10 @@ public class StationBikeCounters {
 	
 	public StationRemovingBycicle removeBike (String bycicleType, ArrayList<ParkingSlot> slots) throws RemoveBikeFailException {
 	try {
-		if (bycicleType!=BycicleElectrical.typeWritten && bycicleType!=BycicleMechanical.typeWritten) {
+		if (!bycicleType.equalsIgnoreCase(BycicleElectrical.typeWritten) && !bycicleType.equalsIgnoreCase(BycicleMechanical.typeWritten)) {
 			throw new UnimplementedSubclassWithInputException("Bycicle",bycicleType);
 		}
-		if(bycicleType == BycicleElectrical.typeWritten && numberElectrical>0) {
+		if(bycicleType.equalsIgnoreCase(BycicleElectrical.typeWritten) && numberElectrical>0) {
 			for (ParkingSlot slot:slots) {
 				if (slot.isStatus() && slot.getBycicle() instanceof BycicleElectrical) {
 					Bycicle userBike = slot.getBycicle();
@@ -146,7 +152,7 @@ public class StationBikeCounters {
 				}
 			}
 		}
-		if(bycicleType == BycicleMechanical.typeWritten && numberMechanical>0) {
+		if(bycicleType.equalsIgnoreCase(BycicleMechanical.typeWritten) && numberMechanical>0) {
 			for (ParkingSlot slot:slots) {
 				if (slot.isStatus() && slot.getBycicle() instanceof BycicleMechanical) {
 					Bycicle userBike = slot.getBycicle();

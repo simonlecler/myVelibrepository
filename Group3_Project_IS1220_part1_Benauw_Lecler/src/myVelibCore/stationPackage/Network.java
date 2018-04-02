@@ -10,6 +10,7 @@ import myVelibCore.abstractFactoryPattern.StationFactory;
 import myVelibCore.byciclePackage.Bycicle;
 import myVelibCore.byciclePackage.BycicleElectrical;
 import myVelibCore.byciclePackage.BycicleMechanical;
+import myVelibCore.exceptions.AddBikeFailException;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
@@ -85,7 +86,6 @@ public class Network {
 		for (Network n : allNetworks) {
 			System.out.print(n.name + " | ");
 		}
-		System.out.println("\n");
 	}
 	/**
 	 * Constructor with 2 parameters
@@ -203,10 +203,10 @@ public class Network {
 	
 	@Override
 	public String toString() {
-		return("This myVelib Network is situated in" + " "+ name + "\n" + "Its ID is" +" "+ id + "\n" 
-				+ "Here are the detailed informations about all the stations of the network :" +  "\n" 
-				+ allStations + "\n"
-				+ "Here are the detailed informations about all the users of the network" + "\n"
+		return("This myVelib Network is situated in" + " "+ name + "\r\n" + "Its ID is" +" "+ id + "\r\n" 
+				+ "Here are the detailed informations about all the stations of the network :" +  "\r\n" 
+				+ allStations + "\r\n"
+				+ "Here are the detailed informations about all the users of the network" + "\r\n"
 				+ allUsers);		
 	}
 	
@@ -214,8 +214,8 @@ public class Network {
 	 * displays informations about the network
 	 */
 	public void display() {
-		System.out.println(this.name);
-		System.out.println(this.id);
+		System.out.println("Name : " + this.name + "\r\n");
+		System.out.println("ID : "+this.id+"\r\n");
 		for(User u : this.allUsers) {u.display();}
 		for(Station s : this.allStations) {s.display();}
 	}
@@ -294,16 +294,23 @@ public class Network {
 				for (Station s : network.getAllStations()) {
 					if(totalBikeAdded<nBikes && Math.random()>0.5) {
 						if(totalMechanicalAdded<nBikesMechanical) {
-							try {s.addBike(bycicleFactory.getBycicle(BycicleMechanical.typeWritten));}
-							catch(Exception e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
-							totalBikeAdded++;
-							totalMechanicalAdded++;
+							try{
+								s.addBike(bycicleFactory.getBycicle(BycicleMechanical.typeWritten));
+								totalBikeAdded++;
+								totalMechanicalAdded++;
+							}
+							catch(BadInstantiationException | FactoryNullException e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
+							catch(AddBikeFailException e){} //Cela arrive, on continue !
 						}
 						else if(totalElectricalAdded<nBikesElectrical) {
-							try {s.addBike(bycicleFactory.getBycicle(BycicleElectrical.typeWritten));}
-							catch(Exception e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
-							totalBikeAdded++;
-							totalElectricalAdded++;
+							try {
+								s.addBike(bycicleFactory.getBycicle(BycicleElectrical.typeWritten));
+								totalBikeAdded++;
+								totalElectricalAdded++;
+							}
+							catch(BadInstantiationException | FactoryNullException e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
+							catch(AddBikeFailException e){} //Cela arrive, on continue !
+							
 						}
 					}
 				}
@@ -330,9 +337,13 @@ public class Network {
 			while(totalBikeAdded<nBikes) {
 				for (Station s : network.getAllStations()) {
 					if(totalBikeAdded<nBikes && Math.random()>0.5) {
-						try {s.addBike(bycicleFactory.getBycicle(BycicleFactory.getRandomBycicleType()));}
-						catch(Exception e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
-						totalBikeAdded++;
+						try {
+							s.addBike(bycicleFactory.getBycicle(BycicleFactory.getRandomBycicleType()));
+							totalBikeAdded++;
+						}
+						catch(BadInstantiationException | FactoryNullException e) {System.out.println("This is not supposed to happen !" + e.getMessage());}
+						catch(AddBikeFailException e){} //Cela arrive, on continue !
+						
 					}
 				}
 			}

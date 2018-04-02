@@ -49,7 +49,7 @@ public class User implements Runnable, Observer{
 	/**
 	 * GPS coordinates of the user
 	 */
-	private GPSLocation gpsLocation;
+	private GPSLocation gpsLocation = new GPSLocation();
 	/**
 	 * Card owned by the user. By default the user doesn't have any card (CardNone)
 	 */
@@ -279,6 +279,7 @@ public class User implements Runnable, Observer{
 			
 			this.isPlanningARide = true;
 		}
+		
 		catch(PlanningPathFailedException | BadInstantiationException e) {
 			throw new PlanningRideFailException(e);
 		}
@@ -300,9 +301,10 @@ public class User implements Runnable, Observer{
 		if (!isThereAnyBicycle || !stationStatus) {
 			try {
 				System.out.println("Departure unavailable, do you want to find another destination ?\r\n");
+				RunningTime.stopTime();
 				Scanner sc = new Scanner(System.in);
 				String reponse = sc.nextLine();
-				sc.close();
+				RunningTime.runTime();
 					if (reponse.equalsIgnoreCase("Yes")){
 						try {
 							planningRide(userLastInput.getLastWantedDestination(), userLastInput.getLastWantedPolicy(), userLastInput.getLastWantedBycicle());
@@ -320,9 +322,11 @@ public class User implements Runnable, Observer{
 					}
 			}
 			catch(UpdateRideFailException e) {
+				RunningTime.stopTime();
 				System.out.println("\r\nImpossible to Update the path ! Would you like to see the log ?\r\n");
 				Scanner sc2 = new Scanner(System.in);
 				String reponse2 = sc2.nextLine();
+				RunningTime.runTime();
 				if (reponse2.equalsIgnoreCase("Yes")){System.out.println(e.getMessage());}
 				else {System.out.println("No log printed\r\n");}
 				System.out.println("Try to update the ride again ?\r\n");
@@ -357,10 +361,11 @@ public class User implements Runnable, Observer{
 	public void updateDestination (boolean isThereFreeSlots,boolean stationStatus) {
 		if(!isThereFreeSlots || !stationStatus) {
 			try {
+				RunningTime.stopTime();
 				System.out.println("Destination unavailable, do you want to find another destination ?");
 				Scanner sc = new Scanner(System.in);
 				String reponse = sc.nextLine();
-				sc.close();
+				RunningTime.runTime();
 				if (reponse.equalsIgnoreCase("Yes")) {
 					if(this.getCurrentDepartureStation()==null) {
 						try {
@@ -395,14 +400,15 @@ public class User implements Runnable, Observer{
 				}
 			}
 			catch(UpdateRideFailException e) {
+				RunningTime.stopTime();
 				System.out.println("\r\nImpossible to Update the path ! Would you like to see the log ?\r\n");
 				Scanner sc2 = new Scanner(System.in);
 				String reponse2 = sc2.nextLine();
+				RunningTime.runTime();
 				if (reponse2.equalsIgnoreCase("Yes")){System.out.println(e.getMessage());}
 				else {System.out.println("No log printed\r\n");}
 				System.out.println("Try to update the ride again ?\r\n");
 				reponse2 = sc2.nextLine();
-				sc2.close();
 				if (reponse2.equalsIgnoreCase("Yes")){
 					this.updateDestination(isThereFreeSlots,stationStatus);
 				}
@@ -423,11 +429,11 @@ public class User implements Runnable, Observer{
 	public String toString() {
 		if (this.getBycicle() == null) {
 			return "name=" + name +  " " + "|" + " " + "id=" + id +" "+ "|" + " " + "Coordonnées GPS" + " "+ gpsLocation + " " + "|" + " " + "Carte d'abonnement" +" " + userCard
-					+ " "+ "|" + " " + "Currently not riding";
+					+ " "+ "|" + " " + "Currently not riding"+"\r\n";
 		}
 		else {
 			return "name=" + name +  " " + "|" + " " + "id=" + id +" "+ "|" + " " + "Coordonnées GPS" + gpsLocation + " " + "|" + " " + "Carte d'abonnement" + " " +userCard
-					+ " " + "|" + " " + "Currently riding with a bicycle of type" + " " + bycicle;
+					+ " " + "|" + " " + "Currently riding with a bicycle of type" + " " + bycicle+"\r\n";
 		}
 		
 	}

@@ -195,8 +195,8 @@ public class ParsingAndCalling {
 		networkName = args[1];
 		stationName = args[2];
 		bicycleType = args[3];
-		AbstractFactory bicycleFactory;
 		try {
+			AbstractFactory bicycleFactory;
 			bicycleFactory = FactoryProducer.getFactory("Bycicle");
 			Bycicle bycicle = bicycleFactory.getBycicle(bicycleType);
 				Network.searchStationByName(stationName, Network.searchNetworkByName(networkName)).addBike(bycicle);
@@ -256,23 +256,18 @@ public class ParsingAndCalling {
 	}
 	
 	public static void returnBikeWith3Param(String[] args) {
-		String userName; String stationName; int time = 0;
+		String userName; String stationName;
 		boolean argsParsable = true;
 		userName = args[1];
 		stationName = args[2];
-		try{time = Integer.parseInt(args[3]);}
-		catch(Exception e) {System.out.println("Error : time must be an integer"); argsParsable = false;}
-		if(argsParsable) {
-			try {
-				User user = Network.searchUserByNameAllNetworks(userName);
-				Station station = Network.searchStationByNameAllNetworks(stationName);
-				station.returnABike(user);
-			}
-			catch (UnexistingUserNameException | UnexistingStationNameException | ReturnBikeFailException | StationFullException e) {
-				System.out.println("Impossible to perform the returning operation because : "+e.getMessage());
-			} 
+		try {
+			User user = Network.searchUserByNameAllNetworks(userName);
+			Station station = Network.searchStationByNameAllNetworks(stationName);
+			station.returnABike(user);
 		}
-		else {System.out.println(TYPE_ERROR_MSG);}
+		catch (UnexistingUserNameException | UnexistingStationNameException | ReturnBikeFailException | StationFullException e) {
+			System.out.println("Impossible to perform the returning operation because : "+e.getMessage());
+		} 
 	}
 	
 	public static void displayStationWith2Param(String[] args) {
@@ -391,17 +386,18 @@ public class ParsingAndCalling {
 		catch(Exception e) {System.out.println("Error : timeOfOperation must be an integer"); argsParsable = false;}
 		try {numberOfParkingSlot = Integer.parseInt(args[5]);}
 		catch(Exception e) {System.out.println("Error : numberOfParkingSlot must be an integer"); argsParsable = false;}
-		try {
-			Network network = Network.searchNetworkByName(velibNetworkName);
-			User user = network.searchUserByName(userName);
-			Station station = Network.searchStationByName(stationName,network);
-			ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
-			station.getStationStatitics().addReturnOperation(user, new Time(timeOfOperation), slot);
+		if (argsParsable) {
+			try {
+				Network network = Network.searchNetworkByName(velibNetworkName);
+				User user = network.searchUserByName(userName);
+				Station station = Network.searchStationByName(stationName,network);
+				ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
+				station.getStationStatitics().addReturnOperation(user, new Time(timeOfOperation), slot);
+			}
+			catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationNameException e) {
+				System.out.println("Impossible to add the returning operation because : " + e.getMessage());
+			}	
 		}
-		catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationNameException e) {
-			System.out.println("Impossible to add the returning operation because : " + e.getMessage());
-		}
-		
 	}
 	
 	public static void runTimeWith0Param(String[] args) {
@@ -412,4 +408,13 @@ public class ParsingAndCalling {
 		RunningTime.stopTime();
 	}
 	
+	public static void updateTimeWith1Param(String[] args) {
+		int minutes = 0;
+		boolean argsParsable = true;
+		try {minutes = Integer.parseInt(args[1]);}
+		catch(Exception e) {System.out.println("Error : timeOfOperation must be an integer"); argsParsable = false;}
+		if (argsParsable) {
+			Time.updateTime(minutes);
+		}
+	}
 }

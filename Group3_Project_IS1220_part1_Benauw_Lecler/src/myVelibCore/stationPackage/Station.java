@@ -23,14 +23,17 @@ import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
 import myVelibCore.stationPackage.stationsStatitics.StationStatistics;
 import myVelibCore.userAndCardPackage.User;
 import myVelibCore.utilities.*;
+
 /**
  * This class defines the type Station
+ * 
  * @author Simon Lecler & Edouard Benauw
  *
  */
-public abstract class Station implements Observable{
+public abstract class Station implements Observable {
 	/**
 	 * The unique instance of StationSortedByType
+	 * 
 	 * @see Network
 	 */
 	private Network network;
@@ -54,12 +57,12 @@ public abstract class Station implements Observable{
 	 * GPS coordinates of the station
 	 */
 	private GPSLocation gpsLocation;
-	
-	private boolean status =true; //true if the station is online
+
+	private boolean status = true; // true if the station is online
 	/**
 	 * Credit given to the user card when returining a bike
 	 */
-	private int	creditGivenWhenReturning;
+	private int creditGivenWhenReturning;
 	/**
 	 * Instance of the class computing statistics for this station
 	 */
@@ -76,41 +79,46 @@ public abstract class Station implements Observable{
 	 * Parameter of the observer pattern for notifying users
 	 */
 	private boolean changed;
-	
-	
+
 	/**
 	 * Constructor of Station
 	 * 
 	 * @param gpsLocation
-	 * 		The GPS coordinates of the station
+	 *            The GPS coordinates of the station
 	 *
-	 *<p> It instantiates a StationBikeCounter and add this station to the StationSortedByType object. It instantiates also a list of parking slots.
-	 *</p>
-	 * @throws UnimplementedSubclassWithoutInputException 
-	 * @throws StationNameAlreadyUsedException 
+	 *            <p>
+	 *            It instantiates a StationBikeCounter and add this station to the
+	 *            StationSortedByType object. It instantiates also a list of parking
+	 *            slots.
+	 *            </p>
+	 * @throws UnimplementedSubclassWithoutInputException
+	 * @throws StationNameAlreadyUsedException
 	 */
-	
-	public Station(GPSLocation gpsLocation, Network network, String name) throws UnimplementedSubclassWithoutInputException, StationNameAlreadyUsedException {
+
+	public Station(GPSLocation gpsLocation, Network network, String name)
+			throws UnimplementedSubclassWithoutInputException, StationNameAlreadyUsedException {
 		super();
 		boolean isNameFree = true;
 		for (Station s : network.getAllStations()) {
-			if (s.getName().equalsIgnoreCase(name)) { 
+			if (s.getName().equalsIgnoreCase(name)) {
 				isNameFree = false;
 			}
 		}
 		if (isNameFree) {
 			this.name = name;
 			this.id = IDGenerator.getInstance().getNextID();
-			this.gpsLocation=gpsLocation;
-			this.network=network;
+			this.gpsLocation = gpsLocation;
+			this.network = network;
 			network.addStation(this);
 			this.stationBikeCounters = new StationBikeCounters();
 			this.slots = new ArrayList<ParkingSlot>();
+			this.status = true;
+		} else {
+			throw new StationNameAlreadyUsedException(name);
 		}
-		else {throw new StationNameAlreadyUsedException(name);}
-		
+
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -122,27 +130,27 @@ public abstract class Station implements Observable{
 	public boolean isOn() {
 		return this.status;
 	}
-	
+
 	public void turnOff() throws SlotStatusFailException {
-		this.status=false;
+		this.status = false;
 		for (ParkingSlot s : slots) {
 			s.stationIsTurnedOff();
 		}
-		this.changed=true;
+		this.changed = true;
 		this.notifyObserversDeparture();
 		this.notifyObserversDestination();
 	}
-	
+
 	public void turnOn() throws SlotStatusFailException {
-		this.status=true;
+		this.status = true;
 		for (ParkingSlot s : slots) {
 			s.stationIsTurnedOn();
 		}
-		this.changed=true;
+		this.changed = true;
 		this.notifyObserversDeparture();
 		this.notifyObserversDestination();
 	}
-	
+
 	/**
 	 * Add a parking slot to the station
 	 */
@@ -151,12 +159,11 @@ public abstract class Station implements Observable{
 		this.slots.add(newPS);
 		this.stationBikeCounters.increaseFreeSlots();
 	}
-	
-	
+
 	public Network getNetwork() {
 		return this.network;
 	}
-	
+
 	public ArrayList<ParkingSlot> getSlots() {
 		return slots;
 	}
@@ -164,217 +171,247 @@ public abstract class Station implements Observable{
 	public int getId() {
 		return id;
 	}
-	
+
 	public StationBikeCounters getStationBikeCounters() {
 		return stationBikeCounters;
 	}
-	
+
 	public GPSLocation getGpsLocation() {
 		return gpsLocation;
 	}
-	
-	
 
 	public StationStatistics getStationStatitics() {
 		return stationStatitics;
 	}
 
-
 	public void setStationStatitics(StationStatistics stationStatitics) {
 		this.stationStatitics = stationStatitics;
 	}
-	
+
 	public void addBike(Bycicle bycicle) throws AddBikeFailException {
 		this.stationBikeCounters.addBike(bycicle, getSlots());
 	}
 
-/**
- * This class  performs the renting operation. A user choose a type of bicycle. If a bicycle is available it is removed from the slot that become free. Else an error message is displayed. The users planning to use this station are notified if after renting there is no more bicycle
- * @param user
- * 		The user renting a bike
- * @param bycicleType
- * 		The type of bicycle wanted by the user
- * @throws RentBikeFailException 
- * @throws NoBycicleAvailableException 
- * 
- */
+	/**
+	 * This class performs the renting operation. A user choose a type of bicycle.
+	 * If a bicycle is available it is removed from the slot that become free. Else
+	 * an error message is displayed. The users planning to use this station are
+	 * notified if after renting there is no more bicycle
+	 * 
+	 * @param user
+	 *            The user renting a bike
+	 * @param bycicleType
+	 *            The type of bicycle wanted by the user
+	 * @throws RentBikeFailException
+	 * @throws NoBycicleAvailableException
+	 * 
+	 */
 	public void rentABike(User user, String bycicleType) throws RentBikeFailException {
-	
+
 		try {
 			if (!status) {
 				throw new StationOfflineException();
-				
-			}
-			else if (this.getStationBikeCounters().isThereAny(bycicleType) == false) {
+
+			} else if (this.getStationBikeCounters().isThereAny(bycicleType) == false) {
 				throw new NoBycicleAvailableException(bycicleType);
-				
-			}
-			else if (user.getNetwork()!=this.network) {
-				throw new UncompatibleNetworkException("User","Network");
-		
-			}
-			else if (user.getBycicle()!=null) {
+
+			} else if (user.getNetwork() != this.network) {
+				throw new UncompatibleNetworkException("User", "Network");
+
+			} else if (user.getBycicle() != null) {
 				throw new RentTwoBikeException();
-		
+
 			}
-			
-			else{
-				
+
+			else {
+
 				Time.lock.lock();
-				
+
 				StationRemovingBycicle rentingBycicle;
-				rentingBycicle = this.stationBikeCounters.removeBike(bycicleType,this.slots);
+				rentingBycicle = this.stationBikeCounters.removeBike(bycicleType, this.slots);
 				this.unregisterObserverDeparture(user);
 				user.isDeparted(rentingBycicle.getBycicle());
-				System.out.println("You've sucessfully rented a " + bycicleType + " bike from station id " + this.getId());
+				System.out.println(
+						"You've sucessfully rented a " + bycicleType + " bike from station id " + this.getId());
 				this.stationStatitics.addRentOperation(user, Time.getCurrentTime(), rentingBycicle.getSlot());
-				
-				if(this.stationBikeCounters.isThereAnyBycicle()==false) {
-					this.changed=true;
+
+				if (this.stationBikeCounters.isThereAnyBycicle() == false) {
+					this.changed = true;
 					this.notifyObserversDeparture();
-				
+
 				}
-			
+
 				Time.lock.unlock();
-				
+
 			}
-		}
-		catch(RemoveBikeFailException | RentTwoBikeException | UncompatibleNetworkException | StationOfflineException | NoBycicleAvailableException e) {
+		} catch (RemoveBikeFailException | RentTwoBikeException | UncompatibleNetworkException | StationOfflineException
+				| NoBycicleAvailableException e) {
 			throw new RentBikeFailException(e);
 		}
-		
+
 	}
+
 	/**
-	 * This class  performs the returning operation. If a slot is available the bike is put on it and the slot's status changes. Else an error message is displayed. This method displays the cost of the ride to the user. The users planning to use this station are notified if after returning there is no more available slots.
+	 * This class performs the returning operation. If a slot is available the bike
+	 * is put on it and the slot's status changes. Else an error message is
+	 * displayed. This method displays the cost of the ride to the user. The users
+	 * planning to use this station are notified if after returning there is no more
+	 * available slots.
+	 * 
 	 * @param user
-	 * 		The user who returns the bicycle
-	 * @throws ReturnBikeFailException 
-	 * @throws StationFullException 
+	 *            The user who returns the bicycle
+	 * @throws ReturnBikeFailException
+	 * @throws StationFullException
 	 */
 	public void returnABike(User user) throws ReturnBikeFailException, StationFullException {
-		
+
 		try {
 			if (!status) {
 				throw new StationOfflineException();
-			}
-			else if(this.getStationBikeCounters().isThereFreeSlots() == false) {
+			} else if (this.getStationBikeCounters().isThereFreeSlots() == false) {
 				throw new StationFullException();
-			}
-			else if (user.getNetwork()!=this.network) {
-				throw new UncompatibleNetworkException("User","Network");
-			}
-			else if (user.getBycicle()==null) {
+			} else if (user.getNetwork() != this.network) {
+				throw new UncompatibleNetworkException("User", "Network");
+			} else if (user.getBycicle() == null) {
 				throw new NoBikeToReturnException();
-			}
-			else {
+			} else {
 				Time.lock.lock();
 				ParkingSlot slot = this.stationBikeCounters.addBike(user.getBycicle(), slots);
 				int cost = user.computeMyRideCost(user.getLastRentTime().timeDifferenceBetween(Time.getCurrentTime()));
-				System.out.println("Duration of your ride : " + user.getLastRentTime().timeDifferenceBetween(Time.getCurrentTime()));
-				try{user.getUserCard().increaseBalance(creditGivenWhenReturning);
-					System.out.println("The credit time balance has been increased by : " + creditGivenWhenReturning + "The total credit time earned is :" + user.getUserCard().getBalance());
-					}
-				catch(CardNoneNoBalanceException e) {System.out.println("No credit time can be given without a card");}//Nothing to do ?
+				System.out.println("Duration of your ride : "
+						+ user.getLastRentTime().timeDifferenceBetween(Time.getCurrentTime()));
+				try {
+					user.getUserCard().increaseBalance(creditGivenWhenReturning);
+					System.out.println("The credit time balance has been increased by : " + creditGivenWhenReturning
+							+ "The total credit time earned is :" + user.getUserCard().getBalance());
+				} catch (CardNoneNoBalanceException e) {
+					System.out.println("No credit time can be given without a card");
+				} // Nothing to do ?
 				System.out.println("You pay :" + cost + "euros");
 				this.stationStatitics.addReturnOperation(user, Time.getCurrentTime(), slot);
 				this.unregisterObserverDestination(user);
 				user.isArrived(cost);
 				System.out.println("You've sucessfully returned your bike to station id " + this.getId());
-				if(this.stationBikeCounters.isThereFreeSlots()==false) {
-					this.changed=true;
+				if (this.stationBikeCounters.isThereFreeSlots() == false) {
+					this.changed = true;
 					this.notifyObserversDestination();
 				}
 				Time.lock.unlock();
-		
+
 			}
-		}
-		catch(NoBikeToReturnException | AddBikeFailException | ComputeCostImpossibleException | UncompatibleNetworkException | StationOfflineException | StationFullException e) {
+		} catch (NoBikeToReturnException | AddBikeFailException | ComputeCostImpossibleException
+				| UncompatibleNetworkException | StationOfflineException | StationFullException e) {
 			throw new ReturnBikeFailException(e);
 		}
-		
+
 	}
+
 	/**
 	 * This method register the users planning to rent a bike in this station
+	 * 
 	 * @param observer
-	 * 		The user that is riding
+	 *            The user that is riding
 	 */
 	public void registerObserverDeparture(User observer) {
 		observersDeparture.add(observer);
 	}
+
 	/**
-	 * This method register the users who have rented their bike or changed their plan
+	 * This method register the users who have rented their bike or changed their
+	 * plan
+	 * 
 	 * @param observer
-	 * 		The user that is riding
+	 *            The user that is riding
 	 */
 	public void unregisterObserverDeparture(User observer) {
 		observersDeparture.remove(observer);
 	}
+
 	/**
 	 * This method register the users planning to return a bike in this station
+	 * 
 	 * @param observer
-	 * 		The user that is riding
+	 *            The user that is riding
 	 */
 	public void registerObserverDestination(User observer) {
 		observersDestination.add(observer);
 	}
+
 	/**
-	 * This method register the users who have returned their bike or changed their plan
+	 * This method register the users who have returned their bike or changed their
+	 * plan
+	 * 
 	 * @param observer
-	 * 		The user that is riding
+	 *            The user that is riding
 	 */
 	public void unregisterObserverDestination(User observer) {
 		observersDestination.remove(observer);
 	}
+
 	/**
-	 * Notifies the users that want to rent a bike in this station, if the station is no more available
-	 * @throws BadInstantiationException 
+	 * Notifies the users that want to rent a bike in this station, if the station
+	 * is no more available
+	 * 
+	 * @throws BadInstantiationException
 	 */
-	public void notifyObserversDeparture()  {
+	public void notifyObserversDeparture() {
 		if (this.changed) {
 			for (User ob : this.observersDeparture) {
 				this.getStationBikeCounters().isThereAnyBycicle();
-				ob.updateDeparture(this.getStationBikeCounters().isThereAnyBycicle(),this.status);
+				ob.updateDeparture(this.getStationBikeCounters().isThereAnyBycicle(), this.status);
 				this.changed = false;
 			}
 		}
 	}
+
 	/**
-	 * Notifies the users that want to return a bike in this station, if the station is no more available
-	 * @throws BadInstantiationException 
+	 * Notifies the users that want to return a bike in this station, if the station
+	 * is no more available
+	 * 
+	 * @throws BadInstantiationException
 	 */
 	public void notifyObserversDestination() {
 		if (this.changed) {
 			for (User ob : observersDestination) {
-				ob.updateDestination(this.getStationBikeCounters().isThereFreeSlots(),this.status);
+				ob.updateDestination(this.getStationBikeCounters().isThereFreeSlots(), this.status);
 				this.changed = false;
 			}
 		}
 	}
+
 	/**
 	 * 
 	 * @param beginningTime
-	 * 		Beginning time of the interval during which we want to compute statistics
+	 *            Beginning time of the interval during which we want to compute
+	 *            statistics
 	 * @param endingTime
-	 *		Ending time of the interval during which we want to compute statistics
+	 *            Ending time of the interval during which we want to compute
+	 *            statistics
 	 * @return The average occupation rate of this station
 	 */
 	public double computeAverageOccupationRate(Time beginningTime, Time endingTime) {
 		return this.stationStatitics.computeAverageOccupationRate(this.slots, beginningTime, endingTime);
 	}
 
-	
-	
 	public void displayStatistics() {
-		System.out.println("Total number of operations on the station : " +this.stationStatitics.getAllOperationsNumber());
-		System.out.println("Total number of renting operations on the station : " +this.stationStatitics.getRentOperationsNumber());
-		System.out.println("Total number of returning operations on the station : " +this.stationStatitics.getReturnOperationsNumber());
-		System.out.println("Average Occupation Rate on this station : " +this.computeAverageOccupationRate(Time.getOriginalTime(), Time.getCurrentTime()));
+		System.out.println(
+				"Total number of operations on the station : " + this.stationStatitics.getAllOperationsNumber());
+		System.out.println("Total number of renting operations on the station : "
+				+ this.stationStatitics.getRentOperationsNumber());
+		System.out.println("Total number of returning operations on the station : "
+				+ this.stationStatitics.getReturnOperationsNumber());
+		System.out.println("Average Occupation Rate on this station : "
+				+ this.computeAverageOccupationRate(Time.getOriginalTime(), Time.getCurrentTime()));
 	}
-	
+
 	public void displayType() {
-		if (this instanceof StationStandard) {System.out.println("Type of station : Standard");}
-		else if (this instanceof StationPlus) {System.out.println("Type of station : Plus");}
-		else {System.out.println("Type of station : not implemented !!!");}
+		if (this instanceof StationStandard) {
+			System.out.println("Type of station : Standard");
+		} else if (this instanceof StationPlus) {
+			System.out.println("Type of station : Plus");
+		} else {
+			System.out.println("Type of station : not implemented !!!");
+		}
 	}
 
 	public void display() {
@@ -386,7 +423,7 @@ public abstract class Station implements Observable{
 			s.display();
 		}
 	}
-	
+
 	public void displayOnlyName() {
 		System.out.println("Station ID : " + this.id);
 		System.out.println("Is online" + this.status);
@@ -394,5 +431,3 @@ public abstract class Station implements Observable{
 	}
 
 }
-	
-

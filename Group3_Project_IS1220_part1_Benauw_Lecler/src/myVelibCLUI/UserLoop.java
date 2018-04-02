@@ -112,7 +112,7 @@ public class UserLoop {
    
    public static final String PLANRIDE_COMMAND = "planRide";
   
-   public static final int NBR1_PARAM_PLANRIDE = 3;
+   public static final int NBR1_PARAM_PLANRIDE = 6;
    public static final String DESCRIPTION1_PLANRIDE =
 		   "	planRide <velibNetworkName> <userName> <policy> <destinationLatitude> <destinationLongitude> <bicycleType> \r\n" +
 		   "	to plan a ride for a given user in a given network following a specific planning policy\r\n" +
@@ -162,6 +162,14 @@ public class UserLoop {
    
    public static final String DESCRIPTION_STOPTIME = 
 		   "stopTime : used to stop the time simulation";
+   //Update Time Command
+   public static final String UPDATETIME_COMMAND = "updateTime";
+   public static final int NBR1_PARAM_UPDATETIME = 1;
+   public static final String DESCRIPTION1_UPDATETIME =
+		   "	updateTime <minutes> : update the time by a given number of minutes \r\n";
+   
+   public static final String DESCRIPTION_UPDATETIME= 
+		   "updateTime : used to update time"+"\r\n" + DESCRIPTION1_UPDATETIME +"\r\n";
    
    //List Network Command 
    public static final String LISTNETWORK_COMMAND = "listNetwork";
@@ -186,10 +194,10 @@ public class UserLoop {
    
    public static final String RETURNBIKE_COMMAND = "returnBike";
 
-   public static final int NBR1_PARAM_RETURNBIKE = 3;
+   public static final int NBR1_PARAM_RETURNBIKE = 2;
    public static final String DESCRIPTION1_RETURNBIKE =
-		   "	returnBike <userName, stationName, time> : to let the user userName returning a bike\r\n" +
-		   "	to station stationName at a given instant of time time (if no parking bay is available\r\n"+
+		   "	returnBike <userName, stationName> : to let the user userName returning a bike\r\n" +
+		   "	to station stationName at the present instant (if no parking bay is available\r\n"+
 		   "	should behave accordingly). This command should display the cost of the rent\r\n";
    
    public static final String DESCRIPTION_RETURNBIKE = 
@@ -292,7 +300,7 @@ public class UserLoop {
    
    public static final String INCORRECT_PARAMETERS_NUMBER_MSG = "You've entered the wrong number of parameters for the command.\r\n"+
 		   														"Type help if you need assistance.\r\n"+"\n";
-   public static final String HELP_MSG = DESCRIPTION_HELP + DESCRIPTION_EXIT + DESCRIPTION_READFILE + DESCRIPTION_WRITETOFILE + DESCRIPTION_SETUP +DESCRITION_DEFAULT_SETUP+ DESCRIPTION_ADDSTATION+DESCRIPTION_ADDBICYCLE+DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY + DESCRIPTION_RUNTIME + DESCRIPTION_STOPTIME + DESCRIPTION_PLANRIDE + DESCRIPTION_LISTNETWORK + DESCRIPTION_ADDRENTOPERATION +DESCRIPTION_ADDRETURNOPERATION;
+   public static final String HELP_MSG = DESCRIPTION_HELP + DESCRIPTION_EXIT + DESCRIPTION_READFILE + DESCRIPTION_WRITETOFILE + DESCRIPTION_SETUP +DESCRITION_DEFAULT_SETUP+ DESCRIPTION_ADDSTATION+DESCRIPTION_ADDBICYCLE+DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY + DESCRIPTION_RUNTIME + DESCRIPTION_STOPTIME + DESCRIPTION_PLANRIDE + DESCRIPTION_LISTNETWORK + DESCRIPTION_ADDRENTOPERATION +DESCRIPTION_ADDRETURNOPERATION + DESCRIPTION_UPDATETIME;
    public static final String UNRECOGNIZED_COMMAND_MSG ="You entered a unrecognized command ! Remember you can type help for help ;)";
    
    public static final String READING_FILE_BEGINNING_MSG = "Beginning to read command from following file :";
@@ -377,7 +385,7 @@ public class UserLoop {
         		 String fileName = inputForParsing[1];
         		 File file = new File(fileName);
         		 txtFromFile = new Scanner(file);
-        		 System.out.print(READING_FILE_BEGINNING_MSG);
+        		 System.out.println(READING_FILE_BEGINNING_MSG +" "+ fileName);
         		 listenToUser = false;
         		 listenToAFile = true;
         		 }
@@ -538,6 +546,12 @@ public class UserLoop {
          else if (command.equalsIgnoreCase(ADDRETURNOPERATION_COMMAND)) {
         	 if(numberOfParametersEntered==NBR1_PARAM_ADDRETURNOPERATION) {
         	 ParsingAndCalling.addReturnOperationWith5Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(UPDATETIME_COMMAND)) {
+        	 if(numberOfParametersEntered==NBR1_PARAM_UPDATETIME) {
+        	 ParsingAndCalling.updateTimeWith1Param(inputForParsing);
         	 }
         	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }

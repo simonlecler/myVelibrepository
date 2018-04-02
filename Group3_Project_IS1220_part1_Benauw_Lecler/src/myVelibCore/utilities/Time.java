@@ -144,9 +144,14 @@ public class Time  {
 		//	Time.setCurrentTime(currentTime+1);
 			//notifyAll();
 //		}
-	public void updateTime() {
+	public static void updateTime() {
 		Time.setCurrentTime(currentTime+1);	
-		
+	}
+	
+	public static void updateTime(int minutes) {
+		for(int i=1;i<minutes;i++) {
+			Time.updateTime();
+		}
 	}
 	
 		

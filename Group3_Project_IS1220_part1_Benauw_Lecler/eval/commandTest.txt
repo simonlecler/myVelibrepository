@@ -1,2 +1,0 @@
-setup networkPrime
-addUser Edouard PasDeCarte networkBis

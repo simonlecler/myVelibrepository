@@ -34,6 +34,7 @@ public class FastestPath implements PlanningPolicy {
 	 */
 	 public Station[] chooseStations(GPSLocation start, GPSLocation destination, String bycicleType,Network network) throws PlanningPathFailedException{
 	 try {
+		 
 		double shortestTime = 100000000;
 		Station startingStation = null;
 		Station destinationStation = null;
@@ -52,7 +53,7 @@ public class FastestPath implements PlanningPolicy {
 		if (availableDestinationStations.size()==0 || (availableDestinationStations.size()==1 && availableStartingStations.size()==1 && availableDestinationStations.get(0)==availableStartingStations.get(0))) {throw new NoDestinationStationAvailableException();}	
 		for(Station stationDepart : availableStartingStations) {
 			for(Station stationArrivee : availableDestinationStations) {
-					double currentTime = ((start.getDistance(stationDepart.getGpsLocation()))/BycicleSpeeds.getSpeed("Foot")) + ((stationDepart.getGpsLocation().getDistance(stationArrivee.getGpsLocation()))/BycicleSpeeds.getSpeed(bycicleType))+ ((destination.getDistance(stationArrivee.getGpsLocation()))/BycicleSpeeds.getSpeed("Foot"));
+					double currentTime = ((start.getDistance(stationDepart.getGpsLocation()))/BycicleSpeeds.getSpeed("Foot"))+ ((stationDepart.getGpsLocation().getDistance(stationArrivee.getGpsLocation()))/BycicleSpeeds.getSpeed(bycicleType))+ ((destination.getDistance(stationArrivee.getGpsLocation()))/BycicleSpeeds.getSpeed("Foot"));
 					if (currentTime < shortestTime) {
 						shortestTime = currentTime;
 						startingStation = stationDepart;
