@@ -14,8 +14,10 @@ import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.NotEnoughSlotsException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UnexistingNetworkNameException;
 import myVelibCore.exceptions.UnexistingStationIDException;
+import myVelibCore.exceptions.UnexistingStationNameException;
 import myVelibCore.exceptions.UnexistingUserIDException;
 import myVelibCore.exceptions.UnexistingUserNameException;
 import myVelibCore.exceptions.UnimplementedSubclassWithInputException;
@@ -57,7 +59,8 @@ public class Network {
 	 */
 	private ArrayList<User> allUsers = new ArrayList<User>();
 	
-
+	private double sideArea;
+	
 	/**
 	 * 
 	 * @return the Id of the network
@@ -85,9 +88,33 @@ public class Network {
 		System.out.println("\n");
 	}
 	/**
-	 * Constructor
+	 * Constructor with 2 parameters
 	 * @param name
 	 *      Name of the network
+	 * @param sideArea
+	 * 		Size of the Area's side of the network
+	 * @throws NetworkNameAlreadyUsedException
+	 */
+	public Network(String name, double sideArea) throws NetworkNameAlreadyUsedException {
+		boolean isNameFree = true;
+		for (Network n : allNetworks) {
+			if (n.getName().equalsIgnoreCase(name)) {
+				isNameFree = false;
+			}
+		}
+		if (isNameFree) {
+			this.name=name;
+			this.id = IDGenerator.getInstance().getNextID();
+			allNetworks.add(this);
+			this.sideArea = sideArea;
+		}
+		else {throw new NetworkNameAlreadyUsedException(name);}
+	}
+	
+	/**
+	 * Constructor with one parameter
+	 * @param name
+	 * 		Name of the network
 	 * @throws NetworkNameAlreadyUsedException
 	 */
 	public Network(String name) throws NetworkNameAlreadyUsedException {
@@ -101,6 +128,7 @@ public class Network {
 			this.name=name;
 			this.id = IDGenerator.getInstance().getNextID();
 			allNetworks.add(this);
+			
 		}
 		else {throw new NetworkNameAlreadyUsedException(name);}
 	}
@@ -116,7 +144,7 @@ public class Network {
 	 */
 	public static void setupNetwork(String name, int nStations, int nSlots, double sideArea, int nBikes) throws NetworkNameAlreadyUsedException, NotEnoughSlotsException {
 		if (nBikes>nSlots) {throw new NotEnoughSlotsException(nBikes,nSlots);}
-		Network network = new Network(name);
+		Network network = new Network(name, sideArea);
 		double maxLat = GPSLocation.getMaxLatitude(sideArea);
 		double maxLong = GPSLocation.getMaxLongitude(sideArea);
 		AbstractFactory stationFactory = null;
@@ -124,8 +152,8 @@ public class Network {
 		try {stationFactory = FactoryProducer.getFactory("Station");} 
 		catch (BadInstantiationException e) {System.out.println("This is not supposed to happen " + e.getMessage());}
 		for (int i=1; i<=nStations; i++) {
-			try {stationFactory.getStation(StationFactory.getRandomStationType(), new GPSLocation(Math.random()*maxLat,Math.random()*maxLong), network);}
-			catch (BadInstantiationException | FactoryNullException e) {System.out.println("This is not supposed to happen ! "+e.getMessage());}
+			try {stationFactory.getStation(StationFactory.getRandomStationType(), new GPSLocation(Math.random()*maxLat,Math.random()*maxLong), network, "station"+i);}
+			catch (BadInstantiationException | FactoryNullException | StationNameAlreadyUsedException e) {System.out.println("This is not supposed to happen ! "+e.getMessage());}
 		//Adding slots
 			for (Station s : network.getAllStations()) {
 				for (i=1; i<=nSlots; i++) {
@@ -150,7 +178,7 @@ public class Network {
 	public static void setupNetworkWithDefinedBycicle(String name, int nStations, int nSlots, double sideArea, int nBikesMechanical, int nBikesElectrical) throws NetworkNameAlreadyUsedException, NotEnoughSlotsException {
 		int nBikes = nBikesMechanical+nBikesElectrical;
 		if (nBikes>nSlots) {throw new NotEnoughSlotsException(nBikes,nSlots);}
-		Network network = new Network(name);
+		Network network = new Network(name, sideArea);
 		double maxLat = GPSLocation.getMaxLatitude(sideArea);
 		double maxLong = GPSLocation.getMaxLongitude(sideArea);
 		AbstractFactory stationFactory = null;
@@ -158,8 +186,8 @@ public class Network {
 		try {stationFactory = FactoryProducer.getFactory("Station");} 
 		catch (BadInstantiationException e) {System.out.println("This is not supposed to happen " + e.getMessage());}
 		for (int i=1; i<=nStations; i++) {
-			try {stationFactory.getStation(StationFactory.getRandomStationType(), new GPSLocation(Math.random()*maxLat,Math.random()*maxLong), network);}
-			catch (BadInstantiationException | FactoryNullException e) {System.out.println("This is not supposed to happen ! "+e.getMessage());}
+			try {stationFactory.getStation(StationFactory.getRandomStationType(), new GPSLocation(Math.random()*maxLat,Math.random()*maxLong), network, "station"+i);}
+			catch (BadInstantiationException | FactoryNullException | StationNameAlreadyUsedException e) {System.out.println("This is not supposed to happen ! "+e.getMessage());}
 		//Adding slots
 			for (Station s : network.getAllStations()) {
 				for (i=1; i<=nSlots; i++) {
@@ -325,6 +353,24 @@ public class Network {
 	}
 	/**
 	 * 
+	 * @param name
+	 * 		Name of the station
+	 * @param network
+	 * 		Network of the station
+	 * @return The station called "name"
+	 * @throws UnexistingStationNameException
+	 */
+	public static Station searchStationByName(String name, Network network) throws  UnexistingStationNameException {
+		for (Station s : network.getAllStations()) {
+			if(s.getName().equalsIgnoreCase(name)) {
+				return s;
+			}
+		}
+		throw new UnexistingStationNameException(name);
+
+	}
+	/**
+	 * 
 	 * @param id
 	 * @return the station of this id
 	 * @throws UnexistingStationIDException
@@ -396,6 +442,14 @@ public class Network {
 		allStations.sort(new StationComparatorByMostUsed());
 	}
 
+	
+	public double getSideArea() {
+		return sideArea;
+	}
+
+	public void setSideArea(double sideArea) {
+		this.sideArea = sideArea;
+	}
 
 	public static ArrayList<Network> getAllNetworks() {
 		return allNetworks;

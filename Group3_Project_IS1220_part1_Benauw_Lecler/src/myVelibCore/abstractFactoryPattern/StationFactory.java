@@ -3,6 +3,7 @@ package myVelibCore.abstractFactoryPattern;
 import myVelibCore.byciclePackage.Bycicle;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.Station;
@@ -38,15 +39,16 @@ public class StationFactory extends AbstractFactory{
 	 * @param choice of type String
 	 * <p>The type of station wanted 
 	 * @return Instance of the desired type of station
+	 * @throws StationNameAlreadyUsedException 
 	 */
 	@Override
-	public Station getStation(String stationType, GPSLocation gpsLocation, Network network) throws BadInstantiationException{
+	public Station getStation(String stationType, GPSLocation gpsLocation, Network network, String name) throws BadInstantiationException, StationNameAlreadyUsedException{
 		if (stationType.equalsIgnoreCase("Standard")){
-			try {return new StationStandard(gpsLocation,network);} 
+			try {return new StationStandard(gpsLocation,network, name);} 
 			catch (UnimplementedSubclassWithoutInputException e) {System.out.println("NOT SUPPOSED TO HAPPEN" + e.getMessage());}
 		}
 		if (stationType.equalsIgnoreCase("Plus")){
-			try{return new StationPlus(gpsLocation,network);}
+			try{return new StationPlus(gpsLocation,network, name);}
 			catch (UnimplementedSubclassWithoutInputException e) {System.out.println("NOT SUPPOSED TO HAPPEN" + e.getMessage());}
 		}
 		throw new BadInstantiationException(stationType,"Station");
@@ -59,6 +61,10 @@ public class StationFactory extends AbstractFactory{
 	@Override
 	public Card getCard(String CardType, int balance) throws FactoryNullException {
 		throw new FactoryNullException("Station","Card");
+	}
+	@Override
+	public Network getNetwork(String name, double sideArea) throws FactoryNullException {
+		throw new FactoryNullException("Station","Network");
 	}
 	@Override
 	public Network getNetwork(String name) throws FactoryNullException {

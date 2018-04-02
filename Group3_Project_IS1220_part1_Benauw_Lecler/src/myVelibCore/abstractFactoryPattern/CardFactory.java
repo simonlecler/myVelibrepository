@@ -27,7 +27,7 @@ public class CardFactory extends AbstractFactory{
 		
 	}
 	@Override
-	public Station getStation(String stationType, GPSLocation gpsLocation, Network network) throws FactoryNullException {
+	public Station getStation(String stationType, GPSLocation gpsLocation, Network network, String name) throws FactoryNullException {
 		throw new FactoryNullException("Card","Station");
 	}
 	/**
@@ -64,6 +64,10 @@ public class CardFactory extends AbstractFactory{
 		else {throw new BadInstantiationException(CardType,"Card");}
 	}
 	
+	@Override
+	public Network getNetwork(String name, double sideArea) throws FactoryNullException {
+		throw new FactoryNullException("Card","Network");
+	}
 	@Override
 	public Network getNetwork(String name) throws FactoryNullException {
 		throw new FactoryNullException("Card","Network");

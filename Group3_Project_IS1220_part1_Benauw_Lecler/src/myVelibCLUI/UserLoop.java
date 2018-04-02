@@ -64,6 +64,19 @@ public class UserLoop {
    
    public static final String DESCRIPTION_SETUP = 
 		   "setup : used to create a myVelib network\r\n"+"\n" + DESCRIPTION1_SETUP + DESCRIPTION2_SETUP+DESCRIPTION3_SETUP+"\n";
+  
+   //default setup command
+   public static final String DEFAULT_SETUP_COMMAND = "default_setup";
+   public static final int NBR_PARAM_DEFAULT_SETUP = 2;
+   public static final String DESCRITION_DEFAULT_SETUP = 
+		   "default_setup <name> <sideArea>: to create a myVelib net-\r\n" +
+		   "default setup : creates only a network with a name and the size of the aera's side\r\n";
+   //addStation Command
+   public static final String ADDSTATION_COMMAND = "addStation";
+   public static final int NBR_PARAM_ADDSTATION = 6;
+   public static final String DESCRIPTION_ADDSTARION = 
+		   "	addStation <networkName> <stationName> <stationType> <latitude> <longitude> <nslots> : to add a station with name stationName in the network with name networkName\r\n"+
+		   "	with number of slots : nslots and located in GPSCoordinates (latitude, longitude)\r\n";
    
    //addUser Command
    
@@ -401,7 +414,18 @@ public class UserLoop {
         	}
         	else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }
-         
+         else if (command.equalsIgnoreCase(DEFAULT_SETUP_COMMAND)) {
+        	 if(numberOfParametersEntered == NBR_PARAM_DEFAULT_SETUP) {
+        		 ParsingAndCalling.defaultSetUpWith2Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);} 
+         }
+         else if (command.equalsIgnoreCase(ADDSTATION_COMMAND)) {
+        	 if(numberOfParametersEntered == NBR_PARAM_ADDSTATION) {
+        		 ParsingAndCalling.addStationWith6Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
          else if (command.equalsIgnoreCase(ADDUSER_COMMAND)) {
          	if(numberOfParametersEntered==NBR1_PARAM_ADDUSER) {
          		ParsingAndCalling.addUserWith3Param(inputForParsing);;

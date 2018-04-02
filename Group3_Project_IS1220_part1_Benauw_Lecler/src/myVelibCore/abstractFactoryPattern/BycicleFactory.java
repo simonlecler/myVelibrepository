@@ -48,7 +48,7 @@ public class BycicleFactory extends AbstractFactory{
 		
 	
 	@Override
-	public Station getStation(String stationType, GPSLocation gpsLocation, Network network) throws FactoryNullException {
+	public Station getStation(String stationType, GPSLocation gpsLocation, Network network, String name) throws FactoryNullException {
 		throw new FactoryNullException("Bycicle","Station");
 	}
 
@@ -61,8 +61,13 @@ public class BycicleFactory extends AbstractFactory{
 		throw new FactoryNullException("Bycicle","Card");
 	}
 	@Override
+	public Network getNetwork(String name, double sideArea) throws FactoryNullException {
+		throw new FactoryNullException("Bycicle","Network");
+	}
+	@Override
 	public Network getNetwork(String name) throws FactoryNullException {
 		throw new FactoryNullException("Bycicle","Network");
 	}
+	
 
 }

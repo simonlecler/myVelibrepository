@@ -20,7 +20,7 @@ public class NetworkFactory extends AbstractFactory{
 		throw new FactoryNullException("Network","Bycicle");
 	}
 	@Override
-	public Station getStation(String stationType, GPSLocation gpsLocation, Network network) throws FactoryNullException {
+	public Station getStation(String stationType, GPSLocation gpsLocation, Network network, String name) throws FactoryNullException {
 		throw new FactoryNullException("Network","Station");
 	}
 
@@ -31,6 +31,10 @@ public class NetworkFactory extends AbstractFactory{
 	@Override
 	public Card getCard(String CardType, int balance) throws FactoryNullException {
 		throw new FactoryNullException("Network","Card");
+	}
+	@Override
+	public Network getNetwork(String name, double sideArea) throws NetworkNameAlreadyUsedException {
+		return new Network(name, sideArea);
 	}
 	@Override
 	public Network getNetwork(String name) throws NetworkNameAlreadyUsedException {

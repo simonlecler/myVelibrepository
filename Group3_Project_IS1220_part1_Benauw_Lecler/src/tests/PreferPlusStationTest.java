@@ -15,6 +15,7 @@ import myVelibCore.exceptions.NoDestinationStationAvailableException;
 import myVelibCore.exceptions.NoStartingStationAvailableException;
 import myVelibCore.exceptions.PlanningPathFailedException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.planningPolicyPackage.PreferPlusStation;
 import myVelibCore.stationPackage.ParkingSlot;
 import myVelibCore.stationPackage.Station;
@@ -24,15 +25,15 @@ import myVelibCore.utilities.GPSLocation;
 class PreferPlusStationTest {
 
 	@Test
-	void whenClosestDestinationStationIsPlusThenChooseIt() throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException{
+	void whenClosestDestinationStationIsPlusThenChooseIt() throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(0,3),network1);
-		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network1);
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1,"stationPlus1");
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(0,3),network1,"stationStandard1");
+		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network1,"stationPlus2");
 
 
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
@@ -61,15 +62,15 @@ class PreferPlusStationTest {
 	}
 	
 	@Test
-	void whenClosestDestinationStationIsNotPlusAndPlusIsTooFarThenChooseStandard() throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException{
+	void whenClosestDestinationStationIsNotPlusAndPlusIsTooFarThenChooseStandard() throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork1");
-		Station stationPlus3 = stationFactory.getStation("Plus", new GPSLocation(106,106),network1);
-		Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(100,103),network1);
-		Station stationPlus4 = stationFactory.getStation("Plus", new GPSLocation(120,120),network1);
+		Station stationPlus3 = stationFactory.getStation("Plus", new GPSLocation(106,106),network1,"stationPlus3");
+		Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(100,103),network1,"stationStandard3");
+		Station stationPlus4 = stationFactory.getStation("Plus", new GPSLocation(120,120),network1,"stationPlus4");
 
 
 		ParkingSlot slot1 = new ParkingSlot(stationPlus3);
@@ -99,16 +100,16 @@ class PreferPlusStationTest {
 	
 	@Test
 	
-	void whenClosestDestinationStationIsNotPlusThenChooseAPlusIfNotTooFar()throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void whenClosestDestinationStationIsNotPlusThenChooseAPlusIfNotTooFar()throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork2");
-		Station stationPlus5 = stationFactory.getStation("Plus", new GPSLocation(202.1,202),network1);
-		Station stationStandard4 = stationFactory.getStation("Standard", new GPSLocation(202,202),network1);
-		Station stationPlus6 = stationFactory.getStation("Plus", new GPSLocation(220,220),network1);
-		Station stationStandard5 = stationFactory.getStation("Standard", new GPSLocation(210,220),network1);
+		Station stationPlus5 = stationFactory.getStation("Plus", new GPSLocation(202.1,202),network1,"stationPlus5");
+		Station stationStandard4 = stationFactory.getStation("Standard", new GPSLocation(202,202),network1,"stationStandard4");
+		Station stationPlus6 = stationFactory.getStation("Plus", new GPSLocation(220,220),network1,"stationPlus6");
+		Station stationStandard5 = stationFactory.getStation("Standard", new GPSLocation(210,220),network1,"stationStandard5");
 		ParkingSlot slot1 = new ParkingSlot(stationPlus5);
 		ParkingSlot slot2 = new ParkingSlot(stationPlus6);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard4);

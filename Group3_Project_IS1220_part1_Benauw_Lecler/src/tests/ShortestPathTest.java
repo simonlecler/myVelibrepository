@@ -18,6 +18,7 @@ import myVelibCore.exceptions.NoDestinationStationAvailableException;
 import myVelibCore.exceptions.NoStartingStationAvailableException;
 import myVelibCore.exceptions.PlanningPathFailedException;
 import myVelibCore.exceptions.RecalculatePathFailedException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.planningPolicyPackage.ShortestPath;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
@@ -34,11 +35,11 @@ class ShortestPathTest {
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,1),network1);
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(5,3),network1);
-		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network1);
-		Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(10,20),network1);
-		Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(3,5),network1);
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,1),network1,"stationPlus1");
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(5,3),network1,"stationStandard1");
+		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network1,"stationPlus2");
+		Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(10,20),network1,"stationStandard2");
+		Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(3,5),network1,"stationStandard3");
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
 		ParkingSlot slot2 = new ParkingSlot(stationPlus2);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard1);
@@ -71,17 +72,17 @@ class ShortestPathTest {
 	}
 
 	@Test
-	void testRecalculateWhenRiding()throws BadInstantiationException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void testRecalculateWhenRiding()throws BadInstantiationException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network2 = NetworkFactory.getNetwork("testNetwork2");
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network2);
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(3,3),network2);
-		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network2);
-		Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(10,20),network2);
-		Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(3,5),network2);
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network2,"bla");
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(3,3),network2,"blabla");
+		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network2,"blablabla");
+		Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(10,20),network2,"ablabl");
+		Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(3,5),network2,"bakbak");
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
 		ParkingSlot slot2 = new ParkingSlot(stationPlus2);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard1);

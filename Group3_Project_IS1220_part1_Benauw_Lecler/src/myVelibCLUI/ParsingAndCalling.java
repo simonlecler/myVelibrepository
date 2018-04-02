@@ -2,6 +2,8 @@ package myVelibCLUI;
 
 import myVelibCore.abstractFactoryPattern.AbstractFactory;
 import myVelibCore.abstractFactoryPattern.FactoryProducer;
+import myVelibCore.byciclePackage.Bycicle;
+import myVelibCore.exceptions.AddBikeFailException;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
@@ -11,8 +13,10 @@ import myVelibCore.exceptions.RentBikeFailException;
 import myVelibCore.exceptions.ReturnBikeFailException;
 import myVelibCore.exceptions.SlotStatusFailException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UnexistingNetworkNameException;
 import myVelibCore.exceptions.UnexistingStationIDException;
+import myVelibCore.exceptions.UnexistingStationNameException;
 import myVelibCore.exceptions.UnexistingUserIDException;
 import myVelibCore.exceptions.UnexistingUserNameException;
 import myVelibCore.exceptions.UserNameAlreadyUsedException;
@@ -39,7 +43,31 @@ public class ParsingAndCalling {
 			System.out.println("Can not create the network because : " + e.getMessage()); 
 		}
 	}
-	
+	public static void defaultSetUpWith2Param(String[] args) {
+		boolean argsParsable = true;
+		String velibNetworkName;
+		double sideArea=0;
+		velibNetworkName = args[1];
+		
+		try {
+			sideArea = Double.parseDouble(args[2]);
+		}
+		catch(Exception e) {System.out.println("Error : sideArea must be a double"); argsParsable = false;}
+		if(argsParsable) {
+			try {
+				AbstractFactory networkFactory = FactoryProducer.getFactory("Network");
+
+				
+				Network defaultNetwork = networkFactory.getNetwork(velibNetworkName, sideArea);
+				
+			}
+			catch(NetworkNameAlreadyUsedException |BadInstantiationException |FactoryNullException e) {
+				System.out.println("Cannot create this network beacause : "+ e.getMessage());}
+		}
+		else {System.out.println(TYPE_ERROR_MSG);}
+				
+		
+	}
 	public static void setupWith5Param(String[] args) {
 		String name; int nstations=0; int nslots=0; float sidearea=0; int nbikes=0;
 		boolean argsParsable = true;
@@ -87,7 +115,41 @@ public class ParsingAndCalling {
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
-	
+	public static void addStationWith6Param(String[] args) {
+		String networkName; String stationName; String stationType; double latitude = 0; double longitude = 0; int nSlots = 0;
+		boolean argsParsable = true;
+		try {nSlots = Integer.parseInt(args[6]);}
+		catch(Exception e) {System.out.println("Error : the number of slots must be in Integer");argsParsable = false;}
+		try {
+			latitude = Double.parseDouble(args[4]);
+		}
+		catch(Exception e) {System.out.println("Error : latitude must be a double"); argsParsable = false;}
+		try {
+			longitude = Double.parseDouble(args[5]);
+		}
+		catch(Exception e) {System.out.println("Error : longitude must be a double"); argsParsable = false;}
+		
+		if(argsParsable) {
+			try {
+				networkName = args[1];
+				stationName = args[2];
+				stationType = args[3];
+				GPSLocation gpsLocation = new GPSLocation(latitude, longitude);
+				double maxLat = GPSLocation.getMaxLatitude(Network.searchNetworkByName(networkName).getSideArea());
+				double maxLong = GPSLocation.getMaxLongitude(Network.searchNetworkByName(networkName).getSideArea());
+				AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
+				Station station = stationFactory.getStation(stationType, gpsLocation, Network.searchNetworkByName(networkName), stationName);
+				for (int i=1; i<=nSlots; i++) {
+					station.addParkingSlot();
+				}
+			}
+			catch(BadInstantiationException |FactoryNullException|UnexistingNetworkNameException |StationNameAlreadyUsedException e) {System.out.println("Error occured because :"+ e.getMessage());}
+		}
+		else {
+			System.out.println(TYPE_ERROR_MSG);
+		}
+		
+	}
 	public static void addUserWith3Param(String[] args) {
 		String userName; String cardType; String velibNetworkName;
 		userName = args[1];
@@ -133,7 +195,27 @@ public class ParsingAndCalling {
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
-	
+	public static void addBicycleWith3Param(String[] args) {
+		String networkName; String stationName; String bicycleType;
+		networkName = args[1];
+		stationName = args[2];
+		bicycleType = args[3];
+		AbstractFactory bicycleFactory;
+		try {
+			bicycleFactory = FactoryProducer.getFactory("Bycicle");
+			Bycicle bycicle = bicycleFactory.getBycicle(bicycleType);
+			if(Network.searchStationByName(stationName, Network.searchNetworkByName(networkName)).getStationBikeCounters().isThereFreeSlots()) {
+				Network.searchStationByName(stationName, Network.searchNetworkByName(networkName)).addBike(bycicle);
+			}
+			else{
+				System.out.println("Impossible to add a bicycle to this station : it is full or offline");
+			}
+		} catch (BadInstantiationException | FactoryNullException | UnexistingStationNameException | UnexistingNetworkNameException | AddBikeFailException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
+		
+	}
 	public static void offlineWith2Param(String[] args) {
 		String velibNetworkName; int stationID = 0;
 		boolean argsParsable = true;

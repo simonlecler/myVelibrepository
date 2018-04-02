@@ -23,6 +23,7 @@ import myVelibCore.exceptions.RentBikeFailException;
 import myVelibCore.exceptions.ReturnBikeFailException;
 import myVelibCore.exceptions.SlotStatusFailException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
@@ -34,7 +35,7 @@ import myVelibCore.utilities.GPSLocation;
 class StationTest {
 
 	@Test
-	void testRentABikeWhenBikeAvailable() throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, NoBycicleAvailableException, UserNameAlreadyUsedException{
+	void testRentABikeWhenBikeAvailable() throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, NoBycicleAvailableException, UserNameAlreadyUsedException, StationNameAlreadyUsedException{
 	
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
@@ -44,7 +45,7 @@ class StationTest {
 
 		User user = userFactory.getUser("John",network1);
 		
-		Station station = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
+		Station station = stationFactory.getStation("Plus", new GPSLocation(1,0),network1,"station1");
 		
 		ParkingSlot slot1 = new ParkingSlot(station);
 		
@@ -59,14 +60,14 @@ class StationTest {
 	}
 	
 	@Test 
-	void testRentABikeWhenNoBikeAvailable() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, UserNameAlreadyUsedException{
+	void testRentABikeWhenNoBikeAvailable() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, UserNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network2 = NetworkFactory.getNetwork("testNetwork2");
 		User user = userFactory.getUser("John",network2);
-		Station station = stationFactory.getStation("Plus", new GPSLocation(1,0),network2);
+		Station station = stationFactory.getStation("Plus", new GPSLocation(1,0),network2,"station2");
 		ParkingSlot slot1 = new ParkingSlot(station);
 		
 		try {
@@ -83,15 +84,15 @@ class StationTest {
 		
 	}
 	@Test
-	void testReturnABikeWhenThereIsFreeSlot() throws BadInstantiationException, RentBikeFailException, ReturnBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException, UserNameAlreadyUsedException{
+	void testReturnABikeWhenThereIsFreeSlot() throws BadInstantiationException, RentBikeFailException, ReturnBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException, UserNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network3 = NetworkFactory.getNetwork("testNetwork3");
 		User user = userFactory.getUser("John",network3);
-		Station stationRent = stationFactory.getStation("Plus", new GPSLocation(1,0),network3);
-		Station stationReturn = stationFactory.getStation("Standard", new GPSLocation(1,1),network3);
+		Station stationRent = stationFactory.getStation("Plus", new GPSLocation(1,0),network3,"station3");
+		Station stationReturn = stationFactory.getStation("Standard", new GPSLocation(1,1),network3,"station4");
 		ParkingSlot slot1 = new ParkingSlot(stationRent);
 		ParkingSlot slot2 = new ParkingSlot(stationReturn);
 		Bycicle bycicle = bycicleFactory.getBycicle("Electrical");
@@ -111,15 +112,15 @@ class StationTest {
 	
 
 	@Test 
-	void testReturnABikeWhenNoFreeSlots()throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException, StationFullException, UserNameAlreadyUsedException{
+	void testReturnABikeWhenNoFreeSlots()throws BadInstantiationException, RentBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, NoBycicleAvailableException, AddBikeFailException, StationFullException, UserNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network4 = NetworkFactory.getNetwork("testNetwork4");
 		User user = userFactory.getUser("John",network4);
-		Station stationRent = stationFactory.getStation("Plus", new GPSLocation(1,0),network4);
-		Station stationReturn = stationFactory.getStation("Standard", new GPSLocation(1,1),network4);
+		Station stationRent = stationFactory.getStation("Plus", new GPSLocation(1,0),network4,"station5");
+		Station stationReturn = stationFactory.getStation("Standard", new GPSLocation(1,1),network4,"station6");
 		ParkingSlot slot1 = new ParkingSlot(stationRent);
 		ParkingSlot slot2 = new ParkingSlot(stationReturn);
 		Bycicle bycicle1 = bycicleFactory.getBycicle("Electrical");
@@ -142,15 +143,15 @@ class StationTest {
 	}
 
 	@Test
-	void testNotifyObserversDeparture() throws BadInstantiationException, NoStartingStationAvailableException, NoDestinationStationAvailableException, SlotStatusFailException, PlanningRideFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException{
+	void testNotifyObserversDeparture() throws BadInstantiationException, NoStartingStationAvailableException, NoDestinationStationAvailableException, SlotStatusFailException, PlanningRideFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network5 = NetworkFactory.getNetwork("testNetwork5");
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network5);
-		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network5);
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(10,10),network5);
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network5,"station7");
+		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network5,"station8");
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(10,10),network5,"station9");
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
 		ParkingSlot slot2 = new ParkingSlot(stationPlus2);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard1);
@@ -176,16 +177,16 @@ class StationTest {
 	}
 
 	@Test
-	void testNotifyObserversDestination()throws BadInstantiationException, NoStartingStationAvailableException, NoDestinationStationAvailableException, StationFullException, AddBikeFailException, PlanningRideFailException, SlotStatusFailException, FactoryNullException, NetworkNameAlreadyUsedException{
+	void testNotifyObserversDestination()throws BadInstantiationException, NoStartingStationAvailableException, NoDestinationStationAvailableException, StationFullException, AddBikeFailException, PlanningRideFailException, SlotStatusFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		Bycicle bycicle1 = bycicleFactory.getBycicle("Electrical");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network6 = NetworkFactory.getNetwork("testNetwork6");
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,1),network6);
-		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network6);
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(3,3),network6);
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,1),network6,"station10");
+		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(20,20),network6,"station11");
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(3,3),network6,"station12");
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
 		ParkingSlot slot2 = new ParkingSlot(stationPlus2);
 		ParkingSlot slot3 = new ParkingSlot(stationStandard1);

@@ -1,5 +1,6 @@
 package myVelibCore.stationPackage;
 
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
 import myVelibCore.userAndCardPackage.Observer;
 import myVelibCore.utilities.GPSLocation;
@@ -19,9 +20,10 @@ public class StationStandard extends Station{
 	 * @param gpsLocation
 	 * 		The GPS Coordinates of the station
 	 * @throws UnimplementedSubclassWithoutInputException 
+	 * @throws StationNameAlreadyUsedException 
 	 */
-	public StationStandard(GPSLocation gpsLocation, Network network) throws UnimplementedSubclassWithoutInputException {
-		super(gpsLocation,network);
+	public StationStandard(GPSLocation gpsLocation, Network network, String name) throws UnimplementedSubclassWithoutInputException, StationNameAlreadyUsedException {
+		super(gpsLocation,network, name);
 	}
 	@Override
 	public String toString() {

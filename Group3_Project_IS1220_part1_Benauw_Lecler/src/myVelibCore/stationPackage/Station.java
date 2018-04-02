@@ -7,6 +7,7 @@ import myVelibCore.exceptions.AddBikeFailException;
 import myVelibCore.exceptions.BadInstantiationException;
 import myVelibCore.exceptions.CardNoneNoBalanceException;
 import myVelibCore.exceptions.ComputeCostImpossibleException;
+import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.NoBikeToReturnException;
 import myVelibCore.exceptions.NoBycicleAvailableException;
 import myVelibCore.exceptions.RemoveBikeFailException;
@@ -15,13 +16,13 @@ import myVelibCore.exceptions.RentTwoBikeException;
 import myVelibCore.exceptions.ReturnBikeFailException;
 import myVelibCore.exceptions.SlotStatusFailException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.StationOfflineException;
 import myVelibCore.exceptions.UncompatibleNetworkException;
 import myVelibCore.exceptions.UnimplementedSubclassWithoutInputException;
 import myVelibCore.stationPackage.stationsStatitics.StationStatistics;
 import myVelibCore.userAndCardPackage.User;
 import myVelibCore.utilities.*;
-import myVelibCore.utilities.Time;
 /**
  * This class defines the type Station
  * @author Simon Lecler & Edouard Benauw
@@ -41,6 +42,10 @@ public abstract class Station implements Observable{
 	 * ID of the station
 	 */
 	private final int id;
+	/**
+	 * Name of the station
+	 */
+	private String name;
 	/**
 	 * Counter of bikes for this station
 	 */
@@ -82,18 +87,37 @@ public abstract class Station implements Observable{
 	 *<p> It instantiates a StationBikeCounter and add this station to the StationSortedByType object. It instantiates also a list of parking slots.
 	 *</p>
 	 * @throws UnimplementedSubclassWithoutInputException 
+	 * @throws StationNameAlreadyUsedException 
 	 */
 	
-	public Station(GPSLocation gpsLocation, Network network) throws UnimplementedSubclassWithoutInputException {
+	public Station(GPSLocation gpsLocation, Network network, String name) throws UnimplementedSubclassWithoutInputException, StationNameAlreadyUsedException {
 		super();
-		this.id = IDGenerator.getInstance().getNextID();
-		this.gpsLocation=gpsLocation;
-		this.network=network;
-		network.addStation(this);
-		this.stationBikeCounters = new StationBikeCounters();
-		this.slots = new ArrayList<ParkingSlot>();
+		boolean isNameFree = true;
+		for (Station s : network.getAllStations()) {
+			if (s.getName().equalsIgnoreCase(name)) {
+				isNameFree = false;
+			}
+		}
+		if (isNameFree) {
+			this.id = IDGenerator.getInstance().getNextID();
+			this.gpsLocation=gpsLocation;
+			this.network=network;
+			network.addStation(this);
+			this.stationBikeCounters = new StationBikeCounters();
+			this.slots = new ArrayList<ParkingSlot>();
+		}
+		else {throw new StationNameAlreadyUsedException(name);}
+		
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public boolean isOn() {
 		return this.status;
 	}

@@ -17,6 +17,7 @@ import myVelibCore.exceptions.FactoryNullException;
 import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.PlanningRideFailException;
 import myVelibCore.exceptions.RentBikeFailException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
@@ -72,7 +73,7 @@ class UserTest {
 	}
 
 	@Test
-	void testPlanningRide() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException {
+	void testPlanningRide() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -83,8 +84,8 @@ class UserTest {
 		user1.setGpsLocation(new GPSLocation(31,31));
 
 		try {
-			Station arrivee = stationFactory.getStation("standard", new GPSLocation(1,1), network1);
-			Station depart = stationFactory.getStation("standard", new GPSLocation(30,30), network1);
+			Station arrivee = stationFactory.getStation("standard", new GPSLocation(1,1), network1,"station1");
+			Station depart = stationFactory.getStation("standard", new GPSLocation(30,30), network1,"station2");
 			ParkingSlot slot1 = new ParkingSlot(depart);
 			ParkingSlot slot2 = new ParkingSlot(arrivee);
 			ParkingSlot slot3 = new ParkingSlot(depart);
@@ -149,7 +150,7 @@ class UserTest {
 	
 	
 	@Test
-	void testRides() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException {
+	void testRides() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -157,8 +158,8 @@ class UserTest {
 		Network network2 = NetworkFactory.getNetwork("testNetwork2");
 		User user1 = userFactory.getUser("Simon", network2);
 		user1.setGpsLocation(new GPSLocation(30.3195050,30.319505));
-		Station arrivee = stationFactory.getStation("standard", new GPSLocation(30.3193,30.3193), network2);
-		Station depart = stationFactory.getStation("standard", new GPSLocation(30.3195,30.3195), network2);
+		Station arrivee = stationFactory.getStation("standard", new GPSLocation(30.3193,30.3193), network2,"station3");
+		Station depart = stationFactory.getStation("standard", new GPSLocation(30.3195,30.3195), network2,"station4");
 		ParkingSlot slot1 = new ParkingSlot(depart);
 		ParkingSlot slot2 = new ParkingSlot(arrivee);
 		ParkingSlot slot3 = new ParkingSlot(depart);
@@ -182,7 +183,7 @@ class UserTest {
 	}
 
 	@Test
-	void testRun() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException {
+	void testRun() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -194,8 +195,8 @@ class UserTest {
 		Thread user1Thread = new Thread(user1);
 		Thread user2Thread = new Thread(user2);
 		user2.setGpsLocation(new GPSLocation(30.3195059,30.3195059));
-		Station arrivee = stationFactory.getStation("standard", new GPSLocation(30.3193,30.3193), network3);
-		Station depart = stationFactory.getStation("standard", new GPSLocation(30.3195,30.3195), network3);
+		Station arrivee = stationFactory.getStation("standard", new GPSLocation(30.3193,30.3193), network3,"station5");
+		Station depart = stationFactory.getStation("standard", new GPSLocation(30.3195,30.3195), network3,"station6");
 		ParkingSlot slot1 = new ParkingSlot(depart);
 		ParkingSlot slot2 = new ParkingSlot(arrivee);
 		ParkingSlot slot3 = new ParkingSlot(depart);

@@ -17,6 +17,7 @@ import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.NoBycicleAvailableException;
 import myVelibCore.exceptions.RemoveBikeFailException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UnimplementedSubclassWithInputException;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
@@ -26,13 +27,13 @@ import myVelibCore.utilities.GPSLocation;
 class StationBikeCountersTest {
 
 	@Test
-	void testIsThereAnyBycicle() throws BadInstantiationException, StationFullException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException{
+	void testIsThereAnyBycicle() throws BadInstantiationException, StationFullException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork1");
-		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
-		Station station2 = stationFactory.getStation("Standard", new GPSLocation(3,1),network1);
+		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1,"station1");
+		Station station2 = stationFactory.getStation("Standard", new GPSLocation(3,1),network1,"station2");
 		Bycicle bycicle = bycicleFactory.getBycicle("Electrical");
 		ParkingSlot slot1 = new ParkingSlot(station1);
 		ParkingSlot slot2 = new ParkingSlot(station2);
@@ -43,12 +44,12 @@ class StationBikeCountersTest {
 	}
 
 	@Test
-	void testIsThereAny() throws BadInstantiationException, StationFullException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException{
+	void testIsThereAny() throws BadInstantiationException, StationFullException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork2");
-		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
+		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1,"bla");
 		ParkingSlot slot1 = new ParkingSlot(station1);
 		Bycicle bycicle = bycicleFactory.getBycicle("Mechanical");
 		station1.getStationBikeCounters().addBike(bycicle, station1.getSlots());
@@ -57,12 +58,12 @@ class StationBikeCountersTest {
 	}
 
 	@Test
-	void testHowMany()throws BadInstantiationException, StationFullException, AddBikeFailException, UnimplementedSubclassWithInputException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void testHowMany()throws BadInstantiationException, StationFullException, AddBikeFailException, UnimplementedSubclassWithInputException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork3");
-		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
+		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1,"blabal");
 		ParkingSlot slot1 = new ParkingSlot(station1);
 		Bycicle bycicle = bycicleFactory.getBycicle("Mechanical");
 		station1.getStationBikeCounters().addBike(bycicle, station1.getSlots());
@@ -71,12 +72,12 @@ class StationBikeCountersTest {
 	}
 
 	@Test
-	void testAddBike() throws BadInstantiationException, StationFullException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException{
+	void testAddBike() throws BadInstantiationException, StationFullException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork4");
-		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
+		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1,"station3");
 		ParkingSlot slot1 = new ParkingSlot(station1);
 		Bycicle bycicle = bycicleFactory.getBycicle("Electrical");
 		ArrayList<ParkingSlot> slots = station1.getSlots();
@@ -86,12 +87,12 @@ class StationBikeCountersTest {
 	}
 
 	@Test
-	void testRemoveBike()throws BadInstantiationException, NoBycicleAvailableException, RemoveBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException {
+	void testRemoveBike()throws BadInstantiationException, NoBycicleAvailableException, RemoveBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
-		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1);
+		Station station1 = stationFactory.getStation("Plus", new GPSLocation(1,0),network1,"bjbi");
 		ParkingSlot slot1 = new ParkingSlot(station1);
 		Bycicle bycicle = new BycicleElectrical();
 		ArrayList<ParkingSlot> slots = station1.getSlots();

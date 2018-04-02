@@ -15,6 +15,7 @@ import myVelibCore.exceptions.NoDestinationStationAvailableException;
 import myVelibCore.exceptions.NoStartingStationAvailableException;
 import myVelibCore.exceptions.PlanningPathFailedException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.planningPolicyPackage.AvoidPlusStation;
 import myVelibCore.stationPackage.Network;
 import myVelibCore.stationPackage.ParkingSlot;
@@ -24,15 +25,15 @@ import myVelibCore.utilities.GPSLocation;
 class AvoidPlusStationTest {
 
 	@Test
-	void testChooseStations() throws BadInstantiationException, StationFullException,NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException{
+	void testChooseStations() throws BadInstantiationException, StationFullException,NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException{
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
 		//Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(1,0));
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(0,3),network1);
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(20,20),network1);
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(0,3),network1, "stationStandard1");
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(20,20),network1,"stationPlus1");
 		//Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(10,20));
 		//Station stationStandard3 = stationFactory.getStation("Standard", new GPSLocation(3,5));
 		Bycicle bycicle1 = bycicleFactory.getBycicle("Electrical");

@@ -14,6 +14,7 @@ import myVelibCore.exceptions.NetworkNameAlreadyUsedException;
 import myVelibCore.exceptions.RentBikeFailException;
 import myVelibCore.exceptions.ReturnBikeFailException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.exceptions.UserNameAlreadyUsedException;
 import myVelibCore.sortStationPackage.StationComparatorByMostUsed;
 import myVelibCore.stationPackage.Network;
@@ -25,14 +26,14 @@ import myVelibCore.utilities.GPSLocation;
 class StationComparatorByMostUsedTest {
 
 	@Test
-	void testCompare() throws BadInstantiationException, FactoryNullException, AddBikeFailException, NetworkNameAlreadyUsedException, ReturnBikeFailException, RentBikeFailException, UserNameAlreadyUsedException {
+	void testCompare() throws BadInstantiationException, FactoryNullException, AddBikeFailException, NetworkNameAlreadyUsedException, ReturnBikeFailException, RentBikeFailException, UserNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
-		Station station1 = stationFactory.getStation("standard", new GPSLocation(1,1), network1);
-		Station station2 = stationFactory.getStation("standard", new GPSLocation(30,30), network1);
+		Station station1 = stationFactory.getStation("standard", new GPSLocation(1,1), network1,"station1");
+		Station station2 = stationFactory.getStation("standard", new GPSLocation(30,30), network1,"station2");
 		ParkingSlot slot1 = new ParkingSlot(station1);
 		ParkingSlot slot2 = new ParkingSlot(station2);
 		ParkingSlot slot3 = new ParkingSlot(station1);

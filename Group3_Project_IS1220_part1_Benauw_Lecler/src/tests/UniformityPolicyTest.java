@@ -17,6 +17,7 @@ import myVelibCore.exceptions.NoDestinationStationAvailableException;
 import myVelibCore.exceptions.NoStartingStationAvailableException;
 import myVelibCore.exceptions.PlanningPathFailedException;
 import myVelibCore.exceptions.StationFullException;
+import myVelibCore.exceptions.StationNameAlreadyUsedException;
 import myVelibCore.planningPolicyPackage.UniformityPolicy;
 import myVelibCore.stationPackage.Network;
 
@@ -27,16 +28,16 @@ import myVelibCore.utilities.GPSLocation;
 class UniformityPolicyTest {
 
 	@Test
-	void whenStationWithMoreBycicleOrMoreFreeSlotNotSoFarThenChooseIt() throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException {
+	void whenStationWithMoreBycicleOrMoreFreeSlotNotSoFarThenChooseIt() throws BadInstantiationException, StationFullException, NoStartingStationAvailableException,NoDestinationStationAvailableException, AddBikeFailException, FactoryNullException, NetworkNameAlreadyUsedException, StationNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
 		AbstractFactory NetworkFactory = FactoryProducer.getFactory("Network");
 		Network network1 = NetworkFactory.getNetwork("testNetwork");
-		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(21,21), network1);
-		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(20,20),network1);
-		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(100,100),network1);
-		Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(99,99),network1);
+		Station stationPlus1 = stationFactory.getStation("Plus", new GPSLocation(21,21), network1,"station1");
+		Station stationStandard1 = stationFactory.getStation("Standard", new GPSLocation(20,20),network1,"station2");
+		Station stationPlus2 = stationFactory.getStation("Plus", new GPSLocation(100,100),network1,"station3");
+		Station stationStandard2 = stationFactory.getStation("Standard", new GPSLocation(99,99),network1,"station4");
 
 
 		ParkingSlot slot1 = new ParkingSlot(stationPlus1);
