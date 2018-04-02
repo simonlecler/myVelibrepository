@@ -34,7 +34,7 @@ public class AvoidPlusStation implements PlanningPolicy{
 		for(Station s : network.getAllStations()) {
 			
 			if (s.getStationBikeCounters().isThereAny(bycicleType) && s.isOn()) {
-			
+				
 				availableStartingStations.add(s);
 				
 			}
@@ -71,7 +71,7 @@ public class AvoidPlusStation implements PlanningPolicy{
 		return stations;
 	}
 	catch (UnimplementedSubclassWithInputException | NoStartingStationAvailableException | NoDestinationStationAvailableException e) {
-		throw new PlanningPathFailedException("Avoid Plus",e);
+		throw new PlanningPathFailedException("Avoid_Plus",e);
 	}
 	}
 	/**

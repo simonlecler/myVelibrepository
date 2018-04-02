@@ -278,6 +278,7 @@ public class User implements Runnable, Observer{
 			catch(BadSpeedSelectionException e) {System.out.println("NOT SUPPOSED TO HAPPEN" + e.getMessage());}
 			
 			this.isPlanningARide = true;
+			this.rides();
 		}
 		
 		catch(PlanningPathFailedException | BadInstantiationException e) {
@@ -473,15 +474,16 @@ public class User implements Runnable, Observer{
 	 * @throws BadInstantiationException
 	 */
 	public void rides() throws BadInstantiationException{
+		System.out.println("rides");
 		while(Time.getCurrentTime().isBefore(this.timeWhenRentingBike)) {
 			try {
-				Thread.sleep(1);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
+		
 		try {
 			this.setGpsLocation(currentDepartureStation.getGpsLocation());
 			currentDepartureStation.rentABike(this, this.userLastInput.getLastWantedBycicle());
@@ -506,6 +508,7 @@ public class User implements Runnable, Observer{
 		try {
 			this.setGpsLocation(currentDestinationStation.getGpsLocation());
 			currentDestinationStation.returnABike(this);
+		
 			
 			
 		} catch (ReturnBikeFailException | StationFullException e1) {
@@ -524,9 +527,9 @@ public class User implements Runnable, Observer{
 			}
 		}
 	
-	
+		System.out.println(this.getName()+" "+"has reached its destination");
 		this.setGpsLocation(this.userLastInput.getLastWantedDestination());
-	
+		
 		this.isPlanningARide = false;
 	
 	}

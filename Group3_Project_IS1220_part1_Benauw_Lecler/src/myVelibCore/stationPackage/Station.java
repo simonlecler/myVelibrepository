@@ -226,7 +226,7 @@ public abstract class Station implements Observable {
 			else {
 
 				Time.lock.lock();
-
+				System.out.println("ok !");
 				StationRemovingBycicle rentingBycicle;
 				rentingBycicle = this.stationBikeCounters.removeBike(bycicleType, this.slots);
 				this.unregisterObserverDeparture(user);

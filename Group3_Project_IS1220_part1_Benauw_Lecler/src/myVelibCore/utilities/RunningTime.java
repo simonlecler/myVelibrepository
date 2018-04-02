@@ -34,10 +34,10 @@ public class RunningTime implements Runnable{
 	public void run() {
 		Time clock = new Time();
 		while(isTimeRunning) {
-			clock.updateTime();
-			System.out.println("One minute has passed !");
+			Time.updateTime();
+			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				//e.printStackTrace();
 			}
@@ -50,6 +50,12 @@ public class RunningTime implements Runnable{
 			System.out.println("Time is already running !");
 		}
 		else { 
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			RunningTime.setTimeRunning(true);
 			Thread time = new Thread(RunningTime.getInstance());
 			RunningTime.getInstance().setCurrentThread(time);

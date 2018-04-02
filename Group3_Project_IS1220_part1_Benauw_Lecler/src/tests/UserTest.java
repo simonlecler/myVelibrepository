@@ -94,7 +94,7 @@ class UserTest {
 			Bycicle bycicle2 = bycicleFactory.getBycicle("Electrical");
 			depart.getStationBikeCounters().addBike(bycicle1, depart.getSlots());
 			depart.getStationBikeCounters().addBike(bycicle2, depart.getSlots());
-			user1.planningRide(new GPSLocation(0,0), "Avoid Plus Stations", "Electrical");
+			user1.planningRide(new GPSLocation(0,0), "Avoid_Plus_Stations", "Electrical");
 
 			assertTrue(user1.getCurrentDepartureStation()==depart);
 			assertTrue(user1.getCurrentDestinationStation()==arrivee);
@@ -171,11 +171,11 @@ class UserTest {
 		depart.getStationBikeCounters().addBike(bycicle2, depart.getSlots());
 
 
-		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid Plus Stations", "Electrical");
+		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid_Plus_Stations", "Electrical");
 		
 		
 		user1.rides();
-		//RunningTime.setSimulaton_On(false);
+		RunningTime.runTime();
 		assertTrue(user1.getGpsLocation().getLatitude()==30.31925);
 		assertTrue(user1.getGpsLocation().getLongitude()==30.31925);
 		assertTrue(user1.isPlanningARide()==false);
@@ -210,8 +210,8 @@ class UserTest {
 		time.start();
 		user1Thread.start();
 		user2Thread.start();
-		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid Plus Stations", "Electrical");
-		user2.planningRide(new GPSLocation(30.31925,30.31925), "Avoid Plus Stations", "Electrical");
+		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid_Plus_Stations", "Electrical");
+		user2.planningRide(new GPSLocation(30.31925,30.31925), "Avoid_Plus_Stations", "Electrical");
 		//user1.rides();
 		//user2.rides();
 		

@@ -30,9 +30,14 @@ import myVelibCore.utilities.RunningTime;
 import myVelibCore.utilities.Time;
 
 public class ParsingAndCalling {
-	
+	/**
+	 * Message printed when the user make a type error
+	 */
 	private static final String TYPE_ERROR_MSG = "An argument is of a wrong type. Please retry or type help for assistance.";
-	
+	/**
+	 * Setup a network with the name giver as parameter. By default it creates 10 stations, 10 slots per station, a network of sideArea of 4 km and 75 bicycles 
+	 * @param args
+	 */
 	public static void setupWith1Param(String[] args) {
 		String velibNetworkName;
 		velibNetworkName = args[1];
@@ -43,7 +48,10 @@ public class ParsingAndCalling {
 			System.out.println("Can not create the network because : " + e.getMessage()); 
 		}
 	}
-	
+	/**
+	 * Default setup. Only creates a network. The parameters are the network's name and its side area.
+	 * @param args
+	 */
 	public static void defaultSetUpWith2Param(String[] args) {
 		boolean argsParsable = true;
 		String velibNetworkName;
@@ -68,6 +76,11 @@ public class ParsingAndCalling {
 				
 		
 	}
+	
+	/**
+	 * Setup with 5 parameters. Name of the network, number of stations, number of slots, sidearea and number of bikes
+	 * @param args
+	 */
 	public static void setupWith5Param(String[] args) {
 		String name; int nstations=0; int nslots=0; float sidearea=0; int nbikes=0;
 		boolean argsParsable = true;
@@ -90,7 +103,11 @@ public class ParsingAndCalling {
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
-	
+	/**
+	 * Setup with 6 parameters.
+	 * Name of the network, number of stations, number of slots, sidearea and number of electrical bicycle. There will have 30% of electrical and 70% of mechanical by default
+	 * @param args
+	 */
 	public static void setupWith6Param(String[] args) {
 		String name; int nstations=0; int nslots=0; float sidearea=0; int nbikesMechanical=0; int nbikesElectrical=0;
 		boolean argsParsable = true;
@@ -115,6 +132,11 @@ public class ParsingAndCalling {
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
+	
+	/**
+	 * Add a station to a network at a given location, with a given number of slots 
+	 * @param args
+	 */
 	public static void addStationWith6Param(String[] args) {
 		String networkName; String stationName; String stationType; double latitude = 0; double longitude = 0; int nSlots = 0;
 		boolean argsParsable = true;
@@ -145,6 +167,10 @@ public class ParsingAndCalling {
 		}
 		
 	}
+	/**
+	 * A a user to a network with a given card (or no card)
+	 * @param args
+	 */
 	public static void addUserWith3Param(String[] args) {
 		String userName; String cardType; String velibNetworkName;
 		userName = args[1];
@@ -167,7 +193,10 @@ public class ParsingAndCalling {
 		} 
 
 	}
-	
+	/**
+	 * sets the user position in the network
+	 * @param args
+	 */
 	public static void setUserGPSPositionWith4Param(String[] args) {
 		String velibNetworkName; String userName ; double latitude = 0; double longitude = 0;
 		boolean argsParsable = true;
@@ -190,6 +219,11 @@ public class ParsingAndCalling {
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 	}
+	
+	/**
+	 * Add a bicycle of a given type to a given station
+	 * @param args
+	 */
 	public static void addBicycleWith3Param(String[] args) {
 		String networkName; String stationName; String bicycleType;
 		networkName = args[1];
@@ -205,6 +239,10 @@ public class ParsingAndCalling {
 		}
 		
 	}
+	/**
+	 * Get a station offline
+	 * @param args
+	 */
 	public static void offlineWith2Param(String[] args) {
 		String velibNetworkName; String stationName;
 		velibNetworkName = args[1];
@@ -221,7 +259,10 @@ public class ParsingAndCalling {
 				System.out.println("Station offline but we encountered problems during the operation : " + e.getMessage());
 			} 
 	}
-	
+	/**
+	 * Get a station online
+	 * @param args
+	 */
 	public static void onlineWith2Param(String[] args) {
 		String velibNetworkName; String stationName;
 		velibNetworkName = args[1];
@@ -239,7 +280,10 @@ public class ParsingAndCalling {
 			} 
 			
 	}
-	
+	/**
+	 * A given user rents a bike of a given type in a given station
+	 * @param args
+	 */
 	public static void rentBikeWith2Param(String[] args) {
 		String userName; String stationName; String bycicleType;
 		userName = args[1];
@@ -254,7 +298,10 @@ public class ParsingAndCalling {
 				System.out.println("Impossible to perform the renting operation because : "+e.getMessage());
 			} 
 	}
-	
+	/**
+	 * A user returns his bike in a given station
+	 * @param args
+	 */
 	public static void returnBikeWith3Param(String[] args) {
 		String userName; String stationName;
 		boolean argsParsable = true;
@@ -269,7 +316,10 @@ public class ParsingAndCalling {
 			System.out.println("Impossible to perform the returning operation because : "+e.getMessage());
 		} 
 	}
-	
+	/**
+	 * Displays the statistics of a given station
+	 * @param args
+	 */
 	public static void displayStationWith2Param(String[] args) {
 		String velibNetworkName =""; String stationName;
 		boolean argsParsable = true;
@@ -285,7 +335,10 @@ public class ParsingAndCalling {
 			}
 		
 	}
-	
+	/**
+	 * Display the statistics of a user
+	 * @param args
+	 */
 	public static void displayUserWith2Param(String[] args) {
 		String velibNetworkName; String userName;
 		velibNetworkName = args[1];
@@ -299,7 +352,10 @@ public class ParsingAndCalling {
 				System.out.println("Impossible to display the user because : " + e.getMessage());
 			}
 	}
-	
+	/**
+	 * Sorts stations according to a given comparator
+	 * @param args
+	 */
 	public static void sortStationWith2Param(String[] args) {
 		String velibNetworkName; String policy;
 		velibNetworkName = args[1];
@@ -312,7 +368,10 @@ public class ParsingAndCalling {
 			System.out.println("Impossible to sort the stations because : " + e.getMessage());
 		}
 	}
-	
+	/**
+	 * Displays the characteristics of a network (stations, users etc...)
+	 * @param args
+	 */
 	public static void displayWith1Param(String[] args) {
 		String velibNetworkName;
 		velibNetworkName = args[1];
@@ -324,11 +383,17 @@ public class ParsingAndCalling {
 			System.out.println("Impossible to display the network because : " + e.getMessage());
 		}
 	}
-	
+	/**
+	 * Give a list of all networks
+	 * @param args
+	 */
 	public static void listNetworkWith0Param(String[] args) {
 		Network.ListAllNetworks();
 	}
-	
+	/**
+	 * Plans the ride of a user, regarding its policy choice, starting location and destination
+	 * @param args
+	 */
 	public static void planningRideWith6Param(String[] args) {
 		String velibNetworkName; String userName; String policy ; double destinationLatitude = 0; double destinationLongitude = 0 ; String bicycleType;
 		boolean argsParsable = true;
@@ -353,7 +418,10 @@ public class ParsingAndCalling {
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}	
 	}
-	
+	/**
+	 * Adds a rent operation to the statistics
+	 * @param args
+	 */
 	public static void addRentOperationWith5Param (String[] args) {
 		String velibNetworkName; String stationName; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
 		boolean argsParsable = true;
@@ -375,7 +443,10 @@ public class ParsingAndCalling {
 			System.out.println("Impossible to add the renting operation because : " + e.getMessage());
 		}
 	}
-	
+	/**
+	 * Adds a return operation to the statistics
+	 * @param args
+	 */
 	public static void addReturnOperationWith5Param (String[] args) {
 		String velibNetworkName; String stationName; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
 		boolean argsParsable = true;
@@ -399,15 +470,24 @@ public class ParsingAndCalling {
 			}	
 		}
 	}
-	
+	/**
+	 * Launches the time simulation
+	 * @param args
+	 */
 	public static void runTimeWith0Param(String[] args) {
 		RunningTime.runTime();
 	}
-	
+	/**
+	 * Stops the time simulation
+	 * @param args
+	 */
 	public static void stopTimeWith0Param(String[] args) {
 		RunningTime.stopTime();
 	}
-	
+	/**
+	 * Updates the current time
+	 * @param args
+	 */
 	public static void updateTimeWith1Param(String[] args) {
 		int minutes = 0;
 		boolean argsParsable = true;
