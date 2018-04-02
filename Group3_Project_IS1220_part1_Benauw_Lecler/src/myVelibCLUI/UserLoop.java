@@ -74,10 +74,15 @@ public class UserLoop {
    //addStation Command
    public static final String ADDSTATION_COMMAND = "addStation";
    public static final int NBR_PARAM_ADDSTATION = 6;
-   public static final String DESCRIPTION_ADDSTARION = 
+   public static final String DESCRIPTION_ADDSTATION = 
 		   "	addStation <networkName> <stationName> <stationType> <latitude> <longitude> <nslots> : to add a station with name stationName in the network with name networkName\r\n"+
 		   "	with number of slots : nslots and located in GPSCoordinates (latitude, longitude)\r\n";
-   
+   //addBicycle Command
+   public static final String ADDBICYCLE_COMMAND = "addBicycle";
+   public static final int NBR_PARAM_ADDBICYCLE = 3;
+   public static final String DESCRIPTION_ADDBICYCLE = 
+		   " 	addBicycle <networkName> <stationName> <bicycleType> : to add a bicycle of type bicycleType\r\n" +
+		   "	in the station stationName of the network networkName";
    //addUser Command
    
    public static final String ADDUSER_COMMAND = "addUser";
@@ -287,7 +292,7 @@ public class UserLoop {
    
    public static final String INCORRECT_PARAMETERS_NUMBER_MSG = "You've entered the wrong number of parameters for the command.\r\n"+
 		   														"Type help if you need assistance.\r\n"+"\n";
-   public static final String HELP_MSG = DESCRIPTION_HELP + DESCRIPTION_EXIT + DESCRIPTION_READFILE + DESCRIPTION_WRITETOFILE + DESCRIPTION_SETUP + DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY + DESCRIPTION_RUNTIME + DESCRIPTION_STOPTIME + DESCRIPTION_PLANRIDE + DESCRIPTION_LISTNETWORK + DESCRIPTION_ADDRENTOPERATION +DESCRIPTION_ADDRETURNOPERATION;
+   public static final String HELP_MSG = DESCRIPTION_HELP + DESCRIPTION_EXIT + DESCRIPTION_READFILE + DESCRIPTION_WRITETOFILE + DESCRIPTION_SETUP +DESCRITION_DEFAULT_SETUP+ DESCRIPTION_ADDSTATION+DESCRIPTION_ADDBICYCLE+DESCRIPTION_ADDUSER + DESCRIPTION_OFFLINE + DESCRIPTION_ONLINE + DESCRIPTION_RENTBIKE + DESCRIPTION_RETURNBIKE + DESCRIPTION_DISPLAYSTATION + DESCRIPTION_DISPLAYUSER + DESCRIPTION_SORTSTATION + DESCRIPTION_DISPLAY + DESCRIPTION_RUNTIME + DESCRIPTION_STOPTIME + DESCRIPTION_PLANRIDE + DESCRIPTION_LISTNETWORK + DESCRIPTION_ADDRENTOPERATION +DESCRIPTION_ADDRETURNOPERATION;
    public static final String UNRECOGNIZED_COMMAND_MSG ="You entered a unrecognized command ! Remember you can type help for help ;)";
    
    public static final String READING_FILE_BEGINNING_MSG = "Beginning to read command from following file :";
@@ -423,6 +428,12 @@ public class UserLoop {
          else if (command.equalsIgnoreCase(ADDSTATION_COMMAND)) {
         	 if(numberOfParametersEntered == NBR_PARAM_ADDSTATION) {
         		 ParsingAndCalling.addStationWith6Param(inputForParsing);
+        	 }
+        	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
+         }
+         else if (command.equalsIgnoreCase(ADDBICYCLE_COMMAND)) {
+        	 if(numberOfParametersEntered == NBR_PARAM_ADDBICYCLE) {
+        		 ParsingAndCalling.addBicycleWith3Param(inputForParsing);
         	 }
         	 else {System.out.println(INCORRECT_PARAMETERS_NUMBER_MSG);}
          }
