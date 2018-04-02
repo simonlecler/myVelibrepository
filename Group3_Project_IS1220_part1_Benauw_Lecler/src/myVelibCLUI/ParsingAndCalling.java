@@ -43,12 +43,12 @@ public class ParsingAndCalling {
 			System.out.println("Can not create the network because : " + e.getMessage()); 
 		}
 	}
+	
 	public static void defaultSetUpWith2Param(String[] args) {
 		boolean argsParsable = true;
 		String velibNetworkName;
 		double sideArea=0;
 		velibNetworkName = args[1];
-		
 		try {
 			sideArea = Double.parseDouble(args[2]);
 		}
@@ -62,7 +62,7 @@ public class ParsingAndCalling {
 				
 			}
 			catch(NetworkNameAlreadyUsedException |BadInstantiationException |FactoryNullException e) {
-				System.out.println("Cannot create this network beacause : "+ e.getMessage());}
+				System.out.println("Cannot create this network because : "+ e.getMessage());}
 		}
 		else {System.out.println(TYPE_ERROR_MSG);}
 				
@@ -204,101 +204,76 @@ public class ParsingAndCalling {
 		try {
 			bicycleFactory = FactoryProducer.getFactory("Bycicle");
 			Bycicle bycicle = bicycleFactory.getBycicle(bicycleType);
-			if(Network.searchStationByName(stationName, Network.searchNetworkByName(networkName)).getStationBikeCounters().isThereFreeSlots()) {
 				Network.searchStationByName(stationName, Network.searchNetworkByName(networkName)).addBike(bycicle);
-			}
-			else{
-				System.out.println("Impossible to add a bicycle to this station : it is full or offline");
-			}
 		} catch (BadInstantiationException | FactoryNullException | UnexistingStationNameException | UnexistingNetworkNameException | AddBikeFailException e) {
-			// TODO Auto-generated catch block
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 		
 	}
 	public static void offlineWith2Param(String[] args) {
-		String velibNetworkName; int stationID = 0;
-		boolean argsParsable = true;
+		String velibNetworkName; String stationName;
 		velibNetworkName = args[1];
-		try{stationID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
-		if(argsParsable) {
+		stationName = args[2];
 			try {
 				Network network = Network.searchNetworkByName(velibNetworkName);
-				Station station = network.searchStationByID(stationID);
+				Station station = network.searchStationByName(stationName,network);
 				station.turnOff();
 			}
-			catch (UnexistingNetworkNameException | UnexistingStationIDException e) {
+			catch (UnexistingNetworkNameException | UnexistingStationNameException e) {
 				System.out.println("Impossible to turn station offline because : " + e.getMessage());
 			} 
 			catch (SlotStatusFailException e) {
 				System.out.println("Station offline but we encountered problems during the operation : " + e.getMessage());
 			} 
-			
-		}
-		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void onlineWith2Param(String[] args) {
-		String velibNetworkName; int stationID = 0;
-		boolean argsParsable = true;
+		String velibNetworkName; String stationName;
 		velibNetworkName = args[1];
-		try{stationID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
-		if(argsParsable) {
+		stationName=args[2];
 			try {
 			Network network = Network.searchNetworkByName(velibNetworkName);
-			Station station = network.searchStationByID(stationID);
+			Station station = network.searchStationByName(stationName,network);
 			station.turnOn();
 			}
-			catch (UnexistingNetworkNameException | UnexistingStationIDException e) {
+			catch (UnexistingNetworkNameException | UnexistingStationNameException e) {
 				System.out.println("Impossible to turn station online because : " + e.getMessage());
 			} 
 			catch (SlotStatusFailException e) {
 				System.out.println("Station online but we encountered problems during the operation : " + e.getMessage());
 			} 
 			
-		}
-		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void rentBikeWith2Param(String[] args) {
-		int userID = 0; int stationID = 0; String bycicleType;
-		boolean argsParsable = true;
-		try{userID = Integer.parseInt(args[1]);}
-		catch(Exception e) {System.out.println("Error : userID must be an integer"); argsParsable = false;}
-		try{stationID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
+		String userName; String stationName; String bycicleType;
+		userName = args[1];
+		stationName = args[2];
 		bycicleType = args[3];
-		if(argsParsable) {
 			try {
-				User user = Network.searchUserByIDAllNetworks(userID);
-				Station station = Network.searchStationByIDAllNetworks(stationID);
+				User user = Network.searchUserByNameAllNetworks(userName);
+				Station station = Network.searchStationByNameAllNetworks(stationName);
 				station.rentABike(user, bycicleType);
 			}
-			catch (UnexistingUserIDException | UnexistingStationIDException | RentBikeFailException e) {
+			catch (UnexistingUserNameException | UnexistingStationNameException | RentBikeFailException e) {
 				System.out.println("Impossible to perform the renting operation because : "+e.getMessage());
 			} 
-		}
-		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void returnBikeWith3Param(String[] args) {
-		int userID = 0; int stationID = 0; int time = 0;
+		String userName; String stationName; int time = 0;
 		boolean argsParsable = true;
-		try{userID = Integer.parseInt(args[1]);}
-		catch(Exception e) {System.out.println("Error : userID must be an integer"); argsParsable = false;}
-		try{stationID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
+		userName = args[1];
+		stationName = args[2];
 		try{time = Integer.parseInt(args[3]);}
 		catch(Exception e) {System.out.println("Error : time must be an integer"); argsParsable = false;}
 		if(argsParsable) {
 			try {
-				User user = Network.searchUserByIDAllNetworks(userID);
-				Station station = Network.searchStationByIDAllNetworks(stationID);
+				User user = Network.searchUserByNameAllNetworks(userName);
+				Station station = Network.searchStationByNameAllNetworks(stationName);
 				station.returnABike(user);
 			}
-			catch (UnexistingUserIDException | UnexistingStationIDException | ReturnBikeFailException | StationFullException e) {
+			catch (UnexistingUserNameException | UnexistingStationNameException | ReturnBikeFailException | StationFullException e) {
 				System.out.println("Impossible to perform the returning operation because : "+e.getMessage());
 			} 
 		}
@@ -306,41 +281,33 @@ public class ParsingAndCalling {
 	}
 	
 	public static void displayStationWith2Param(String[] args) {
-		String velibNetworkName =""; int stationID=0;
+		String velibNetworkName =""; String stationName;
 		boolean argsParsable = true;
 		velibNetworkName = args[1];
-		try{stationID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
-		if(argsParsable) {
+		stationName = args[2];
 			try {
 				Network network = Network.searchNetworkByName(velibNetworkName);
-				Station station = network.searchStationByID(stationID);
+				Station station = Network.searchStationByName(stationName,network);
 				station.display();
 			}
-			catch (UnexistingStationIDException | UnexistingNetworkNameException e) {
+			catch (UnexistingStationNameException | UnexistingNetworkNameException e) {
 				System.out.println("Impossible to display the station because : " + e.getMessage());
 			}
-		}
-		else {System.out.println(TYPE_ERROR_MSG);}
+		
 	}
 	
 	public static void displayUserWith2Param(String[] args) {
-		String velibNetworkName; int userID = 0;
-		boolean argsParsable = true;
+		String velibNetworkName; String userName;
 		velibNetworkName = args[1];
-		try{ userID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : userID must be an integer"); argsParsable = false;}
-		if(argsParsable) {
+		userName = args[2];
 			try {
 				Network network = Network.searchNetworkByName(velibNetworkName);
-				User user = network.searchUserByID(userID);
+				User user = network.searchUserByName(userName);
 				user.display();
 			}
-			catch (UnexistingNetworkNameException | UnexistingUserIDException e) {
+			catch (UnexistingNetworkNameException | UnexistingUserNameException e) {
 				System.out.println("Impossible to display the user because : " + e.getMessage());
 			}
-		}
-		else {System.out.println(TYPE_ERROR_MSG);}
 	}
 	
 	public static void sortStationWith2Param(String[] args) {
@@ -398,11 +365,10 @@ public class ParsingAndCalling {
 	}
 	
 	public static void addRentOperationWith5Param (String[] args) {
-		String velibNetworkName; int stationID = 0; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
+		String velibNetworkName; String stationName; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
 		boolean argsParsable = true;
 		velibNetworkName = args[1];
-		try {stationID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
+		stationName = args[2];
 		userName = args[3];
 		try {timeOfOperation = Integer.parseInt(args[4]);}
 		catch(Exception e) {System.out.println("Error : timeOfOperation must be an integer"); argsParsable = false;}
@@ -411,21 +377,20 @@ public class ParsingAndCalling {
 		try {
 			Network network = Network.searchNetworkByName(velibNetworkName);
 			User user = network.searchUserByName(userName);
-			Station station = network.searchStationByID(stationID);
+			Station station = Network.searchStationByName(stationName,network);
 			ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
 			station.getStationStatitics().addRentOperation(user, new Time(timeOfOperation), slot);
 		}
-		catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationIDException e) {
+		catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationNameException e) {
 			System.out.println("Impossible to add the renting operation because : " + e.getMessage());
 		}
 	}
 	
 	public static void addReturnOperationWith5Param (String[] args) {
-		String velibNetworkName; int stationID = 0; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
+		String velibNetworkName; String stationName; String userName; int timeOfOperation = 0; int numberOfParkingSlot = 0;
 		boolean argsParsable = true;
 		velibNetworkName = args[1];
-		try {stationID = Integer.parseInt(args[2]);}
-		catch(Exception e) {System.out.println("Error : stationID must be an integer"); argsParsable = false;}
+		stationName = args[2];
 		userName = args[3];
 		try {timeOfOperation = Integer.parseInt(args[4]);}
 		catch(Exception e) {System.out.println("Error : timeOfOperation must be an integer"); argsParsable = false;}
@@ -434,11 +399,11 @@ public class ParsingAndCalling {
 		try {
 			Network network = Network.searchNetworkByName(velibNetworkName);
 			User user = network.searchUserByName(userName);
-			Station station = network.searchStationByID(stationID);
+			Station station = Network.searchStationByName(stationName,network);
 			ParkingSlot slot = station.getSlots().get(numberOfParkingSlot); //We can do better...
 			station.getStationStatitics().addReturnOperation(user, new Time(timeOfOperation), slot);
 		}
-		catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationIDException e) {
+		catch (UnexistingNetworkNameException | UnexistingUserNameException | UnexistingStationNameException e) {
 			System.out.println("Impossible to add the returning operation because : " + e.getMessage());
 		}
 		

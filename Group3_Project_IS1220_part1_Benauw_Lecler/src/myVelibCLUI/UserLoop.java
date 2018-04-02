@@ -124,7 +124,7 @@ public class UserLoop {
    
    public static final int NBR1_PARAM_OFFLINE = 2;
    public static final String DESCRIPTION1_OFFLINE =
-		   "	offline <velibnetworkName, stationID> : to put offline the station stationID\r\n"+
+		   "	offline <velibnetworkName, stationName> : to put offline the station stationName\r\n"+
 		   "	of the myVelib network velibnetworkName\r\n";
    
    public static final String DESCRIPTION_OFFLINE = 
@@ -136,7 +136,7 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_ONLINE = 2;
    public static final String DESCRIPTION1_ONLINE =
-		   "	online <velibnetworkName, stationID> : to put online the station stationID\r\n"+
+		   "	online <velibnetworkName, stationName> : to put online the station stationName\r\n"+
 		   "	of the myVelib network velibnetworkName\r\n";
    
    public static final String DESCRIPTION_ONLINE  = 
@@ -171,8 +171,8 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_RENTBIKE = 3;
    public static final String DESCRIPTION1_RENTBIKE =
-		   "	rentBike <userID, stationID,bycicleType> : to let the user userID renting a bike from station\r\n"+
-		   "	stationID from the given type (if no bikes are available should behave accordingly)\r\n";
+		   "	rentBike <userName, stationName,bycicleType> : to let the user userName renting a bike from station\r\n"+
+		   "	stationName from the given type (if no bikes are available should behave accordingly)\r\n";
    
    public static final String DESCRIPTION_RENTBIKE = 
 		   "rentBike : used to rent a bike"+"\n" + DESCRIPTION1_RENTBIKE +"\n";
@@ -183,8 +183,8 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_RETURNBIKE = 3;
    public static final String DESCRIPTION1_RETURNBIKE =
-		   "	returnBike <userID, stationID, time> : to let the user userID returning a bike\r\n" +
-		   "	to station stationID at a given instant of time time (if no parking bay is available\r\n"+
+		   "	returnBike <userName, stationName, time> : to let the user userName returning a bike\r\n" +
+		   "	to station stationName at a given instant of time time (if no parking bay is available\r\n"+
 		   "	should behave accordingly). This command should display the cost of the rent\r\n";
    
    public static final String DESCRIPTION_RETURNBIKE = 
@@ -196,7 +196,7 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_ADDRENTOPERATION = 5;
    public static final String DESCRIPTION1_ADDRENTOPERATION =
-		   "	addRentOperation <velibNetworkName> <stationID> <userName> <timeOfOperation> <numberOfParkingSlot> :\r\n" +
+		   "	addRentOperation <velibNetworkName> <stationName> <userName> <timeOfOperation> <numberOfParkingSlot> :\r\n" +
 		   "	add a renting operation on the given station concerning the given user, parking slot and time\r\n";
    
    public static final String DESCRIPTION_ADDRENTOPERATION = 
@@ -208,7 +208,7 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_ADDRETURNOPERATION = 5;
    public static final String DESCRIPTION1_ADDRETURNOPERATION =
-		   "	addReturnOperation <velibNetworkName> <stationID> <userName> <timeOfOperation> <numberOfParkingSlot> :\r\n" +
+		   "	addReturnOperation <velibNetworkName> <stationName> <userName> <timeOfOperation> <numberOfParkingSlot> :\r\n" +
 			"	add a returning operation on the given station concerning the given user, parking slot and time\r\n";
    
    public static final String DESCRIPTION_ADDRETURNOPERATION = 
@@ -220,8 +220,8 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_DISPLAYSTATION = 2;
    public static final String DESCRIPTION1_DISPLAYSTATION =
-		  "		displayStation<velibnetworkName, stationID> : to display the statistics (as of\r\n"+
-		  "		Section ??) of station stationID of a myVelib network velibnetwork.\r\n";
+		  "		displayStation<velibnetworkName, stationName> : to display the statistics\r\n"+
+		  "		of station stationName of a myVelib network velibnetwork.\r\n";
    
    public static final String DESCRIPTION_DISPLAYSTATION = 
 		   "displayStation : used to display a station"+"\n" + DESCRIPTION1_DISPLAYSTATION +"\n";
@@ -232,8 +232,8 @@ public class UserLoop {
 
    public static final int NBR1_PARAM_DISPLAYUSER = 2;
    public static final String DESCRIPTION1_DISPLAYUSER =
-		  "		displayUser<velibnetworkName, userID> : to display the statistics (as of\r\n"+
-		  "		Section ??) of user userID of a myVelib network velibnetwork.\r\n";
+		  "		displayUser<velibnetworkName, userName> : to display the statistics\r\n"+
+		  "		of user userName of a myVelib network velibnetwork.\r\n";
    
    public static final String DESCRIPTION_DISPLAYUSER = 
 		   "displayUser : used to display a station"+"\n" + DESCRIPTION1_DISPLAYUSER +"\n";

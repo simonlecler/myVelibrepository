@@ -360,7 +360,7 @@ public class Network {
 	 * @return The station called "name"
 	 * @throws UnexistingStationNameException
 	 */
-	public static Station searchStationByName(String name, Network network) throws  UnexistingStationNameException {
+	public static Station searchStationByName(String name,Network network) throws  UnexistingStationNameException {
 		for (Station s : network.getAllStations()) {
 			if(s.getName().equalsIgnoreCase(name)) {
 				return s;
@@ -394,6 +394,18 @@ public class Network {
 		}
 		throw new UnexistingStationIDException(id);
 	}
+	
+	public static Station searchStationByNameAllNetworks(String name) throws UnexistingStationNameException {
+		for (Network n : allNetworks) {
+			for (Station s : n.allStations) {
+				if (s.getName()== name) {
+					return s;
+				}
+			}
+		}
+		throw new UnexistingStationNameException(name);
+	}
+	
 	/**
 	 * 
 	 * @param id
@@ -432,6 +444,17 @@ public class Network {
 			}
 		}
 		throw new UnexistingUserIDException(id);
+	}
+	
+	public static User searchUserByNameAllNetworks(String name) throws UnexistingUserNameException {
+		for (Network n : allNetworks) {
+			for (User u : n.allUsers) {
+				if (u.getName()== name) {
+					return u;
+				}	
+			}
+		}
+		throw new UnexistingUserNameException(name);
 	}
 	
 	public void sortStationByLeastOccupied(Time beginningTime, Time endingTime){
