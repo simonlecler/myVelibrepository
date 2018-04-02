@@ -475,7 +475,7 @@ public class User implements Runnable, Observer{
 	public void rides() throws BadInstantiationException{
 		while(Time.getCurrentTime().isBefore(this.timeWhenRentingBike)) {
 			try {
-				Thread.sleep(1);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -495,7 +495,7 @@ public class User implements Runnable, Observer{
 		
 		while(Time.getCurrentTime().isBefore(this.timeWhenReturningBike)) {
 			try {
-				Thread.sleep(1);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -607,7 +607,8 @@ public class User implements Runnable, Observer{
 			}
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException e) {
+			} 
+			catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

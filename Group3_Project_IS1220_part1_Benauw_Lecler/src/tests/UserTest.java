@@ -94,7 +94,7 @@ class UserTest {
 			Bycicle bycicle2 = bycicleFactory.getBycicle("Electrical");
 			depart.getStationBikeCounters().addBike(bycicle1, depart.getSlots());
 			depart.getStationBikeCounters().addBike(bycicle2, depart.getSlots());
-			user1.planningRide(new GPSLocation(0,0), "Avoid Plus Stations", "Electrical");
+			user1.planningRide(new GPSLocation(0,0), "Avoid_Plus_Stations", "Electrical");
 
 			assertTrue(user1.getCurrentDepartureStation()==depart);
 			assertTrue(user1.getCurrentDestinationStation()==arrivee);
@@ -107,7 +107,7 @@ class UserTest {
 			e.printStackTrace();
 		}
 	}
-
+	/*
 	@Test
 	void testUpdateDeparture() {
 		fail("Not yet implemented");
@@ -122,7 +122,7 @@ class UserTest {
 	void testCalculateTotalTimeSpentOnABike() {
 		fail("Not yet implemented");
 	}
-	
+	*/
 	@Test
 	void testIsDeparted() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, UserNameAlreadyUsedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
@@ -150,7 +150,7 @@ class UserTest {
 	
 	
 	@Test
-	void testRides() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException, StationNameAlreadyUsedException {
+	void testRides() throws BadInstantiationException, FactoryNullException, NetworkNameAlreadyUsedException, AddBikeFailException, PlanningRideFailException, UserNameAlreadyUsedException, StationNameAlreadyUsedException, InterruptedException {
 		AbstractFactory stationFactory = FactoryProducer.getFactory("Station");
 		AbstractFactory userFactory = FactoryProducer.getFactory("User");
 		AbstractFactory bycicleFactory = FactoryProducer.getFactory("Bycicle");
@@ -171,11 +171,12 @@ class UserTest {
 		depart.getStationBikeCounters().addBike(bycicle2, depart.getSlots());
 
 
-		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid Plus Stations", "Electrical");
+		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid_Plus_Stations", "Electrical");
 		
-		
+		RunningTime.runTime();
 		user1.rides();
-		//RunningTime.setSimulaton_On(false);
+		Thread.sleep(3500);
+		RunningTime.stopTime();
 		assertTrue(user1.getGpsLocation().getLatitude()==30.31925);
 		assertTrue(user1.getGpsLocation().getLongitude()==30.31925);
 		assertTrue(user1.isPlanningARide()==false);
@@ -205,27 +206,14 @@ class UserTest {
 		Bycicle bycicle2 = bycicleFactory.getBycicle("Electrical");
 		depart.getStationBikeCounters().addBike(bycicle1, depart.getSlots());
 		depart.getStationBikeCounters().addBike(bycicle2, depart.getSlots());
-	
-		Thread time = new Thread(RunningTime.getInstance());
-		time.start();
-		user1Thread.start();
-		user2Thread.start();
-		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid Plus Stations", "Electrical");
-		user2.planningRide(new GPSLocation(30.31925,30.31925), "Avoid Plus Stations", "Electrical");
-		//user1.rides();
-		//user2.rides();
-		
-		
-		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	
+		RunningTime.runTime();
+		user1.planningRide(new GPSLocation(30.31925,30.31925), "Avoid_Plus_Stations", "Electrical");
+		user2.planningRide(new GPSLocation(30.31925,30.31925), "Avoid_Plus_Stations", "Electrical");
+		user1.rides();
+		user2.rides();
+		try {Thread.sleep(3500);} 
+		catch (InterruptedException e) {e.printStackTrace();}
+		RunningTime.stopTime();
 		assertTrue(user1.getGpsLocation().getLatitude()==30.31925 && user1.getGpsLocation().getLongitude()==30.31925);
 		assertTrue(user2.getGpsLocation().getLatitude()==30.31925 && user1.getGpsLocation().getLongitude()==30.31925);
 	

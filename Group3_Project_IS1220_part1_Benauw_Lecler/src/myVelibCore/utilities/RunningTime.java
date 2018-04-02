@@ -37,7 +37,7 @@ public class RunningTime implements Runnable{
 			clock.updateTime();
 			System.out.println("One minute has passed !");
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				//e.printStackTrace();
 			}
