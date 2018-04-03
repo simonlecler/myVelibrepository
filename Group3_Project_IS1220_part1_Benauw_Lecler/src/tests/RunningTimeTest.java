@@ -19,18 +19,12 @@ class RunningTimeTest {
 	@Test
 	void testRun() {
 		
-		Thread thread = new Thread(RunningTime.getInstance());
+		RunningTime.runTime();
+		try {Thread.sleep(5000);} 
+		catch (InterruptedException e) {e.printStackTrace();}
+		RunningTime.stopTime();
+		assertTrue(Time.getStaticCurrentTime()>0);
 		
-		try {
-			thread.start();
-			Thread.sleep(100);
-			//RunningTime.setSimulaton_On(false);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		assertTrue(Time.getStaticCurrentTime() == 8 || Time.getStaticCurrentTime()==9);
 	}
 
 }

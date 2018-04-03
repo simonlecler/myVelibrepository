@@ -51,11 +51,7 @@ class TimeTest {
 
 	@Test
 	void testUpdateTime() {
-		Thread thread = new Thread(RunningTime.getInstance());
-		Time time = new Time();
-		thread.start();
-		time.updateTime();
-		//RunningTime.setSimulaton_On(false);
+		Time.updateTime();
 		assertTrue(Time.getStaticCurrentTime()==1);
 	}
 
